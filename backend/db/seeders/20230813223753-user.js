@@ -24,6 +24,8 @@ module.exports = {
     */
     const validUsers = [
       {
+        firstName: 'Demo',
+        lastName: 'Lition',
         username: 'Demo-lition',
         email: 'demo@lition.com',
         hashedPassword: bcrypt.hashSync('password')
