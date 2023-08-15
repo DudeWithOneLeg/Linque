@@ -1,7 +1,7 @@
 'use strict';
 const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Users extends Model {
+  class User extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,27 +9,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Users.hasMany(models.Friend, {
+      User.hasMany(models.Friend, {
         foreignKey: 'fromUserId'
       })
-      Users.hasMany(models.Friend, {
+      User.hasMany(models.Friend, {
         foreignKey: 'toUserId'
       })
-      Users.hasMany(models.Message, {
+      User.hasMany(models.Message, {
         foreignKey: 'senderId'
       })
-      Users.hasMany(models.Message, {
+      User.hasMany(models.Message, {
         foreignKey: 'recieverId'
       })
-      Users.hasOne(models.UserSetting, {
+      User.hasOne(models.UserSetting, {
         foreignKey: 'userId'
       })
-      Users.hasMany(models.UserEvent, {
+      User.hasMany(models.UserEvent, {
         foreignKey: 'userId'
       })
     }
   }
-  Users.init(
+  User.init(
     {
       firstName: {
         allowNull: false,
@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Users",
+      modelName: "User",
       defaultScope: {
         attributes: {
           exclude: ["hashedPassword", "email", "createdAt", "updatedAt"]
@@ -77,5 +77,5 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   );
-  return Users;
+  return User;
 };
