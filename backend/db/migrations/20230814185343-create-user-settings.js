@@ -14,31 +14,31 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: false
       },
       lat: {
         type: Sequelize.DECIMAL,
-        allowNull: true,
+        allowNull: true
       },
       lng: {
         type: Sequelize.DECIMAL,
-        allowNull: true,
+        allowNull: true
       },
       chatAudioResponse: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true,
+        defaultValue: true
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.literal('CURRENT_TIMESTAMP'),
+        type: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.literal('CURRENT_TIMESTAMP'),
+        type: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
   },
