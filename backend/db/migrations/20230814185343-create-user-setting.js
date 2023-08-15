@@ -41,7 +41,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.literal('CURRENT_TIMESTAMP'),
       }
-    }, options);
+    });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);
