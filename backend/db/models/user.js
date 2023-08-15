@@ -15,9 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Friend, {
         foreignKey: 'toUserId'
       })
-      User.hasMany(models.Message, {
-        foreignKey: 'recieverId'
-      })
       User.hasMany(models.UserEvent, {
         foreignKey: 'userId'
       })
