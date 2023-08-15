@@ -13,13 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DudeWithOneLeg/Capstone.git"
+    "url": "git+https://github.com/DudeWithOneLeg/Linque.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DudeWithOneLeg/Capstone/issues"
+    "url": "https://github.com/DudeWithOneLeg/Linque/issues"
   },
-  "homepage": "https://github.com/DudeWithOneLeg/Capstone#readme"
+  "homepage": "https://github.com/DudeWithOneLeg/Linque#readme"
 }
