@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      ChatBotMessage.belongsTo(models.chatBotConvo, {
+      ChatBotMessage.belongsTo(models.ChatBotConvo, {
         foreignKey: 'chatBotConvoId'
       })
     }
