@@ -25,9 +25,72 @@ module.exports = {
     const validUsers = [
       {
         firstName: 'Demo',
-        lastName: 'Lition',
-        username: 'Demo-lition',
+        lastName: 'lition',
+        username: 'demolition',
         email: 'demo@lition.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Michael',
+        lastName: 'Scott',
+        username: 'TheOfficeFanatic',
+        email: 'michael.scott@dundermifflin.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Leonardo',
+        lastName: 'DiCaprio',
+        username: 'LeoTheGreat',
+        email: 'hollywood_star@oscarsaremylife.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Jennifer',
+        lastName: 'Lawrence',
+        username: 'JLawFanatic',
+        email: 'lawrence_of_laughter@funnyactress.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Johnny',
+        lastName: 'Depp',
+        username: 'CaptainSparrow',
+        email: 'pirate_johnny@rum_and_movies.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Meryl',
+        lastName: 'Streep',
+        username: 'MerylMagic',
+        email: 'award_queen@merylsmania.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Beyoncé',
+        lastName: 'Knowles',
+        username: 'QueenBee',
+        email: 'beyhive_ruler@musicbuzz.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Brad',
+        lastName: 'Pitt',
+        username: 'BradStar',
+        email: 'hollywood_heartthrob@funnyflicks.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Taylor',
+        lastName: 'Swift',
+        username: 'SwiftieForever',
+        email: 'pop_princess@shakingitoff.com',
+        hashedPassword: bcrypt.hashSync('password')
+      },
+      {
+        firstName: 'Tom',
+        lastName: 'Hanks',
+        username: 'TomTheActor',
+        email: 'hanks_for_laughing@comedymovies.com',
         hashedPassword: bcrypt.hashSync('password')
       }
     ]
@@ -43,7 +106,7 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     await queryInterface.bulkDelete(options, {
-      id: [1]
+      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     }, {});
   }
 };
