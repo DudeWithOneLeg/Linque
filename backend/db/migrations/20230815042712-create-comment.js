@@ -20,13 +20,13 @@ module.exports = {
         allowNull: true,
         type: Sequelize.TEXT
       },
-      commentImageId: {
-        allowNull: true,
-        type: Sequelize.INTEGER
-      },
       userId: {
         allowNull: false,
         type: Sequelize.INTEGER
+      },
+      postId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

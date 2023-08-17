@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       Comment.belongsTo(models.Post, {
         foreignKey: 'postId'
       })
+
+      Comment.belongsTo(models.User, {
+        foreignKey: 'userId'
+      })
     }
   }
   Comment.init({
@@ -21,11 +25,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: true
     },
-    commentImageId: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
     userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    postId: {
       type: DataTypes.INTEGER,
       allowNull: false
     }

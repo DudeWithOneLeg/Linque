@@ -1,49 +1,111 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { User, Friend, Post } = require('../../db/models');
+const { User, Friend, Post, Comment } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require('sequelize')
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const isPostAuthor = (req, res, next) => {
+    const { id: userId} = req.user
+    const { post: {userId: authorId} } = req
 
+    if (authorId !== userId) {
+        res.status(403)
+        return res.json({
+            message: "You do not have permission to edit this post"
+        })
+    }
+    return next()
+}
 
-const validateFriends = async (userId, friendId) => {
-    const friends = await Friend.findOne({
+const validateFriends = async (req, res, next) => {
+
+    if (req.err) return res.json(req.err)
+
+    const { id: userId } = req.user
+
+    const { userId: friendId } = req.post
+
+    if (userId === friendId) return next()
+
+    const friend = await Friend.findOne({
         where: {
-            [Op.or]: [{toUserId: userId}, {fromUserId: friendId}, {toUserId: friendId}, {fromUserId: userId}],
+            [Op.or]: [[{toUserId: userId}, {fromUserId: friendId}], [{toUserId: friendId}, {fromUserId: userId}]],
             status: 'friends'
         }
     })
-    console.log(friends)
-    if (((friends.toUserId === userId && friends.fromUserId === friendId) || (friends.fromUserId === userId && friends.toUserId === friendId)) && friends.status === 'friends') {
-        console.log('true')
-        return true
+
+    if (!friend) {
+        res.status(403)
+        return res.json({
+            message: "You must be friends with this user to see their posts."
+        })
     }
-    else {
-        console.log(false)
-        return false
-    }
+
+    return next()
+
 }
 
-// const postExists = async (req, res) {
+const postExists = async (req, res, next) => {
+    const { postId } = req.params
+    const post = await Post.findOne({
+        where: {
+            id: postId
+        },
+        include: [
+            {
+                model: Comment,
+                include: User
+            },
+            User
+        ]
+    })
 
-// }
+
+
+    const comments = await Comment.findAll({
+        where: {
+            postId: postId
+        },
+        include: [{model: User}]
+    })
+    console.log(comments)
+    console.log(post)
+    if (post) {
+        req.post = post
+    }
+    else {
+        res.status(404)
+        return res.json({
+            message: "This post does not exist"
+        })
+    }
+    return next()
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 const router = express.Router();
 
+//Get all posts only if friends
 router.get('/', requireAuth, async (req, res) => {
+
     const userid = req.user.id
+
     const friends = await Friend.findAll({
         where: {
             [Op.or]: [{ toUserId: userid }, { fromUserId: userid }],
             status: 'friends'
         }
     })
-    const friendsIds = []
+
+    const friendsIds = [userid]
+
     friends.map((friend) => {
-        if (friend.toUserId !== 1 && friend.fromUserId == 1 && !friendsIds.includes(friend.toUserId))
+
+        if (friend.toUserId !== userid && friend.fromUserId == userid && !friendsIds.includes(friend.toUserId) && friend.status === 'friends')
             return friendsIds.push(friend.toUserId)
-        else if (friend.fromUserId !== 1 && friend.toUserId === 1 && !friendsIds.includes(friend.fromUserId)) {
+        else if (friend.fromUserId !== userid && friend.toUserId === userid && !friendsIds.includes(friend.fromUserId) && friend.status === 'friends') {
             return friendsIds.push(friend.fromUserId)
         }
     })
@@ -54,7 +116,13 @@ router.get('/', requireAuth, async (req, res) => {
                 [Op.in]: friendsIds
             }
         },
-        include: [{ model: User }]
+        include: [
+            {
+                model: Comment,
+                include: User
+            },
+            User
+        ]
     })
 
     res.status(200)
@@ -62,7 +130,38 @@ router.get('/', requireAuth, async (req, res) => {
 
 })
 
-router.post('/', requireAuth, async (req, res) => {
+router.get('/my-posts', requireAuth, async (req, res) => {
+
+    const {id: userId } = req.user
+
+    const posts = await Post.findAll({
+        where: {
+            userId: userId
+        },
+        include: [
+            {
+                model: Comment,
+                include: User
+            },
+            {
+                model: User
+            }
+        ]
+    })
+
+    if (!posts) {
+        res.status(404)
+        return res.json({
+            message: "You dont have any posts."
+        })
+    }
+
+    res.status(200)
+    return res.json(posts)
+})
+
+//Create a post
+router.post('/', [requireAuth], async (req, res) => {
     const user = req.user
 
     const { body } = req.body
@@ -77,69 +176,25 @@ router.post('/', requireAuth, async (req, res) => {
 
 })
 
+//Get post by ID if user is author or friend is author
+router.get('/:postId', [requireAuth, postExists, validateFriends], async (req, res) => {
 
-router.get('/:postId', requireAuth, async (req, res) => {
-    const userId = req.user.id
-    const { postId } = req.params
+    const { post } = req
 
-    const post = await Post.findOne({
-        where: {
-            id: postId
-        },
-        include: {model: User}
-    })
+    res.status(200)
 
-    if (!post) {
-        res.status(404)
-        return res.json({
-            message: "This post does not exists"
-        })
-    }
-
-    const poster = post.userId
-
-    if (poster === userId) {
-        res.status(200)
-        res.json(post)
-    }
-
-    await validateFriends(userId, poster).then((reponses) => {
-        if (reponses) {
-            res.status(200)
-            return res.json(post)
-        }
-    else if (!reponses) {
-        res.status(403)
-        res.json({
-            message: "You must be friends with this user."
-        })
-    }
-    })
+    return res.json(post)
 
 })
 
-router.put('/:postId', requireAuth, async (req, res) => {
-    const user = req.user
-    const { postId } = req.params
+//Update post if user is author
+router.put('/:postId', [requireAuth, postExists, isPostAuthor], async (req, res) => {
+
     const { body } = req.body
 
-    const oldPost = await Post.findOne({
-        where: {
-            id: postId
-        },
-        incude: [{model: User}]
-    })
+    const { post: oldPost } = req
 
-    if (oldPost.userId !== user.id) {
-        res.status(403)
-        return res.json({
-            message: "You dont have permission to edit this post."
-        })
-    }
-
-    console.log(oldPost)
-
-    const newPost = await oldPost.set({
+    const newPost = await oldPost.update({
         body
     })
 
@@ -148,23 +203,9 @@ router.put('/:postId', requireAuth, async (req, res) => {
 
 })
 
-router.delete('/:postId', requireAuth, async (req, res) => {
-    const user = req.user
-    const { postId } = req.params
+router.delete('/:postId', [requireAuth, postExists, isPostAuthor], async (req, res) => {
 
-    const post = await Post.findOne({
-        where: {
-            id: postId
-        },
-        incude: [{model: User}]
-    })
-
-    if (post.userId !== user.id) {
-        res.status(403)
-        return res.json({
-            message: "You dont have permission to edit this post."
-        })
-    }
+    const { post } = req
 
     await post.destroy()
 
@@ -173,6 +214,11 @@ router.delete('/:postId', requireAuth, async (req, res) => {
         message: "Success"
     })
 
+})
+
+router.get('/:postId/comments', [requireAuth, postExists], async (req, res) => {
+    res.status(200)
+    return res.json(req.post.Comments)
 })
 
 module.exports = router;
