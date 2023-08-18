@@ -5,32 +5,69 @@ const { Op } = require('sequelize');
 
 const router = express.Router()
 
-const friendsExist = async (req, res, next) => {
+const userExists = async (req, res, next) => {
 
-    const {id: userId} = req.user
+    const { userId } = req.params
 
-    const friends = await Friend.findAll({
-        where: {
-            [Op.or]: [{fromUserId: userId}, {toUserId: userId}]
-        },
-        include: User
-    })
-    if (!friends) {
+    const user = await User.findByPk(userId)
+
+    if (!user) {
         res.status(404)
-        res.json({
-            message: "You dont have any friends"
+        return res.json({
+            message: "This user does not exist"
         })
     }
-    req.friends = friends
     return next()
+
 }
 
-router.get('/', [requireAuth, friendsExist], async (req, res) => {
+const validateFriends = async (req, res, next) => {
 
-    const { friends } = req
+    const { id: userId } = req.user
+
+    const { userId: friendId } = req.params
+
+    const friend = await Friend.findOne({
+        where: {
+            [Op.or]: [[{ toUserId: userId }, { fromUserId: friendId }], [{ toUserId: friendId }, { fromUserId: userId }]],
+        }
+    })
+
+    if (!friend) {
+        res.status(403)
+        return res.json({
+            message: "You're not friends with this user'"
+        })
+    }
+
+    req.friend = friend
+
+    return next()
+
+}
+
+//Get friendship
+router.get('/:userId', [requireAuth, userExists, validateFriends], async (req, res) => {
+
+    const { friend } = req
 
     res.status(200)
-    return res.json(friends)
+    return res.json(friend)
+
+})
+
+//Update a friendship
+router.put('/:friendsipId', [requireAuth, userExists, validateFriends], async (req, res) => {
+
+    const { friendshipId } = req.params
+
+    const friendship = await friendshipId.findByPk(friendshipId)
+
+    
+
+    res.status(200)
+    return res.json(friend)
+
 })
 
 module.exports = router

@@ -6,7 +6,7 @@ const postsRouter = require('./posts.js')
 const commentsRouter = require('./comments.js')
 const friendsRouter = require('./friends.js')
 const profileRouter = require('./profile.js')
-const { Op } = require('../../db/models')
+const eventsRouter = require('./events.js')
 
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -28,6 +28,8 @@ router.use('/comments', commentsRouter)
 router.use('/friends', friendsRouter)
 
 router.use('/profile', profileRouter)
+
+router.use('/events', eventsRouter)
 
 router.get('/set-token-cookie', async (_req, res) => {
   const user = await User.findOne({

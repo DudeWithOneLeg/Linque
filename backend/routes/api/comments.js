@@ -42,7 +42,7 @@ router.put('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (
     const { body } = req.body
     const { comment } = req
 
-    const newComment = await comment.set({
+    const newComment = await comment.update({
         body
     })
 

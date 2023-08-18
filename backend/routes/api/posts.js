@@ -79,36 +79,6 @@ const postExists = async (req, res, next) => {
 
 const router = express.Router();
 
-router.get('/my-posts', requireAuth, async (req, res) => {
-
-    const {id: userId } = req.user
-
-    const posts = await Post.findAll({
-        where: {
-            userId: userId
-        },
-        include: [
-            {
-                model: Comment,
-                include: User
-            },
-            {
-                model: User
-            }
-        ]
-    })
-
-    if (!posts) {
-        res.status(404)
-        return res.json({
-            message: "You dont have any posts."
-        })
-    }
-
-    res.status(200)
-    return res.json(posts)
-})
-
 //Create a post
 router.post('/', [requireAuth], async (req, res) => {
     const user = req.user
@@ -164,11 +134,6 @@ router.delete('/:postId', [requireAuth, postExists, isPostAuthor], async (req, r
     })
 
 })
-
-// router.get('/:postId/comments', [requireAuth, postExists, validateFriends], async (req, res) => {
-//     res.status(200)
-//     return res.json(req.post.Comments)
-// })
 
 router.post('/:postId/comments', [requireAuth, postExists, validateFriends], async (req, res) => {
     const { body } = req.body
