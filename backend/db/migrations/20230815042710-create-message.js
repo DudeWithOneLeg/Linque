@@ -16,11 +16,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      body: {
+        type: Sequelize.TEXT,
+        allowNull: false
+      },
       senderId: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      recieverId: {
+      receiverId: {
         type: Sequelize.INTEGER,
         allowNull: false
       },

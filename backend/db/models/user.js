@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'senderId'
       })
       User.hasMany(models.Message, {
-        foreignKey: 'recieverId'
+        foreignKey: 'receiverId'
       })
       User.hasOne(models.UserSetting, {
         foreignKey: 'userId'

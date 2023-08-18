@@ -15,16 +15,20 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'senderId'
       })
       Message.belongsTo(models.User, {
-        foreignKey: 'recieverId'
+        foreignKey: 'receiverId'
       })
     }
   }
   Message.init({
+    body: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
     senderId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    recieverId: {
+    receiverId: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
