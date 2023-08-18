@@ -1,6 +1,26 @@
 const express = require('express')
 const { requireAuth } = require('../../utils/auth');
 const { User, Friend, Post, Comment, UserEvent } = require('../../db/models');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
+
+// const validateEvent = [
+//     check('name')
+//         .withMessage('Please enter a name.'),
+//     check('body')
+//         .withMessage('Please enter a description.'),
+//     check('lat')
+//         .withMessage('Please enter a latitude.'),
+//     check('lng')
+//         .withMessage('Please enter a longitude.'),
+//     check('address')
+//         .withMessage('Please enter the address.'),
+//     check('city')
+//         .withMessage('Please enter the city.'),
+//     check('state')
+//         .withMessage('Please enter the state.'),
+//     handleValidationErrors
+// ]
 
 const router = express.Router()
 
@@ -49,10 +69,10 @@ router.put('/:eventId', [requireAuth, eventExists, isEventOrganizer], async (req
 
     const options = {}
 
-    for (key in Object.keys(body)) {
+    for (key of Object.keys(body)) {
         options[key] = body[key]
     }
-
+    
     const newEvent = await event.update(options)
 
     res.status(200)

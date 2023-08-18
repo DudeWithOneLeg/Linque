@@ -38,7 +38,8 @@ const usersFriendsExist = async (req, res, next) => {
 
     const friends = await Friend.findAll({
         where: {
-            [Op.or]: [{ fromUserId: userId }, { toUserId: userId }]
+            [Op.or]: [{ fromUserId: userId }, { toUserId: userId }],
+            status: 'friends'
         },
         include: User
     })
@@ -46,7 +47,7 @@ const usersFriendsExist = async (req, res, next) => {
     if (!friends) {
         res.status(404)
         res.json({
-            message: "You dont have any friends"
+            message: "This user doesn't have any friends"
         })
     }
 
