@@ -32,7 +32,6 @@ module.exports = {
     {
       toUserId: 1,
       fromUserId: 4,
-      status: "friends"
     },
     {
       toUserId: 1,
@@ -76,7 +75,7 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     await queryInterface.bulkDelete(options, {
-      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      id: [1, 2, 3, 4, 5, 6, 7, 8, 9]
     }, {});
   }
 };
