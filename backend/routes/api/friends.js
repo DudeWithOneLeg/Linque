@@ -56,17 +56,22 @@ router.get('/:userId', [requireAuth, userExists, validateFriends], async (req, r
 
 })
 
+//NOT FINISHED!!!
+////////////////////////////////////////////////////////////
+
 //Update a friendship
-router.put('/:friendsipId', [requireAuth, userExists, validateFriends], async (req, res) => {
+router.put('/:friendsipId', [requireAuth, validateFriends], async (req, res) => {
 
     const { friendshipId } = req.params
 
     const friendship = await friendshipId.findByPk(friendshipId)
 
-    
+    await friendship.update({
+        status: 'friends'
+    })
 
     res.status(200)
-    return res.json(friend)
+    return res.json(friendship)
 
 })
 
