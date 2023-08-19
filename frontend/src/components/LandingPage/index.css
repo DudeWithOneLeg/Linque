@@ -1,0 +1,14 @@
+#landing-page {
+    border: solid red;
+    display: flex;
+    flex-direction: column;
+}
+
+#landing-title-container {
+    display: flex;
+    justify-content: center;
+}
+
+#landing-title {
+    font-size: 70px;
+}

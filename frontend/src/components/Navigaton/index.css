@@ -1,0 +1,12 @@
+#navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#login-signup {
+    display: flex;
+    flex-direction: row;
+    width: 150px;
+    justify-content: space-between;
+}

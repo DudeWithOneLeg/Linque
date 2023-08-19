@@ -1,1 +1,11 @@
 /* TODO Add site wide styles */
+body {
+    background-color: rgb(34, 32, 32);
+    color: white;
+    margin: 0px;
+    height: 100%;
+}
+
+html {
+    border: solid red;
+}
