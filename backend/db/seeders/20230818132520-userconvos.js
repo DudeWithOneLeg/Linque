@@ -1,13 +1,14 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA; // define your schema in options object
 }
-options.tableName = 'Friends'
-module.exports = {
+options.tableName = 'UserConvos'
 
+module.exports = {
   async up (queryInterface, Sequelize) {
     /**
      * Add seed commands here.
@@ -18,54 +19,35 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   const validFriends = [
+   const validConvos = [
     {
-      toUserId: 1,
-      fromUserId: 2,
-      status: "friends"
+      friendshipId: 1,
     },
     {
-      toUserId: 1,
-      fromUserId: 3,
-      status: "friends"
+      friendshipId: 2
     },
     {
-      toUserId: 1,
-      fromUserId: 4,
-      status: 'friends'
+      friendshipId: 3
     },
     {
-      toUserId: 1,
-      fromUserId: 5,
-      status: "friends"
+      friendshipId: 4
     },
     {
-      toUserId: 1,
-      fromUserId: 6,
-      status: "friends"
+      friendshipId: 5
     },
     {
-      toUserId: 1,
-      fromUserId: 7,
-      status: "friends"
+      friendshipId: 6
     },
     {
-      toUserId: 1,
-      fromUserId: 8,
-      status: "friends"
+      friendshipId: 7
     },
     {
-      toUserId: 1,
-      fromUserId: 9,
-      status: "friends"
+      friendshipId: 8
     },
-    {
-      toUserId: 1,
-      fromUserId: 10,
-      status: "pending"
-    }
+
    ]
-   await queryInterface.bulkInsert(options, validFriends, {})
+   await queryInterface.bulkInsert(options, validConvos, {}).catch(err => console.log(err))
+
   },
 
   async down (queryInterface, Sequelize) {
@@ -76,7 +58,7 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     await queryInterface.bulkDelete(options, {
-      id: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    }, {});
+      id: [ 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    }, {})
   }
 };

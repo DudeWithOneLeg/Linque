@@ -15,23 +15,14 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Comment, {
         foreignKey: 'userId'
       })
-      User.hasMany(models.Friend, {
-        foreignKey: 'fromUserId'
-      })
-      User.hasMany(models.Friend, {
-        foreignKey: 'toUserId'
-      })
-      User.hasMany(models.Message, {
-        foreignKey: 'senderId'
-      })
-      User.hasMany(models.Message, {
-        foreignKey: 'recieverId'
-      })
       User.hasOne(models.UserSetting, {
         foreignKey: 'userId'
       })
       User.hasMany(models.UserEvent, {
         foreignKey: 'userId'
+      })
+      User.hasMany(models.Friend, {
+        foreignKey: 'toUserId'
       })
     }
   }

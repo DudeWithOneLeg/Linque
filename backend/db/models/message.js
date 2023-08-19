@@ -11,20 +11,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Message.belongsTo(models.User, {
-        foreignKey: 'senderId'
-      })
-      Message.belongsTo(models.User, {
-        foreignKey: 'recieverId'
+      Message.belongsTo(models.UserConvo, {
+        foreignKey: 'convoId'
       })
     }
   }
   Message.init({
+    body: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
     senderId: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    recieverId: {
+    convoId: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
