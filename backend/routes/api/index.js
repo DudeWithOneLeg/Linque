@@ -8,6 +8,7 @@ const friendsRouter = require('./friends.js')
 const profileRouter = require('./profile.js')
 const eventsRouter = require('./events.js')
 const messagesRouter = require('./messages.js')
+const conversationsRouter = require('./conversations.js')
 
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -33,6 +34,8 @@ router.use('/profile', profileRouter)
 router.use('/events', eventsRouter)
 
 router.use('/messages', messagesRouter)
+
+router.use('/conversations', conversationsRouter)
 
 router.get('/set-token-cookie', async (_req, res) => {
   const user = await User.findOne({

@@ -23,54 +23,54 @@ module.exports = {
     {
         body: "Hello there!",
         senderId: 1,
-        receiverId: 2
+        convoId: 1
     },
     {
-        'body': "Hey! How are you?",
+        body: "Hey! How are you?",
         senderId: 2,
-        receiverId: 1
+        convoId: 1
     },
     {
-        'body': "Did you watch the game last night?",
+        body: "Did you watch the game last night?",
         senderId: 3,
-        receiverId: 4
+        convoId: 2
     },
     {
-        'body': "Yes, it was amazing!",
+        body: "Yes, it was amazing!",
         senderId: 4,
-        receiverId: 3
+        convoId: 2
     },
     {
-        'body': "I need your help with the project.",
+        body: "I need your help with the project.",
         senderId: 5,
-        receiverId: 6
+        convoId: 3
     },
     {
-        'body': "Sure, I'd be happy to help!",
+        body: "Sure, I'd be happy to help!",
         senderId: 6,
-        receiverId: 5
+        convoId: 3
     },
     {
-        'body': "What's your plan for the weekend?",
+        body: "What's your plan for the weekend?",
         senderId: 7,
-        receiverId: 8
+        convoId: 4
     },
     {
-        'body': "I'm thinking of going hiking.",
+        body: "I'm thinking of going hiking.",
         senderId: 8,
-        receiverId: 7
+        convoId: 4
     },
     {
-        'body': "Have you tried the new restaurant in town?",
+        body: "Have you tried the new restaurant in town?",
         senderId: 9,
-        receiverId: 10
+        convoId: 5
     },
     {
-        'body': "Not yet, but I've heard good things about it.",
+        body: "Not yet, but I've heard good things about it.",
         senderId: 10,
-        receiverId: 9
+        convoId: 5
     }
-  ]
+]
   await queryInterface.bulkInsert(options, validMessages, {})
   },
 
