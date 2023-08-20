@@ -3,3 +3,8 @@
     color: white;
 }
 
+#logo {
+    height: fit-container;
+    display: flex;
+    align-items: center;
+}

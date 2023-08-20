@@ -17,6 +17,11 @@ input[type="text"], input[type="password"] {
     color: white;
     font-size: 18px;
     background-color: gray;
+    padding-left: 10px;
+}
+
+form > input {
+    background-color: gray;
 }
 
 form > * {
@@ -27,11 +32,18 @@ form > * {
     color: white;
     border: none;
     outline: none;
-    background-color: gray;
     font-size: 18px;
+}
+
+form > button {
+    background-color: rgb(17, 17, 17);
 }
 
 form > button:hover {
     cursor: pointer;
     background-color: rgb(92, 91, 91);
+}
+
+.errors {
+    color: red;
 }

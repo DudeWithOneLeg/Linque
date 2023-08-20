@@ -1,14 +1,17 @@
 import { NavLink } from "react-router-dom"
+import { useSelector } from "react-redux"
 import Logo from "../Logo"
 import './index.css'
 
 export default function Navigation({setLogin, setSignup}) {
+
+    const sessionUser = useSelector(state => state.session.user)
+
     return (
         <nav id='navigation'>
-            <div>
+            
                 <Logo />
-            </div>
-            <div id='login-signup'>
+            {!sessionUser && <div id='login-signup'>
                     <a
                     onClick={() => {setSignup(false); setLogin(true)}}>
                     <h1>Login</h1>
@@ -20,7 +23,7 @@ export default function Navigation({setLogin, setSignup}) {
                     >Sign Up</h1>
                     </a>
 
-            </div>
+            </div>}
 
         </nav>
     )
