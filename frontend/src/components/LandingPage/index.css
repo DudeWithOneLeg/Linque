@@ -3,6 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 100px;
 }
 
 #landing-title-container {
@@ -27,4 +28,8 @@
 #get-started:hover {
     cursor: pointer;
     background-color: rgb(92, 91, 91);
+}
+
+#get-started-container {
+    padding-top: 200px;
 }

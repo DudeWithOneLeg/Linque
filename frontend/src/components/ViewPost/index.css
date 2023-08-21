@@ -3,6 +3,7 @@
     margin-bottom: 20px;
     border-radius: 10px;
     background-color: rgb(51, 50, 50);
+    padding-bottom: 10px;
 }
 
 .name-body {
@@ -25,6 +26,7 @@
     height: 40px;
     border-radius: 20px;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .post-user-info {
@@ -42,7 +44,6 @@
 .post-body {
     padding-top: 20px;
     font-size: 30px;
-    text-overflow: wrap;
 }
 
 .post-body > p {
@@ -53,4 +54,44 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    border-bottom: solid gray 1px;
+}
+
+.post-engagement > * {
+    margin: 5px;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-edit {
+    width: 25px;
+    height: 25px;
+}
+
+.post-edit:hover {
+    cursor: pointer;
+}
+
+.post-like-button > img {
+    width: 30px;
+    height: 30px;
+}
+
+.post-like-button > * {
+    margin: 0px;
+    margin-left: 10px;
+}
+
+.post-like-button {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+
+    margin: 0px;
+    border-bottom: solid gray 1px;
+
 }

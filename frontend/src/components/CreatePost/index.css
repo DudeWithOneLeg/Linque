@@ -1,0 +1,60 @@
+#create-post {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(51, 50, 50);
+    border-radius: 10px;
+    padding-top: 20px;
+    height: fit-content;
+}
+
+#attachments {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    border-top: solid gray 1px;
+}
+
+#create-post-input {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#create-post-input > textarea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    background-color: gray;
+    padding-left: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+#create-post-input > textarea::placeholder {
+    color: white;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#create-post-button {
+    height: 35px;
+    width: 60px;
+    border-radius: 10px;
+    background-color: rgb(34, 32, 32);
+    border: none;
+    color: white;
+    align-self: flex-end;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+#create-post-button:hover {
+    background-color: rgb(71, 71, 71);
+}

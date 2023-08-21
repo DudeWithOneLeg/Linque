@@ -2,14 +2,15 @@ import { NavLink } from "react-router-dom"
 import { useSelector } from "react-redux"
 import Logo from "../Logo"
 import './index.css'
+import ProfileDropdown from "../ProfileDropdown"
 
 export default function Navigation({setLogin, setSignup}) {
 
     const sessionUser = useSelector(state => state.session.user)
 
     return (
-        <nav id='navigation'>
-            
+        <div id='navigation'>
+
                 <Logo />
             {!sessionUser && <div id='login-signup'>
                     <a
@@ -24,7 +25,10 @@ export default function Navigation({setLogin, setSignup}) {
                     </a>
 
             </div>}
+            {
+                sessionUser && <ProfileDropdown sessionUser={sessionUser}/>
+            }
 
-        </nav>
+        </div>
     )
 }

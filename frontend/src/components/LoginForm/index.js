@@ -36,17 +36,20 @@ export default function LoginForm() {
         <div id='login-form'>
             <form onSubmit={handleSubmit}>
                 <input
+                className="example"
                 type='text'
                 placeholder='Usrname or Email'
                 onChange={(e) => setCredential(e.target.value)}
                 />
                 <input
+                className="example"
                 placeholder="Password"
                 type='password'
                 onChange={(e) => setPassword(e.target.value)}
                 />
                 {errors.credential && <p class='errors'>{errors.credential}</p>}
-                <button type='submit'>Login</button>
+                <button
+                className="example" type='submit'>Login</button>
             </form>
         </div>
 

@@ -12,6 +12,8 @@ function App() {
 
   const sessionUser = useSelector(state => state.session.user)
 
+  console.log(sessionUser)
+
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);

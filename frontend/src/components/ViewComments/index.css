@@ -1,0 +1,47 @@
+.view-comments {
+    padding: 10px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    overflow: wrap;
+}
+
+.comment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    overflow: wrap;
+    width: 100%;
+    height: fit-content;
+}
+
+.comment-body {
+    display: flex;
+    flex-direction: column;
+    background-color: gray;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.comment-body > * {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 5px;
+    height: fit-content;
+}
+
+.comment-body > p {
+    overflow: break-word;
+    height: fit-content;
+}
+
+.comment-user-info {
+    font-size: 14px;
+    height: fit-content;
+}
+
+.comment-content {
+    overflow: break-word;
+    height: fit-content;
+}

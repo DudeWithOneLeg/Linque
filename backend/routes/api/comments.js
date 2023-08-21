@@ -38,6 +38,7 @@ const isCommentAuthor = (req, res, next) => {
     })
 }
 
+
 router.put('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (req, res) => {
     const { body } = req.body
     const { comment } = req

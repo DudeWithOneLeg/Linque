@@ -38,7 +38,7 @@ export default function LandingPage() {
 
 
     useEffect(()  => {
-        if (soundRef) {
+        if (soundRef.current) {
 
             soundRef.current.playbackRate = '.8'
             soundRef.current.play().catch(err => {
@@ -64,7 +64,7 @@ export default function LandingPage() {
             {
                 sessionUser && <Feed />
             }
-        {!sessionUser && <>
+        {!sessionUser && <div id='get-started-container'>
             <Navigation setLogin={setLogin} setSignup={setSignup}/>
             <audio ref={soundRef} id='audio'src='/audio/welcome.mp3' preload="auto">
 
@@ -83,7 +83,7 @@ export default function LandingPage() {
                 id='get-started'
                 onClick={() => handleGetStarted()}
                 >Get Started</button>
-            }</>}
+            }</div>}
             <Microphone soundRef={soundRef}/>
         </div>
     )

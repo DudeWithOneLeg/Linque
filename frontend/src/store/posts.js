@@ -1,10 +1,10 @@
 import { csrfFetch } from './csrf'
 export const flatten = (arr) => {
+
     const obj = {}
     for (let el of arr) {
       obj[el.id] = el
     }
-    console.log(obj)
     return obj
 }
 
@@ -108,7 +108,7 @@ export const createPost = (newPost) => async (dispatch) => {
         body: JSON.stringify(newPost)
     })
     const data = await res.json()
-    if (data && !data.message) dispatch(setNewPost(newPost))
+    if (data && !data.message) dispatch(setNewPost(data))
     return res
 }
 
@@ -117,15 +117,30 @@ const initialState = {}
 export const postsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_POSTS:
-            return {...state, allPosts: action.payload}
+            return {...state, allPosts: {...action.payload}}
         case GET_SINGLE_POST:
-            return {...state, singlePost: action.payload}
+            return {...state, singlePost: {...action.payload}}
         case UPDATE_POST:
-            return {...state, allPosts: action.payload}
+            const postId = action.payload.id
+            const updatedState = {...state}
+            const updaedPosts = {...updatedState.allPosts}
+            updaedPosts[postId] = {...action.payload}
+            return {...updatedState, allPosts: {...updaedPosts}}
         case DELETE_POST:
-            return {...state, allPosts: action.payload}
+            const deleteId = action.payload
+            const currentState = {...state}
+            const currentPosts = {...currentState.allPosts}
+            delete currentPosts[deleteId]
+            return {...state, allPosts: {...currentPosts}}
         case GET_FRIEND_POSTS:
-            return {...state, friendPosts: action.payload}
+            return {...state, friendPosts: {...action.payload}}
+        case CREATE_POST:
+            const id = action.payload.id
+            const newState = {...state}
+            const newPosts = {...newState.allPosts}
+            newPosts[id] = {...action.payload}
+            console.log(newPosts[id])
+            return {...newState, allPosts: {...newPosts}}
 
         default:
             return state

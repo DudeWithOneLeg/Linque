@@ -50,27 +50,27 @@ export default function SignupForm() {
                 onChange={(e) => setFirstname(e.target.value)}
                 placeholder='First name'
                 />
-                    {errors.firstName && <p>{errors.firstName}</p>}
+                    {errors.firstName && <p className='errors'>{errors.firstName}</p>}
                 <input
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder='Last name'
                 />
-                    {errors.lastName && <p>{errors.lastName}</p>}
+                    {errors.lastName && <p className='errors'>{errors.lastName}</p>}
                 <input
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder='Username'
                 />
-                    {errors.username && <p>{errors.username}</p>}
+                    {errors.username && <p className='errors'>{errors.username}</p>}
                 <input
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder='Email'
                 />
-                    {errors.email && <p>{errors.email}</p>}
+                    {errors.email && <p className='errors'>{errors.email}</p>}
                 <input
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder='Password'
                 />
-                    {errors.password && <p>{errors.password}</p>}
+                    {errors.password && <p className='errors'>{errors.password}</p>}
                 <input
                 placeholder="Confirm Password"
                 type='password'

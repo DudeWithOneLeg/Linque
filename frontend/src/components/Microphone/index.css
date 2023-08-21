@@ -1,5 +1,8 @@
 #microphone {
-    width: 50px;
-    height: 50px;
+    position: fixed;
+    right: 3%;
+    bottom: 5%;
+    width: 60px;
+    height: 60px;
     border-radius: 30px;
 }

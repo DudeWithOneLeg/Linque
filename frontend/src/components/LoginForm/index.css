@@ -46,4 +46,6 @@ form > button:hover {
 
 .errors {
     color: red;
+    margin: 0px;
+    margin-top: 5px;
 }
