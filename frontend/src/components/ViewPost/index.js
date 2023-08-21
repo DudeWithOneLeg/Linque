@@ -1,7 +1,11 @@
+import { useState } from 'react'
 import ViewComments from '../ViewComments'
 import './index.css'
 
 export default function ViewPost({ post, userId }) {
+
+    const [edit, setEdit] = useState(false)
+    const [body, setBody] = useState(post.body)
 
     return (
         <div className='view-post'>
@@ -10,17 +14,21 @@ export default function ViewPost({ post, userId }) {
                     <div className='post-user-info'>
                         <img className='profile-image' src='https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU=' alt='profile'/>
                         <div>
-                            <h3>{post.User && post.User.firstName} {post && post.User.lastName}</h3>
-                            <p>{post && post.createdAt}</p>
+                            <h3>{post.User.firstName} {post.User.lastName}</h3>
+                            <p>{post.createdAt}</p>
                         </div>
 
 
                     </div>
-                    {post && post.userId === userId && <img src='/images/edit.png' alt='edit' className='post-edit'/>}
+                    {post.userId === userId && !edit && <img onClick={() => setEdit(true)} src='/images/edit.png' alt='edit' className='post-edit'/>}
 
                 </div>
                 <div className='post-body'>
-                    {post && post.body && <p>{post && post.body}</p>}
+                    {!edit && <p>{post && post.body}</p>}
+                    {post.userId === userId && edit && <div className=''>
+                        <textarea value={body} className='new-post' onChange={(e) => setBody(e.target.value)}/>
+                        <button className='save-new-post'>Save</button>
+                        </div>}
                 </div>
             </div>
 
@@ -28,7 +36,7 @@ export default function ViewPost({ post, userId }) {
 
                     <p>num of likes</p>
 
-                    <p>{post && post.Comments && post.Comments.length} comments</p>
+                    <p>{post.Comments && post.Comments.length} comments</p>
 
             </div>
             <div className='post-like-button'>
