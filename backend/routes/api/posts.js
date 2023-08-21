@@ -85,10 +85,24 @@ router.post('/', [requireAuth], async (req, res) => {
 
     const { body } = req.body
 
-    const newPost = await Post.create({
+    const post = await Post.create({
         userId: user.id,
-        body
+        body,
     })
+
+    const newPost = await Post.findOne({
+        where: {
+            id: post.id
+        },
+        include: [
+            User,
+            {
+                model: Comment,
+                include: [User]
+            }
+        ]
+    })
+
 
     res.status(200)
     return res.json(newPost)
@@ -133,6 +147,20 @@ router.delete('/:postId', [requireAuth, postExists, isPostAuthor], async (req, r
         message: "Success"
     })
 
+})
+
+router.get('/:postId/comments', [requireAuth, postExists, validateFriends], async (req, res) => {
+
+    const { Comments } = req.post
+
+    if (!Comments) {
+        res.status(404)
+        return res.json({
+            message: 'This post has no comments yet.'
+        })
+    }
+
+    return res.json(Comments)
 })
 
 router.post('/:postId/comments', [requireAuth, postExists, validateFriends], async (req, res) => {

@@ -1,0 +1,35 @@
+#landing-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 100px;
+}
+
+#landing-title-container {
+    display: flex;
+    justify-content: center;
+}
+
+#landing-title {
+    font-size: 70px;
+}
+
+#get-started {
+    height: 35px;
+    width: 250px;
+    border-radius: 5px;
+    color: white;
+    background-color: rgb(17, 17, 17);
+    border: none;
+    align-self: center;
+}
+
+#get-started:hover {
+    cursor: pointer;
+    background-color: rgb(92, 91, 91);
+}
+
+#get-started-container {
+    padding-top: 200px;
+}

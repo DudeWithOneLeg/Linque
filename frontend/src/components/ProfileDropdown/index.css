@@ -1,0 +1,15 @@
+#profile-dropdown {
+    margin-right: 10px;
+}
+
+#dropdown-list {
+    position: fixed;
+    right: 10px;
+    border-radius: 10px;
+    width: 200px;
+    background-color: gray;
+}
+
+#dropdown-list > ul {
+    list-style-type: none;
+}

@@ -1,0 +1,10 @@
+#logo > a {
+    text-decoration: none;
+    color: white;
+}
+
+#logo {
+    height: fit-container;
+    display: flex;
+    align-items: center;
+}

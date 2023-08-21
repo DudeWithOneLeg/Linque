@@ -1,0 +1,97 @@
+.view-post {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background-color: rgb(51, 50, 50);
+    padding-bottom: 10px;
+}
+
+.name-body {
+    padding: 10px;
+    height: fit-content;
+}
+
+.name-body > * {
+    margin: 0px;
+    padding: 0px;
+}
+
+.name-body > * > * {
+    margin: 0px;
+    padding: 0px;
+}
+
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.post-user-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: fit-content;
+}
+
+.post-user-info > div > * {
+    height: fit-content;
+    margin: 0px;
+}
+
+.post-body {
+    padding-top: 20px;
+    font-size: 30px;
+}
+
+.post-body > p {
+    overflow-wrap: break-word;
+}
+
+.post-engagement {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: solid gray 1px;
+}
+
+.post-engagement > * {
+    margin: 5px;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-edit {
+    width: 25px;
+    height: 25px;
+}
+
+.post-edit:hover {
+    cursor: pointer;
+}
+
+.post-like-button > img {
+    width: 30px;
+    height: 30px;
+}
+
+.post-like-button > * {
+    margin: 0px;
+    margin-left: 10px;
+}
+
+.post-like-button {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 100%;
+
+    margin: 0px;
+    border-bottom: solid gray 1px;
+
+}
