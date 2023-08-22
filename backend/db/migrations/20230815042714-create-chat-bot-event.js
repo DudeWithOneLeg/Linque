@@ -6,10 +6,11 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
+options.tableName = 'ChatBotEvents'
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("ChatBotEvents", {
+    await queryInterface.createTable(options, {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -64,7 +65,6 @@ module.exports = {
     }, options);
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = 'ChatBotEvents'
     await queryInterface.dropTable(options);
   }
 };
