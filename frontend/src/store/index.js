@@ -3,11 +3,13 @@ import thunk from 'redux-thunk';
 import sessionReducer from "./session";
 import { speechReducer } from './speech';
 import { postsReducer } from './posts';
+import { ChatBotReducer } from './chatbot';
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   speech: speechReducer,
-  posts: postsReducer
+  posts: postsReducer,
+  chatBot: ChatBotReducer
 });
 
 

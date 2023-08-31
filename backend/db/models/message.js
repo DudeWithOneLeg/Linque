@@ -23,7 +23,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     senderId: {
       type: DataTypes.INTEGER,
-      allowNull: false
     },
     convoId: {
       type: DataTypes.INTEGER,

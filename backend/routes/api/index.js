@@ -9,6 +9,7 @@ const profileRouter = require('./profile.js')
 const eventsRouter = require('./events.js')
 const messagesRouter = require('./messages.js')
 const conversationsRouter = require('./conversations.js')
+const chatBotConvosRouter = require('./chatbot.js')
 
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -37,6 +38,8 @@ router.use('/messages', messagesRouter)
 
 router.use('/conversations', conversationsRouter)
 
+router.use('/chatbot', chatBotConvosRouter)
+
 router.get('/set-token-cookie', async (_req, res) => {
   const user = await User.findOne({
     where: {
@@ -63,4 +66,6 @@ router.get(
 );
 
 
-module.exports = router;
+
+
+module.exports = router

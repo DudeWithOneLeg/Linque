@@ -5,6 +5,7 @@ import * as sessionActions from "./store/session";
 import Microphone from "./components/Microphone";
 import LandingPage from "./components/LandingPage";
 import Navigation from "./components/Navigaton";
+import ChatBot from "./components/ChatBot";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
         <Route exact path='/'>
           {sessionUser && <Navigation />}
           <LandingPage />
+          <ChatBot />
         </Route>
       </Switch>
     </>

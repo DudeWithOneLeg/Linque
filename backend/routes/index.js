@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const apiRouter = require('./api');
+// const { Message, ChatBotMessage } = require('../db/models')
 
 router.use('/api', apiRouter);
 
@@ -37,5 +38,7 @@ if (process.env.NODE_ENV !== 'production') {
     return res.json({});
   });
 }
+
+
 
 module.exports = router;

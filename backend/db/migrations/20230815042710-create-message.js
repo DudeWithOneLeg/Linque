@@ -22,8 +22,7 @@ module.exports = {
         allowNull: false
       },
       senderId: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+        type: Sequelize.INTEGER
       },
       convoId: {
         type: Sequelize.INTEGER,

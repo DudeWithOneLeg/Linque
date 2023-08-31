@@ -18,11 +18,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       summary: {
-        allowNull: false,
         type: Sequelize.TEXT
       },
       userId: {

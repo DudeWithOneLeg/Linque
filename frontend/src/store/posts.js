@@ -24,28 +24,28 @@ const setAllPosts = (posts) => {
 
 const setOnePost = (post) => {
     return {
-        type: GET_ALL_POSTS,
+        type: GET_SINGLE_POST,
         payload: post
     }
 }
 
 const setUpdatePost = (post) => {
     return {
-        type: GET_ALL_POSTS,
+        type: UPDATE_POST,
         payload: post
     }
 }
 
 const setDeletePost = (postId) => {
     return {
-        type: GET_ALL_POSTS,
+        type: DELETE_POST,
         payload: postId
     }
 }
 
 const setFriendPosts = (posts) => {
     return {
-        type: GET_ALL_POSTS,
+        type: GET_FRIEND_POSTS,
         payload: posts
     }
 }

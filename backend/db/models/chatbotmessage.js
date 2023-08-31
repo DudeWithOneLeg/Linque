@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     chatBotConvoId: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    user: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   }, {
     sequelize,

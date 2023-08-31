@@ -1,0 +1,98 @@
+#bot-button {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    height: 40px;
+    background-color: #F29559;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px 0px 0px 0px;
+    width: 300px;
+    cursor: pointer;
+}
+
+#bot-button > h2 {
+    margin: 0px;
+}
+
+#chat-box {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding: 0px;
+    height: 80vh;
+    width: 400px;
+    background-color: #F29559;
+    border-radius: 10px 0px 0px 0px;
+}
+
+#chatbox-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background-color: #202C39;
+    border-radius: 10px 0px 0px 0px;
+    padding: 0px 10px 0px 10px;
+    cursor: pointer;
+}
+
+#chatbox-header > * {
+    margin: 0px;
+}
+
+#minimize > div {
+    height: 3px;
+    background-color: white;
+    width: 20px;
+}
+
+#minimize {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+}
+
+#chatbox-text-input {
+    margin: 5px;
+    border-radius: 5px;
+    height: 50px;
+}
+
+.user-message, .bot-message {
+    border-radius: 10px;
+    width: fit-content;
+    padding: 10px;
+}
+
+#messages {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 500px;
+    scroll-snap-type: y proximity;
+}
+
+.user-message {
+    background-color: #283845;
+    align-self: flex-end;
+    margin-left: 10px;
+}
+
+.bot-message {
+    align-self: flex-start;
+    background-color: black;
+    color: white;
+    margin-right: 10px;
+}
+
+#convo {
+    height: 100%;
+}
