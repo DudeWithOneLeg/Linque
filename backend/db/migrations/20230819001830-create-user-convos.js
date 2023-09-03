@@ -10,7 +10,7 @@ options.tableName = 'UserConvos'
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable(options, {
+    await queryInterface.createTable('UserConvos', {
       id: {
         allowNull: false,
         autoIncrement: true,

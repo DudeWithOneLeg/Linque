@@ -10,7 +10,7 @@ options.tableName = 'ChatBotEvents'
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable(options, {
+    await queryInterface.createTable('ChatBotEvents', {
       id: {
         allowNull: false,
         autoIncrement: true,

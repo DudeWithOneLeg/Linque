@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 options.tableName = 'Friends'
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable(options, {
+    await queryInterface.createTable('Friends', {
       id: {
         allowNull: false,
         autoIncrement: true,
