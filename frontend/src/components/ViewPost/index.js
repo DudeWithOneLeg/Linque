@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import ViewComments from '../ViewComments'
+import * as postActions from '../../store/posts'
+import { useDispatch } from 'react-redux'
 import './index.css'
 
 export default function ViewPost({ post, userId }) {
 
     const [edit, setEdit] = useState(false)
     const [body, setBody] = useState(post.body)
+
+    const dispatch = useDispatch()
 
     return (
         <div className='view-post'>
@@ -27,7 +31,10 @@ export default function ViewPost({ post, userId }) {
                     {!edit && <p>{post && post.body}</p>}
                     {post.userId === userId && edit && <div className=''>
                         <textarea value={body} className='new-post' onChange={(e) => setBody(e.target.value)}/>
-                        <button className='save-new-post'>Save</button>
+                        <button className='save-new-post' onClick={() => {
+                            dispatch(postActions.updatePost(post.id, {body}))
+                            setEdit(false)
+                            }}>Save</button>
                         </div>}
                 </div>
             </div>
@@ -43,7 +50,7 @@ export default function ViewPost({ post, userId }) {
                 <img src='/images/like.png'/>
                 <h3>Like</h3>
             </div>
-            <ViewComments comments={post.Comments}/>
+            <ViewComments comments={post.Comments} postId={post.id}/>
         </div>
     )
 }

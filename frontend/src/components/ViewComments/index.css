@@ -19,7 +19,7 @@
 .comment-body {
     display: flex;
     flex-direction: column;
-    background-color: gray;
+    background-color: #B8B08D;
     border-radius: 10px;
     padding: 5px;
 }

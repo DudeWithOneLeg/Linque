@@ -12,6 +12,8 @@ const isProduction = environment === 'production';
 
 const app = express()
 
+app.use('/audio', express.static('audio'))
+
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
@@ -42,7 +44,7 @@ app.use(
 
 const routes = require('./routes');
 
-app.use(routes);
+app.use(routes.router);
 
 app.use((_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");

@@ -8,6 +8,7 @@ const { use } = require('./comments');
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const isPostAuthor = (req, res, next) => {
+    console.log(req.body)
     const { id: userId} = req.user
     const { post: {userId: authorId} } = req
 
@@ -49,6 +50,7 @@ const validateFriends = async (req, res, next) => {
 }
 
 const postExists = async (req, res, next) => {
+    console.log(req.body)
     const { postId } = req.params
     const post = await Post.findOne({
         where: {
@@ -122,6 +124,7 @@ router.get('/:postId', [requireAuth, postExists, validateFriends], async (req, r
 
 //Update post if user is author
 router.put('/:postId', [requireAuth, postExists, isPostAuthor], async (req, res) => {
+
 
     const { body } = req.body
 
