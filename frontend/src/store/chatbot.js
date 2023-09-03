@@ -7,6 +7,7 @@ export const flatten = (arr) => {
 console.log(arr)
     const obj = {}
     for (let el of arr) {
+        if (el.data) el.data = JSON.parse(el.data)
       obj[el.id] = el
     }
     return obj
@@ -83,7 +84,7 @@ export const createMessage = (message) => async (dispatch) => {
         const data = await res.json()
         if (data && !data.message) dispatch(setNewMessage(data))
 
-        console.log('hi')
+        message.chatBotConvoId = data.chatBotConvoId
         const gpt = await csrfFetch(`/api/chatbot/gpt`, {
             method: 'POST',
             body: JSON.stringify(message)
@@ -110,10 +111,12 @@ export const ChatBotReducer = (state = initialState, action) => {
             delete currentConvos[deleteId]
             return {...state, allConvos: {...currentConvos}}
         case CREATE_MESSAGE:
-            const id = action.payload.id
+            let object = action.payload
+            console.log(object)
+            const id = object.id
             const newState = {...state}
             const newConvo = {...newState.singleConvo}
-            newConvo[id] = {...action.payload}
+            newConvo[id] = {...object}
 
             return {...newState, singleConvo: {...newConvo}}
 

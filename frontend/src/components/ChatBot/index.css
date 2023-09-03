@@ -25,10 +25,10 @@
     right: 0px;
     bottom: 0px;
     padding: 0px;
-    height: 80vh;
-    width: 400px;
+    height: 90vh;
+    width: 30vw;
     background-color: #F29559;
-    border-radius: 10px 0px 0px 0px;
+    border-radius: 10px;
 }
 
 #chatbox-header {
@@ -61,23 +61,33 @@
 }
 
 #chatbox-text-input {
-    margin: 5px;
     border-radius: 5px;
-    height: 50px;
+    height: 100%;
+    background-color: #283845;
+    color: white;
+    font-weight: bold;
+    border: none;
+    width: 29vw;
 }
+
+/* #chatbox-text-input:active {
+    border: none;
+} */
 
 .user-message, .bot-message {
     border-radius: 10px;
     width: fit-content;
     padding: 10px;
+    margin-top: 10px;
 }
 
 #messages {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    height: 500px;
+    height: 80%;
     scroll-snap-type: y proximity;
+    padding: 10px
 }
 
 .user-message {
@@ -90,9 +100,76 @@
     align-self: flex-start;
     background-color: black;
     color: white;
-    margin-right: 10px;
+    padding-right: 10px;
 }
 
 #convo {
+    display: flex;
+    flex-direction: column;
     height: 100%;
+}
+
+.chatbot-conversation {
+    height: 20px;
+    padding: 10px;
+    background-color: #283845;
+    color: white;
+    border-radius: 7px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+#send-message-button {
+    width: 35px;
+    position: absolute;
+    right: 20px;
+    bottom: 25px;
+    cursor: pointer;
+}
+
+
+.link-card {
+    border-radius: 7px;
+    color: black;
+    width: 100%;
+    margin-right: 0px;
+}
+
+.link-card-info {
+    width: 100%;
+    background-color: white;
+    border-radius: 7px;
+    padding: 5px;
+}
+
+#back-button {
+    height: 30px;
+}
+
+.images-card {
+    display: flex;
+    flex-direction: column;
+    height: 220px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.image-row {
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    height: 45%;
+    justify-content: space-between;
+}
+
+.image-results {
+    height: 100%;
+    border-radius: 6px;
+}
+
+#input-div {
+    height: 200px;
+    justify-self: flex-end;
 }

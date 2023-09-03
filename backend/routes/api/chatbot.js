@@ -2,17 +2,130 @@ const express = require('express')
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Message, User, UserConvo, Friend, ChatBotConvo, ChatBotMessage } = require('../../db/models')
 const axios = require('axios');
+const fs = require('fs')
+const util = require('util');
+const writeFile = util.promisify(fs.writeFile);
+const SerpApi = require('google-search-results-nodejs');
+const {Translate} = require('@google-cloud/translate').v2;
+const language = require('@google-cloud/language');
 
+const PROJECT_ID = process.env.PROJECT_ID;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const SERP_API_KEY = process.env.SERP_API_KEY;
-const PORT = process.env.PORT;
 
-const fetchGPT = async (prompt) => {
+const router = express.Router()
 
-    console.log(prompt)
+// Instantiates a client
+const translate = new Translate({PROJECT_ID});
+const client = new language.LanguageServiceClient();
 
-    let maxTokens = 200
+async function detectLanguage(text) {
+
+
+
+  const document = {
+    content: text,
+    type: 'PLAIN_TEXT',
+  };
+const features = {extractEntities: true}
+  // Detects the sentiment of the text
+  const [result] = await client.annotateText({document, features: features});
+
+
+
+  console.log(`Language: ${result.language}`);
+  }
+
+async function translateText(text, target) {
+
+
+  // The target language
+  target = 'ru';
+
+  // Translates some text into Russian
+  const [translation] = await translate.translate(text, target);
+  console.log(`Text: ${text}`);
+  console.log(`Translation: ${translation}`);
+  return translation
+}
+
+
+
+router.use('/audio', express.static('audio'))
+
+const voiceApi = async (object, res, body, req) => {
+    console.log("---------------------------------------");
+    console.log('Fetching audio...')
+    const API_ENDPOINT = 'https://api.elevenlabs.io/v1/text-to-speech/ThT5KcBeYPX3keUQqHPh'
+    const voice = {
+        text: object.message,
+        "voice_id": "J2hHvTmY6ypV9AV8h3Zz",
+        "voice_settings": {
+            "stability": 1,
+            "similarity_boost": 1
+        }
+    };
+
+    //Fetch voice
+    await axios.post(`${API_ENDPOINT}`, voice, {
+        headers: {
+            'Content-Type': 'application/json',
+            'xi-api-key': ELEVENLABS_API_KEY
+        },
+        responseType: 'arraybuffer'
+    }).then(response => {
+        if (response.data) {
+            writeAudio(response.data, object, res, body, req)
+        }
+
+    })
+        .catch(error => console.error(error)).catch(() => {
+            console.log('FAILED :(')
+        })
+}
+
+const writeAudio = (buffer, object, res, body, req) => {
+    //Write new voice to audio file
+    const audioBuffer = Buffer.from(buffer, 'binary')
+    writeFile("audio/audio.mp3", audioBuffer)
+        .then(async () => {
+            console.log('SUCCESS: File written successfully!');
+            console.log("---------------------------------------");
+
+
+
+            if (object) {
+                const chat = await ChatBotMessage.create({
+                    body: object.message,
+                    chatBotConvoId: body.chatBotConvoId,
+                    user: false,
+                    engine: object.engine ? object.engine : null,
+                    data: object.data ? JSON.stringify(object.data) : null
+                });
+                const data = await ChatBotMessage.findOne({
+                    where: {
+                        id: chat.id
+                    },
+                    raw: true
+                })
+
+                res.status(200);
+                console.log({...data, data: JSON.parse(data.data)})
+                return res.json({...data, data: JSON.parse(data.data)});
+
+            }
+
+        })
+        .catch((err) => {
+            console.error('FAILED: Writing audio failed.', err);
+            console.log("---------------------------------------");
+        })
+}
+
+const fetchGPT = async (prompt, res, body, req) => {
+
+    let maxTokens = 1000
 
     // Set the OpenAI API endpoint and headers
     const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
@@ -42,18 +155,10 @@ const fetchGPT = async (prompt) => {
                 const knowledge = <system> knowledge of <prompt>
                 engines = [google, google_maps, google_shopping, google_scholar, google_videos, google_events, google_images]
 
-                const res = {
-                    "message": <system>,
-                    "api": {
-                        "engine": "<engine>",
-                        "q": "<query>"
-                    }.
-                    "action": {}
-                }
 
+                you will always include the api" object
                 Always include the object
                 Always put your response in the "message" key
-                Always include a response in the "message key"
                 if (knowledge) res.message = <knowledge>
 
                 if (prompt includes "Create a post that says I had such a wonderful day") {
@@ -74,8 +179,16 @@ const fetchGPT = async (prompt) => {
 
                 return res
 
+                const res = {
+                    "message": <system>,
+                    "api": {
+                        "engine": "<engine>",
+                        "q": "<query>"
+                    }.
+                    "action": {}
+                }
                 ` },
-                { "role": "user", "content": "Hello" },
+            { "role": "user", "content": "Hello" },
             {
                 "role": "assistant", "content": `
                 {
@@ -188,35 +301,137 @@ const fetchGPT = async (prompt) => {
         ]
     }
 
-    return await axios.post(API_ENDPOINT, parameters, { headers: HEADERS, body: parameters }).then(response => {
+    await axios.post(API_ENDPOINT, parameters, { headers: HEADERS, body: parameters }).then(async response => {
         const gptRes = response.data.choices[0].message.content.replace('\n', '')
 
 
         console.log('SUCCESS!')
         console.log('GPT Initial response: ', gptRes)
-        // let object = {}
+        let object = {}
 
-        // if (gptRes.includes('{') && gptRes.includes('}')) object = JSON.parse(gptRes)
+        if (gptRes.includes('{') && gptRes.includes('}')) object = JSON.parse(gptRes)
 
-        // else  object.message = gptRes
+        else object.message = gptRes
 
-        // return voiceApi(object.message)
 
-        return gptRes
+
+        if (object.api) {
+            searchResults(object, res, body, req)
+        }
+
+        else {
+            const russian = await translateText(object.message)
+            console.log(russian, 'yooo')
+            object.message = russian
+            //detectLanguage(russian)
+            voiceApi(object, res, body, req)
+        }
+
 
     })
-    // .then(response => {
-    //     if (response) {
-    //         console.log('Audio Buffer:', response)
-    //         return writeAudio(response, res)
-    //     }
 
-    // })
-    .catch(error => console.error(error))
 
-  }
+}
 
-const router = express.Router()
+const searchResults = (object, res, body, req) => {
+    console.log("Response Object", object)
+
+
+    const search = new SerpApi.GoogleSearch(SERP_API_KEY);
+
+    const callback = async function (data) {
+        const engine = data.search_parameters.engine
+
+        console.log("FETCHED api")
+        console.log("---------------------------------------")
+        console.log(data)
+
+
+        object.engine = engine
+
+        if (engine === 'google_videos') {
+
+            const video = data.video_results[1]
+            object.data = data.video_results
+
+            console.log(video)
+        }
+
+        if (engine === 'google_scholar') {
+
+            const article = data.organic_results[0]
+            // const data2 = await axios.get(article.link, {responseType: 'document'})
+            // await new Promise(resolve => setTimeout(resolve, 5000));
+            // // const res2 = await res.json()
+            // fs.writeFileSync('./newhtml.html', data2.data)
+
+            //object.message = article.snippet
+
+            object.data = data.organic_results
+
+            console.log(article)
+        }
+
+        if (engine === 'google_events') {
+
+            const event = data.events_results[0]
+
+            object.message = `${event.title} on ${event.date.start_date} at ${event.address}. ${event.description}`
+            object.data = data.events_results
+            console.log(event)
+        }
+
+        if (engine === 'google_maps') {
+
+            const mapResult = data.search_metadata
+
+
+
+            if (data.place_results) {
+
+                object.message = data.place_results.description.snippet
+                object.data = data.place_results
+            }
+        }
+
+        if (engine === 'google') {
+
+            const result = data.organic_results[0]
+            object.message = data.organic_results[0].snippet
+            object.data = data.organic_results
+
+
+        }
+
+        if (engine === 'google_shopping') {
+
+            const product = data.shopping_results[0]
+            object.message = `I found a ${product.title} at ${product.source} for ${product.price}`
+            object.data = data.shopping_results
+
+        }
+
+        if (engine === 'google_images') {
+
+            const imageResults = data.images_results
+
+            object.data = {images: {...imageResults.slice(0, 4)}, metaData: {...data.search_metadata}}
+
+        }
+        console.log(object)
+        voiceApi(object, res, body, req)
+
+    }
+
+    // Show result as JSON
+    if (object.api) {
+        console.log('yoooooo', object.api)
+        search.json(object.api, callback)
+    }
+
+
+}
+
 
 router.get('/', [requireAuth], async (req, res) => {
     const user = req.user
@@ -254,7 +469,7 @@ router.post('/', [requireAuth], async (req, res) => {
 
     const chatBody = req.body
 
-    const options = {...chatBody, user: true}
+    const options = { ...chatBody, user: true }
 
     if (!chatBody.chatBotConvoId) {
         const convo = await ChatBotConvo.create({
@@ -275,17 +490,12 @@ router.post('/', [requireAuth], async (req, res) => {
 router.post('/gpt', [requireAuth], async (req, res) => {
     const { body } = req
 
+   return await fetchGPT(body.body, res, body, req)
 
-    const gpt = await fetchGPT(body.body)
 
-    const chat = await ChatBotMessage.create({
-        body: gpt,
-        chatBotConvoId: body.chatBotConvoId,
-        user: false
-    })
 
-    res.status(200)
-    return res.json(chat)
+
+
 })
 
 module.exports = router

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "linque-397907",
+  "private_key_id": "da7d74ec4d299998cf4260779d9434bce6ac9a88",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCf66Miw3bAOHYG\n5WmrGX/4CPYEqtZNSBYNLcL9eAHN4lqzviMukEwuZQZF5w6K6ZZLvd9rpRS2WxhT\nWB+Tprpgj0pkR0dIeoSNNHsiKP8D6/zXT1bLbHG8OQ06shcWVx4XIti17VDal/Mh\nnnRQqq0XjuEfhh8LqaavUDmJdFC2OlCh3ONKve5H44I5oot0Q3OJzWvJ0Mk0xmpb\nXrnzhHAUvvZGFhJhb0CCrW4yOhl9LkESnRcsz3p/l87GKpzm6bTaRVHM4pEaDdGG\n96t79og9PG9ttOAIW/GFa35nOuVar4T6k5q83PkpWv+1zeB+KhkvcMsb3aIp4M9h\nwRNTGltXAgMBAAECggEAKmwOvYUOdlVD8fZffpToHnr6ECjlamDKALr389cm21/F\nYdL5cDu1CcWg0WBGulDWnscCgoKrKOinXkyNK9TZsg2w1UMXRMHDcdXPKDOp2nd6\nff887f+ZeC3GNaDSgQmhINAMns4SWbpfM7bd8hwkiJBNZdhlWemqHu1wJedmFcCc\ngZQBuPzRyWiMfWHb41nnf5qjnmevEcCWVvV08M+QNIk6GH1OQyGozHHwEoIBusV3\nb8C1znIIDEjfnbmPQfs6NrZeOpPxCp769WZAK+uhZGBgCUM2Urlj/uH0qpH0IOR8\nfKE2B7dPj5p/jPKIiuurp0r1iy+8hHvOtjRa+grl+QKBgQDgUXLJk7dJbTRrYjuv\n164eq6NsNseo01m4NbjFY5KfFKhHgZ2QwrU1smGQienBHTQH1KnujQKVBQ7wTT8b\nBS4MLaX7/642AfhAo9g3lS9VjJJVIx4akz09J+AO4iHPslCFVeoXMOuMRAblE+l7\nV+zR+4cZNQEBCGA1cs1xGixgnQKBgQC2gcuyEDlcgVrn7XDDl265UQyS5pUv2biP\nOam5+x9299nMgIlt7QH9w/XcvOnWsS9OLZ4F9V8n6isoj7oW4SbP8pp2QcwXYPHk\nhYLESNoOevqz//FLSEVRiiX/2ZU1ez5clnxx0YPosWf3W9Aj+6pPkTuol975oH0n\nFx8V4lEngwKBgA1LRm5D3tzvJ+glTjxBoAQZT/od1P9gZzTPmj+4gvwCkWaLe/cU\nUwD3rWiPg9b6EBdWtyt4F+sU/amoKlFDoVL/cZLZuE1jGH9cNng00zVSu2loR2Rz\nzXFOZ6z6Id7ZRoRgbxsovwz1CyOQZon00Agxy/PmfES/ZlRElYBaeL7RAoGAPwAZ\nL7N4CZ3BorQNLAd3OlNnEsK0FxuCITbXhxLP7sJqFbT9O8wH1vCxS2yPEASD/umy\nVf44xc+I7GyI4WMBgeEOPupBqIRXm/oWhOldFIiRSFd+lO0yuI4GxgX3AsozYcS0\n2plnfojXCcVQ2UsDpInO3UjnuKYU7cyGd4hzWT8CgYAtsXx4Fw41uNxly/AW0wXL\nYt/K/BLAC4dYkz15fSHXatTmLpJyIbhtO/LhOPYkk7cC9Ebg7If/cR6Er8Q5pznS\n+gFDVtRD8QcwngoQMoFKDKraLVA1mBC8avq+B/sNRncbxcdfd93Xicv1P9EpJzoe\nhnP0qDCzXcDfXnT0bmaXQQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "linque@linque-397907.iam.gserviceaccount.com",
+  "client_id": "114890616280562110249",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/linque%40linque-397907.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -28,6 +28,14 @@ module.exports = (sequelize, DataTypes) => {
     user: {
       type: DataTypes.BOOLEAN,
       allowNull: false
+    },
+    engine: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    data: {
+    type: DataTypes.STRING,
+    allowNull: true
     }
   }, {
     sequelize,

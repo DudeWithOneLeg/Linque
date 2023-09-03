@@ -4,12 +4,14 @@ import sessionReducer from "./session";
 import { speechReducer } from './speech';
 import { postsReducer } from './posts';
 import { ChatBotReducer } from './chatbot';
+import { mapReducer } from './googleMaps';
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   speech: speechReducer,
   posts: postsReducer,
-  chatBot: ChatBotReducer
+  chatBot: ChatBotReducer,
+  map: mapReducer
 });
 
 

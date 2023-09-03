@@ -29,6 +29,14 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
+      engine: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      data: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
