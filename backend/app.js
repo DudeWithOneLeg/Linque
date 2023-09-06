@@ -16,6 +16,7 @@ app.use('/audio', express.static('audio'))
 
 app.use(morgan('dev'));
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 //security middleware

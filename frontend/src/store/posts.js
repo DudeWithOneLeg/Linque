@@ -14,6 +14,7 @@ const UPDATE_POST = 'post/update'
 const DELETE_POST = 'post/delete'
 const GET_FRIEND_POSTS = 'getPosts/friend'
 const CREATE_POST = 'create/post'
+const CREATE_POST_IMAGE = 'create/postImage'
 
 const setAllPosts = (posts) => {
     return {
@@ -139,7 +140,6 @@ export const postsReducer = (state = initialState, action) => {
             const newState = {...state}
             const newPosts = {...newState.allPosts}
             newPosts[id] = {...action.payload}
-            console.log(newPosts[id])
             return {...newState, allPosts: {...newPosts}}
 
         default:

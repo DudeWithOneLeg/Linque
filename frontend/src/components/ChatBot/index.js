@@ -196,6 +196,7 @@ export default function ChatBot() {
                         onChange={(e) => setBody(e.target.value)}
                         value={body}
                     />
+                    <img src='/images/send.png' id='send-message-button' onClick={handleClick} />
                 </div>
             </div>}
         </div> : <div id='bot-button' onClick={() => setShowBot(true)}>
