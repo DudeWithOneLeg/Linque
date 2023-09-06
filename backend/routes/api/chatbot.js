@@ -28,20 +28,19 @@ async function detectLanguage(text) {
     content: text,
     type: 'PLAIN_TEXT',
   };
-const features = {extractEntities: true}
+const features = {extractDocumentSentiment: true}
   // Detects the sentiment of the text
-  const [result] = await client.annotateText({document, features: features});
+  const [result] = await client.annotateText({document, features});
 
 
 
-  console.log(`Language: ${result.language}`);
+  return result.language
   }
 
 async function translateText(text, target) {
 
 
   // The target language
-  target = 'ru';
 
   // Translates some text into Russian
   const [translation] = await translate.translate(text, target);
@@ -57,6 +56,7 @@ router.use('/audio', express.static('audio'))
 const voiceApi = async (object, res, body, req) => {
     console.log("---------------------------------------");
     console.log('Fetching audio...')
+
     const API_ENDPOINT = 'https://api.elevenlabs.io/v1/text-to-speech/ThT5KcBeYPX3keUQqHPh'
     const voice = {
         text: object.message,
@@ -96,12 +96,17 @@ const writeAudio = (buffer, object, res, body, req) => {
 
 
             if (object) {
+
+                const language = await detectLanguage(object.message)
+                console.log(language)
+
                 const chat = await ChatBotMessage.create({
                     body: object.message,
                     chatBotConvoId: body.chatBotConvoId,
                     user: false,
                     engine: object.engine ? object.engine : null,
-                    data: object.data ? JSON.stringify(object.data) : null
+                    data: object.data ? JSON.stringify(object.data) : null,
+                    language: language
                 });
                 const data = await ChatBotMessage.findOne({
                     where: {
@@ -175,7 +180,8 @@ const fetchGPT = async (prompt, res, body, req) => {
                 google_maps requires a 'type' key: <'search' - returns a list of results for the set q parameter,
                 'place' - returns results for a specific place when data parameter is set>
 
-                always include th res object
+                always include the res object
+
 
                 return res
 
@@ -297,6 +303,17 @@ const fetchGPT = async (prompt, res, body, req) => {
                     }
                 }
             ` },
+            { "role": "user", "content": "donde esta egypt" },
+            {
+                "role": "assistant", "content": `
+                {
+                    "message": "Egypt, officially known as the Arab Republic of Egypt, is a transcontinental country located mainly in North Africa, with a small portion of its territory extending into the northeastern corner of the African continent. It also includes the Sinai Peninsula, which is situated in Western Asia.",
+                    "api": {
+                        "engine": "google_maps",
+                        "q": "egypt"
+                    }
+                }
+            ` },
             { "role": "user", "content": prompt }
         ]
     }
@@ -320,9 +337,9 @@ const fetchGPT = async (prompt, res, body, req) => {
         }
 
         else {
-            const russian = await translateText(object.message)
-            console.log(russian, 'yooo')
-            object.message = russian
+            //const russian = await translateText(object.message)
+            //console.log(russian, 'yooo')
+            //object.message = russian
             //detectLanguage(russian)
             voiceApi(object, res, body, req)
         }
@@ -419,6 +436,7 @@ const searchResults = (object, res, body, req) => {
 
         }
         console.log(object)
+        object.message = await translateText(object.message, body.language)
         voiceApi(object, res, body, req)
 
     }
@@ -469,6 +487,8 @@ router.post('/', [requireAuth], async (req, res) => {
 
     const chatBody = req.body
 
+    const language = await detectLanguage(chatBody.body)
+
     const options = { ...chatBody, user: true }
 
     if (!chatBody.chatBotConvoId) {
@@ -480,7 +500,7 @@ router.post('/', [requireAuth], async (req, res) => {
         options.chatBotConvoId = convo.id
     }
 
-    const chat = await ChatBotMessage.create(options)
+    const chat = await ChatBotMessage.create({...options, language: language})
 
     res.status(200)
     return res.json(chat)
@@ -490,11 +510,9 @@ router.post('/', [requireAuth], async (req, res) => {
 router.post('/gpt', [requireAuth], async (req, res) => {
     const { body } = req
 
+
+
    return await fetchGPT(body.body, res, body, req)
-
-
-
-
 
 })
 

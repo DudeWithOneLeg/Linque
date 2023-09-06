@@ -84,7 +84,6 @@ const router = express.Router();
 //Create a post
 router.post('/', [requireAuth], async (req, res) => {
     const user = req.user
-
     const { body } = req.body
 
     const post = await Post.create({

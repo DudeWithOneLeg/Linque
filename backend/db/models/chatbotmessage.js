@@ -36,7 +36,11 @@ module.exports = (sequelize, DataTypes) => {
     data: {
     type: DataTypes.TEXT,
     allowNull: true
-    }
+    },
+    language: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
   }, {
     sequelize,
     modelName: 'ChatBotMessage',

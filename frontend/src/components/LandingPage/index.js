@@ -37,7 +37,7 @@ export default function LandingPage() {
     }, [speech])
 
 
-    useEffect(()  => {
+    useEffect(() => {
         if (soundRef.current) {
 
             soundRef.current.playbackRate = '.8'
@@ -47,7 +47,7 @@ export default function LandingPage() {
             })
         }
 
-    },[soundRef])
+    }, [soundRef])
 
 
 
@@ -64,27 +64,27 @@ export default function LandingPage() {
             {
                 sessionUser && <Feed />
             }
-        {!sessionUser && <div id='get-started-container'>
-            <Navigation setLogin={setLogin} setSignup={setSignup}/>
-            <audio ref={soundRef} id='audio'src='/audio/welcome.mp3' preload="auto">
+            {!sessionUser && <div id='get-started-container'>
+                <Navigation setLogin={setLogin} setSignup={setSignup} />
+                <audio ref={soundRef} id='audio' src='/audio/welcome.mp3' preload="auto">
 
-            </audio>
-            <div id='landing-title-container'>
-                <p id='landing-title'>Linque</p>
-            </div>
-            {
-                login === true && <LoginForm />
-            }
-            {
-                signup === true && <SignupForm />
-            }
-            {
-                domErr && !signup && !login && <button
-                id='get-started'
-                onClick={() => handleGetStarted()}
-                >Get Started</button>
-            }</div>}
-            <Microphone soundRef={soundRef}/>
+                </audio>
+                <div id='landing-title-container'>
+                    <p id='landing-title'>Linque</p>
+                </div>
+                {
+                    login === true && <LoginForm />
+                }
+                {
+                    signup === true && <SignupForm />
+                }
+                {
+                    domErr && !signup && !login && <button
+                        id='get-started'
+                        onClick={() => handleGetStarted()}
+                    >Get Started</button>
+                }</div>}
+            <Microphone soundRef={soundRef} />
         </div>
     )
 }

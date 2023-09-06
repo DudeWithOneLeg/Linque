@@ -28,7 +28,7 @@ export default function Microphone({ soundRef }) {
         console.log('Listening: ', listening, finalTranscript)
 
         if (listening && finalTranscript) {
-
+            console.log(finalTranscript)
             dispatch(speechActions.setSpeech(finalTranscript))
         }
 
@@ -37,7 +37,7 @@ export default function Microphone({ soundRef }) {
     //Keep speech recognition on when mic enabled
     useEffect(() => {
         if (!listening && mic) {
-            SpeechRecognition.startListening()
+            SpeechRecognition.startListening({ language: 'en' })
         }
     }, [listening])
 
@@ -63,11 +63,12 @@ export default function Microphone({ soundRef }) {
 
     return (
         <>
-            <button
+            <img
                 id='microphone'
+                src='/images/microphone.png'
                 onClick={() => tglMic()}
                 style={listening ? { backgroundColor: 'black', color: 'white' } : { backgroundColor: 'white' }}
-            >Mic</button>
+            />
         </>
 
     )
