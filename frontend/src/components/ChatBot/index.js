@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react"
 import * as chatBotActions from '../../store/chatbot'
 import { useDispatch, useSelector } from "react-redux"
-import * as post from '../../store/posts'
 import VideoCard from "../VideoCard"
 import ImagesCard from "../ImagesCard"
 import TextCard from "../TextCard"
 import ProductsCard from "../ProductsCard"
 import GoogleMaps from "../GoogleMaps"
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import './index.css'
 
 const languages = {
@@ -46,7 +43,6 @@ export default function ChatBot() {
     const [body, setBody] = useState('')
     const [showBot, setShowBot] = useState(false)
     const [showConvos, setShowConvos] = useState(true)
-    const [image, setImage] = useState(null)
     const dispatch = useDispatch()
 
     const convos = useSelector(state => state.chatBot.allConvos)
@@ -61,19 +57,7 @@ export default function ChatBot() {
     }
 
     const handleClick = async () => {
-        const client = new S3Client({ region: "us-west-2" });
-        const command = new PutObjectCommand({
-          Bucket: process.env.linque,
-          Key: image.name,
-          Body: image,
-        });
-console.log(command)
-        try {
-          const signedUrl = await getSignedUrl(client, command, { expiresIn: 3600 });
-          console.log(`Successfully uploaded file. URL: ${signedUrl}`);
-        } catch (err) {
-          console.error("Error uploading file: ", err);
-        }
+
 
         const newBody = { body: body, user: true }
         if (messages) {
@@ -206,23 +190,12 @@ console.log(command)
                         })
                     }
                 </div>
-                    <form onSubmit={(e) => {e.preventDefault()}} encType="multipart/form-data">
-                    <input
-                            id="image"
-                            className='create-resturant-input'
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {setImage(e.target.files[0]); }}
-                        />
-                        <button type='submit'>yoooo</button>
-                        </form>
                 <div id='input-div'>
                     <textarea
                         id='chatbox-text-input'
                         onChange={(e) => setBody(e.target.value)}
                         value={body}
                     />
-                    <img src='/images/send.png' id='send-message-button' onClick={handleClick} />
                 </div>
             </div>}
         </div> : <div id='bot-button' onClick={() => setShowBot(true)}>
