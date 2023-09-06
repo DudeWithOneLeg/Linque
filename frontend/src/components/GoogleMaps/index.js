@@ -1,19 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import usePlacesAutocomplete from "use-places-autocomplete";
-import * as placeActions from '../../store/google';
 import { useDispatch, useSelector } from 'react-redux';
+import * as placeActions from '../../store/googleMaps'
 import './index.css'
 
-const libraries = ['places']
+// const libraries = ['places']
 
-export default function GoogleMap({coord, stylingId, containerStyle, mapOptions}) {
-    // const [address, setAddress] = useState('Address')
-    // const [city, setCity] = useState('City')
-    // const [state, setState] = useState('State')
-    const [position, setPosition] = useState(coord)
+export default function GoogleMaps({message}) {
+    const [address, setAddress] = useState('Address')
+    const [city, setCity] = useState('City')
+    const [state, setState] = useState('State')
+
+    const placeDetails = useSelector(state => state.map.place)
+
+    const latLng = message.data.gps_coordinates
+
+
+    const [position, setPosition] = useState({lat: latLng.latitude, lng: latLng.longitude})
 
     const dispatch = useDispatch()
+
+    const containerStyle = {
+        width: '100%',
+        height: '100%',
+        borderRadius: '0px 0px 10px 10px',
+        marginBottom: '0px',
+        zIndex: '0'
+    }
+
+
 
     // const placeDetails = useSelector(state => state.map.place)
 
@@ -23,6 +39,7 @@ export default function GoogleMap({coord, stylingId, containerStyle, mapOptions}
     // const { ready, value, setValue, suggestions: { status, data }, clearSuggestions } = usePlacesAutocomplete({
 
     // })
+
     // useEffect(() => {
     //     console.log('hello')
     //     geocoder.geocode({ location: position }, (results, status) => {
@@ -36,11 +53,7 @@ export default function GoogleMap({coord, stylingId, containerStyle, mapOptions}
     //         } else {
     //             console.error("Geocoder failed due to: " + status);
     //         }
-
     //     });
-
-
-
     // }, [position])
 
     // useEffect(() => {
@@ -80,13 +93,12 @@ export default function GoogleMap({coord, stylingId, containerStyle, mapOptions}
 
     const { isLoaded } = useLoadScript({
         id: 'google-map-script',
-        googleMapsApiKey: 'AIzaSyBiC-knCF8B1sha04loDyGfM3sM_yaC93U',
-        libraries: libraries,
+        googleMapsApiKey: 'AIzaSyBiC-knCF8B1sha04loDyGfM3sM_yaC93U'
     })
 
     const marker = () => {
         return (
-            <Marker position={position}></Marker>
+            <Marker ></Marker>
         )
     }
 
@@ -202,7 +214,7 @@ export default function GoogleMap({coord, stylingId, containerStyle, mapOptions}
 
 
     return (
-        <div id={stylingId}>
+        <div className='bot-message'>
             <div>
             <script
                 defer
@@ -222,19 +234,32 @@ export default function GoogleMap({coord, stylingId, containerStyle, mapOptions}
                     <p>{state}</p>
                 </div>
             </div> */}
-            <div id='map'>
+            <p>{message.body}</p>
+            <div className='map'>
                 {
                     isLoaded ? (
                         <GoogleMap
                             mapContainerStyle={containerStyle}
                             center={position}
-                            zoom={zoom}
+                            zoom={7}
 
-                            options={mapOptions}
+                            options={{
+
+
+                                scrollwheel: false,
+                                draggable: false,
+                                mapTypeControlOptions: {
+                                    style: window.google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                                    position: window.google.maps.ControlPosition.LEFT_TOP,
+                                },
+                                fullscreenControlOptions: {
+                                    position: window.google.maps.ControlPosition.RIGHT_TOP,
+                                }
+                            }}
                             //onClick={(e) => handleMapClick(e)}
-                            onLoad={(map) => mapRef.current = map
+                            // onLoad={(map) => mapRef.current = map
 
-                            }
+                            // }
                         >
                             { /* Child components, such as markers, info windows, etc. */}
                             {

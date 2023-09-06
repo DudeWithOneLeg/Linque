@@ -85,6 +85,7 @@ export const createMessage = (message) => async (dispatch) => {
         if (data && !data.message) dispatch(setNewMessage(data))
 
         message.chatBotConvoId = data.chatBotConvoId
+        message.language = data.language
         const gpt = await csrfFetch(`/api/chatbot/gpt`, {
             method: 'POST',
             body: JSON.stringify(message)
