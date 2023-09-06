@@ -5,6 +5,7 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require('sequelize');
 const { use } = require('./comments');
+const { singleMulterUpload, singlePublicFileUpload } = require('../awsS3')
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const isPostAuthor = (req, res, next) => {
@@ -191,6 +192,10 @@ router.post('/:postId/comments', [requireAuth, postExists, validateFriends], asy
 
     res.status(200)
     return res.json(post)
+
+})
+
+router.post('/:postId/images', [requireAuth, postExists, isPostAuthor, singleMulterUpload], async (req, res) => {
 
 })
 
