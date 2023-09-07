@@ -6,10 +6,10 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
+options.tableName = 'UserSettings'
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    options.tableName = 'UserSettings'
     await queryInterface.createTable('UserSettings', {
       id: {
         allowNull: false,
