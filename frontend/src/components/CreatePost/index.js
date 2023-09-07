@@ -5,11 +5,17 @@ import './index.css'
 
 export default function CreatePost({ user }) {
     const [body, setBody] = useState("")
+    const [image, setImage] = useState(null)
+    const [imageForm, setImageForm] = useState(false)
     const dispatch = useDispatch()
 
     const handleSubmit = () => {
-        dispatch(postActions.createPost({body}))
+        dispatch(postActions.createPost({body})).then(data => {
+            dispatch(postActions.uploadImage(data.id, image))
+        })
+
         setBody("")
+        setImage(null)
     }
 
     return (
@@ -28,7 +34,7 @@ export default function CreatePost({ user }) {
 
             <button
             id='create-post-button'
-            hidden={!body}
+            hidden={!body && !image}
             onClick={handleSubmit}
             >
                 Post
@@ -36,12 +42,22 @@ export default function CreatePost({ user }) {
 
             <div id='attachments'>
 
-                <h2>
-                    photo
-                </h2>
+                {!imageForm && <h2 onClick={() => setImageForm(true)}>
+                    Photo
+                </h2>}
+                {
+                    imageForm && <div id='image-container'>
+                        <input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {setImage(e.target.files[0]); }}
+                />
+                    </div>
+                }
 
                 <h2>
-                    event
+                    Event
                 </h2>
 
             </div>

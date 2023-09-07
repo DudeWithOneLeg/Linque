@@ -3,7 +3,7 @@ export const flatten = (arr) => {
 
     const obj = {}
     for (let el of arr) {
-      obj[el.id] = el
+        obj[el.id] = el
     }
     return obj
 }
@@ -58,6 +58,27 @@ const setNewPost = (post) => {
     }
 }
 
+const setNewImage = (image) => {
+    return {
+        type: CREATE_POST_IMAGE,
+        payload: image
+    }
+}
+
+export const uploadImage = (postId, image) => async (dispatch) => {
+    const formData = new FormData();
+    if (image) formData.append("image", image);
+    const res = await csrfFetch(`api/posts/${postId}/images`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+    })
+    const data = await res.json();
+  dispatch(setNewImage(data));
+}
+
 export const getAllPosts = () => async (dispatch) => {
     const res = await csrfFetch('/api/feed')
     const data = await res.json()
@@ -110,7 +131,7 @@ export const createPost = (newPost) => async (dispatch) => {
     })
     const data = await res.json()
     if (data && !data.message) dispatch(setNewPost(data))
-    return res
+    return data
 }
 
 const initialState = {}
@@ -118,30 +139,40 @@ const initialState = {}
 export const postsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_POSTS:
-            return {...state, allPosts: {...action.payload}}
+            return { ...state, allPosts: { ...action.payload } }
         case GET_SINGLE_POST:
-            return {...state, singlePost: {...action.payload}}
+            return { ...state, singlePost: { ...action.payload } }
         case UPDATE_POST:
             const postId = action.payload.id
-            const updatedState = {...state}
-            const updaedPosts = {...updatedState.allPosts}
-            updaedPosts[postId] = {...action.payload}
-            return {...updatedState, allPosts: {...updaedPosts}}
+            const updatedState = { ...state }
+            const updaedPosts = { ...updatedState.allPosts }
+            updaedPosts[postId] = { ...action.payload }
+            return { ...updatedState, allPosts: { ...updaedPosts } }
         case DELETE_POST:
             const deleteId = action.payload
-            const currentState = {...state}
-            const currentPosts = {...currentState.allPosts}
+            const currentState = { ...state }
+            const currentPosts = { ...currentState.allPosts }
             delete currentPosts[deleteId]
-            return {...state, allPosts: {...currentPosts}}
+            return { ...state, allPosts: { ...currentPosts } }
         case GET_FRIEND_POSTS:
-            return {...state, friendPosts: {...action.payload}}
+            return { ...state, friendPosts: { ...action.payload } }
         case CREATE_POST:
             const id = action.payload.id
-            const newState = {...state}
-            const newPosts = {...newState.allPosts}
-            newPosts[id] = {...action.payload}
-            return {...newState, allPosts: {...newPosts}}
+            const newState = { ...state }
+            const newPosts = { ...newState.allPosts }
+            newPosts[id] = { ...action.payload }
+            console.log('post payload',action.payload)
+            return { ...newState, allPosts: { ...newPosts } }
+        case CREATE_POST_IMAGE:
+            const imgPostId = action.payload.postId
+            console.log(action.payload)
+            console.log('image postid',imgPostId)
+            const imageState = {...state}
+            const imagePosts = {...imageState.allPosts}
+            const imgPost = imagePosts[imgPostId]
+            imagePosts[imgPostId] = {...imgPost, url: action.payload.url, data: action.payload.data}
 
+            return {...imageState, allPosts: {...imagePosts}}
         default:
             return state
     }

@@ -8,7 +8,16 @@ if (process.env.NODE_ENV === "development") {
 	dotenv.config();
 }
 
+
 const AWS = require('aws-sdk')
+AWS.config.update({ region: 'us-east-2' });
+
+// AWS.config.update({
+// 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+// 	secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+// 	region: process.env.AWS_REGION,
+//   });
+
 
 //Name of Bucket
 const S3_BUCKET = process.env.S3_BUCKET
@@ -20,26 +29,26 @@ const multer = require('multer')
 //  AWS_SECRET_ACCESS_KEY
 //  and aws will automatically use those environment variables
 
-const s3 = new AWS.S3({ apiVersion: "2006-03-01" })
+const s3 = new AWS.S3({ apiVersion: "2006-03-01" , region: 'us-east-2'})
 
 //------------------------Public Upload---------------
 
 const singlePublicFileUpload = async (file) => {
-	const { originalName, buffer } = await file;
-	const path = require('path')
-
+	const { originalname, mimetype, buffer } = await file;
+	const data = await file
 	//name of the file in your s3 bucket will be the date in ms plus the extension name
-	const Key = new Date().getTime().toString() + path.extname(originalName);
+	const Key = new Date().getTime().toString() + path.extname(originalname);
+
 	const uploadParams = {
 		Bucket: S3_BUCKET,
-		Key,
+		Key: Key,
 		Body: buffer,
-		ACL: 'pubic-read'
+		ACL:'public-read'
 	};
 	const result = await s3.upload(uploadParams).promise();
 
 	//save name of file in your bucket as the key in your db
-	console.log(result)
+
 	return result.Location;
 }
 

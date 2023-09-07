@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
     postId: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    data: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }
   , {

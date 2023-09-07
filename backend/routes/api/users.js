@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User, Post, Comment, Friend, UserEvent } = require('../../db/models');
+const { User, Post, Comment, Friend, UserEvent, PostImage } = require('../../db/models');
 const { Op } = require('sequelize')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -136,7 +136,7 @@ router.get('/:userId/posts', [requireAuth, userExists, validateFriends], async (
             {
                 model: Post,
                 include: [
-                    User,
+                    {model: User},
                     {
                         model: Comment,
                         include: [User]

@@ -190,6 +190,7 @@ export default function ChatBot() {
                         })
                     }
                 </div>
+
                 <div id='input-div'>
                     <textarea
                         id='chatbox-text-input'
