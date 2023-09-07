@@ -1,11 +1,12 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { User, Friend, Post, Comment } = require('../../db/models');
+const { User, Friend, Post, Comment, PostImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require('sequelize');
 const { use } = require('./comments');
 const { singleMulterUpload, singlePublicFileUpload } = require('../awsS3')
+const vision = require('@google-cloud/vision');
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const isPostAuthor = (req, res, next) => {
@@ -21,6 +22,28 @@ const isPostAuthor = (req, res, next) => {
     }
     return next()
 }
+
+async function detectObjects(url) {
+    // Imports the Google Cloud client library
+    const vision = require('@google-cloud/vision');
+
+    // Creates a client
+    const client = new vision.ImageAnnotatorClient();
+    console.log(client)
+
+    // Performs label detection on the image file
+    const [result] = await client.objectLocalization(url);
+    console.log(result)
+    const objects = result.localizedObjectAnnotations;
+    const arr = []
+    objects.forEach(object => {
+        const obj = {}
+        obj.name = object.name
+        obj.data = object.boundingPoly.normalizedVertices
+        arr.push(obj)
+    });
+    return arr
+  }
 
 const validateFriends = async (req, res, next) => {
 
@@ -97,7 +120,7 @@ router.post('/', [requireAuth], async (req, res) => {
             id: post.id
         },
         include: [
-            User,
+            {model: User},
             {
                 model: Comment,
                 include: [User]
@@ -105,7 +128,7 @@ router.post('/', [requireAuth], async (req, res) => {
         ]
     })
 
-
+console.log(post)
     res.status(200)
     return res.json(newPost)
 
@@ -195,8 +218,20 @@ router.post('/:postId/comments', [requireAuth, postExists, validateFriends], asy
 
 })
 
-router.post('/:postId/images', [requireAuth, postExists, isPostAuthor, singleMulterUpload], async (req, res) => {
+router.post('/:postId/images', [requireAuth, postExists, isPostAuthor, singleMulterUpload('image')], async (req, res) => {
+    const url = await singlePublicFileUpload(req.file);
+    const { postId } = req.params
+    const { id: userId } = req.user
+    const data = await detectObjects(url)
+
+    const postImage = await PostImage.create({
+        url, postId, userId, data: JSON.stringify(data)
+    })
+    console.log(postId)
+    res.status(200)
+    return res.json({...postImage.dataValues, data: data})
 
 })
+
 
 module.exports = router;

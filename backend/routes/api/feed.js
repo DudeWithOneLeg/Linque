@@ -1,6 +1,6 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { User, Friend, Post, Comment } = require('../../db/models');
+const { User, Friend, Post, Comment, PostImage } = require('../../db/models');
 const { Op } = require('sequelize');
 
 const router = express.Router();
@@ -28,7 +28,7 @@ router.get('/', requireAuth, async (req, res) => {
         }
     })
 
-    const posts = await Post.findAll({
+    let posts = await Post.findAll({
         where: {
             userId: {
                 [Op.in]: friendsIds
@@ -39,12 +39,27 @@ router.get('/', requireAuth, async (req, res) => {
                 model: Comment,
                 include: User
             },
-            User
+            User,
+
+            {
+                model: PostImage
+            }
         ]
     })
 
+    const newPosts = []
+
+    posts.forEach(post => {
+        post = post.toJSON()
+        if (post.PostImage) {
+            post.url = post.PostImage.url,
+            post.data = JSON.parse(post.PostImage.data)
+        }
+        newPosts.push(post)
+    })
+
     res.status(200)
-    return res.json(posts)
+    return res.json(newPosts)
 
 })
 

@@ -58,3 +58,9 @@
 #create-post-button:hover {
     background-color: rgb(71, 71, 71);
 }
+
+#image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
