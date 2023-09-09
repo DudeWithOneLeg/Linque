@@ -1,53 +1,99 @@
 import { useEffect, useState } from 'react'
 import ViewComments from '../ViewComments'
 import * as postActions from '../../store/posts'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import ViewObjects from '../ViewObjects'
 import './index.css'
 
-export default function ViewPost({ post, userId }) {
+export default function ViewPost({ post, userId}) {
 
     const [edit, setEdit] = useState(false)
     const [body, setBody] = useState(post.body)
-    const [imageLoaded, setImageLoaded] = useState(false)
+    const [images, setImags] = useState([])
 
     const dispatch = useDispatch()
 
-
-
+    const posts = useSelector(state => state.posts.allPosts)
 
     useEffect(() => {
-        if (post.url) {
-
+        if (post.PostImage) {
+            const newArr = []
             const imgDiv = document.getElementById(post.url)
-            if (post.data) {
+            const img = document.getElementById(post.PostImage.url + 'image')
 
-                if (post.data.length) {
-                const objects = post.data
-                for (let object of objects) {
+            img.onload = () => {
+                if (post.PostImage) {
+                    if (!post.PostImage.results) {
 
-                        console.log(object.data)
+                        console.log('useEffect ran',post.PostImage.data)
+                            const objects = JSON.parse(post.PostImage.data)
+                            console.log(objects)
+                            for (let object of objects) {
+                                if (object.name != 'Person') {
+                                    console.log(object.name)
+                                    const canvas = document.createElement('canvas')
 
-                        const canvas = document.createElement('canvas')
+                                    const naturalWidth = img.naturalWidth
+                                    const naturalHeight = img.naturalHeight
 
-                        const left = object.data[0].x * canvas.width
-                        const top = object.data[0].y * canvas.height
+                                    //box size && position
+                                    const left = object.data[0].x * naturalWidth
+                                    const top = object.data[0].y * naturalHeight
 
-                        const width = object.data[1].x * canvas.width - object.data[0].x * canvas.width
-                        const height = object.data[2].y * canvas.height - object.data[0].y * canvas.height
+                                    const width = (object.data[1].x * naturalWidth) - (object.data[0].x * naturalWidth)
+                                    const height = (object.data[2].y * naturalHeight) - (object.data[0].y * naturalHeight)
+                                    canvas.width = width
+                                    canvas.height = height
 
-                        const ctx = canvas.getContext("2d");
-                        ctx.strokeStyle = '#ff0000'
-                        ctx.strokeRect(left, top, width, height);
+                                    //drawing canvas and boxes
+                                    const ctx = canvas.getContext("2d");
 
-                        const croppedDataURL = canvas.toDataURL("image/png")
-                        console.log(croppedDataURL)
+                                    //ctx.strokeRect(left, top, width, height)
 
-                        imgDiv.appendChild(canvas)
+                                    //extracting the cropped image
+                                    ctx.drawImage(img, left, top, width, height, 0, 0, width, height)
+
+
+                                    const croppedDataURL = canvas.toDataURL("image/png")
+                                    function dataURLtoFile(dataurl, filename) {
+                                        let arr = dataurl.split(','),
+                                            mime = arr[0].match(/:(.*?);/)[1],
+                                            bstr = atob(arr[arr.length - 1]),
+                                            n = bstr.length,
+                                            u8arr = new Uint8Array(n);
+                                        while (n--) {
+                                            u8arr[n] = bstr.charCodeAt(n);
+                                        }
+                                        return new File([u8arr], filename, { type: mime });
+                                    }
+
+
+                                    const file = dataURLtoFile(croppedDataURL, 'hello.png');
+
+
+
+                                    newArr.push(file)
+                                    console.log(object.name, croppedDataURL)
+                                }
+
+
+
+                                //imgDiv.appendChild(canvas)
+
+                            }
+
+                            console.log('new array',newArr)
+                            if (newArr.length) {
+
+                                dispatch(postActions.uploadImage(post.id, newArr))
+                            }
+
                     }
 
 
-                }
 
+
+                }
             }
         }
 
@@ -55,7 +101,7 @@ export default function ViewPost({ post, userId }) {
 
 
 
-    }, [])
+    }, [posts])
 
 
 
@@ -82,10 +128,12 @@ export default function ViewPost({ post, userId }) {
                 <div className='post-body'>
                     {!edit && post && <div>
                         <p>{post.body && post.body}</p>
-
                         {
-                            post.url && post.data && <div id={post.url} style={{position: 'relative'}}>
-                                <img src={post.url} className='post-image'/>
+                            post.hasImage && !post.PostImage && <img src='/images/loading.png' className='image-loading'/>
+                        }
+                        {
+                            post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }}>
+                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image' crossOrigin='anonymous'/>
                             </div>
 
 
@@ -93,30 +141,47 @@ export default function ViewPost({ post, userId }) {
                     </div>}
                     {post.userId === userId && edit && <div className=''>
                         <textarea value={body} className='new-post' onChange={(e) => setBody(e.target.value)} />
-                        <button className='save-new-post' onClick={() => {
-                            dispatch(postActions.updatePost(post.id, { body }))
-                            setEdit(false)
-                        }}>Save</button>
+                        <div className='edit-post-buttons-container'>
+                            <button className='save-new-post' onClick={() => {
+                                dispatch(postActions.updatePost(post.id, { body }))
+                                setEdit(false)
+                            }}><img src='/images/save.png' /></button>
+
+                            <button className='save-new-post' onClick={() => {
+                                dispatch(postActions.deletePost(post.id))
+                            }}>
+                                <img src='/images/trash.png'/>
+                            </button>
+
+                        </div>
                     </div>}
                 </div>
+
             </div>
 
             <div className='post-engagement'>
 
-                <p>num of likes</p>
+                {/* <p>num of likes</p>
 
-                <p>{post.Comments && post.Comments.length} comments</p>
+                <p>{post.Comments && post.Comments.length} comments</p> */}
 
             </div>
             <div className='post-like-button'>
-                <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUXbmV2ZXIgZ29ubmEgZ2l2ZSB5b3UgdXA%3D' target="_blank">
+                {/* <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUXbmV2ZXIgZ29ubmEgZ2l2ZSB5b3UgdXA%3D' target="_blank">
 
-                <img src='/images/like.png' />
+                    <img src='/images/like.png' />
                 </a>
 
-                <h3>Like</h3>
+                <h3>Like</h3> */}
+                {
+                post.PostImage && post.PostImage.results && <ViewObjects results={post.PostImage.results} />
+            }
             </div>
-            <ViewComments comments={post.Comments} postId={post.id} />
+            <ViewComments comments={post.Comments} postId={post.id} key={post.id}/>
+            {
+                post.PostImage && post.PostImage.data && !post.PostImage.results && <img src='/images/loading.png' className='loading'/>
+            }
+
         </div>
     )
 }

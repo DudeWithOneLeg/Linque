@@ -25,14 +25,14 @@ export default function Feed() {
         })
     }, [dispatch])
 
-    
+
 
     return (
         <div id='feed'>
             <CreatePost user={sessionUser}/>
             {
                  Object.values(newPosts).length && !posts.message ? Object.values(newPosts).reverse().map(post => {
-                    return <ViewPost post={post} userId={sessionUser.id} key={post.id}/>
+                    return <ViewPost post={post} userId={sessionUser.id} key={post.id} posts={postsState}/>
                 }): posts.message
             }
         </div>

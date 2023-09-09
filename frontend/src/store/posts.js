@@ -3,6 +3,10 @@ export const flatten = (arr) => {
 
     const obj = {}
     for (let el of arr) {
+        if (el.results) {
+            console.log(el.results)
+            el.data = JSON.parse(el.results)
+        }
         obj[el.id] = el
     }
     return obj
@@ -15,6 +19,38 @@ const DELETE_POST = 'post/delete'
 const GET_FRIEND_POSTS = 'getPosts/friend'
 const CREATE_POST = 'create/post'
 const CREATE_POST_IMAGE = 'create/postImage'
+const CREATE_POST_IMAGES = 'create/postImages'
+const UPDATE_COMMENT = 'comment/update'
+const DELETE_COMMENT = 'comment/delete'
+const CREATE_COMMENT = 'create/comment'
+
+const setNewComment = (comment) => {
+    return {
+        type: CREATE_COMMENT,
+        payload: comment
+    }
+}
+
+const setUpdateComment = (comment) => {
+    return {
+        type: UPDATE_COMMENT,
+        payload: comment
+    }
+}
+
+const setDeleteComment = (commentId) => {
+    return {
+        type: DELETE_COMMENT,
+        payload: commentId
+    }
+}
+
+const setPostImage = (data) => {
+    return {
+        type: CREATE_POST_IMAGES,
+        payload: data
+    }
+}
 
 const setAllPosts = (posts) => {
     return {
@@ -65,10 +101,63 @@ const setNewImage = (image) => {
     }
 }
 
+export const createComment = (postId, newComment) => async (dispatch) => {
+    const res = await csrfFetch(`/api/posts/${postId}/comments`, {
+        method: 'POST',
+        body: JSON.stringify(newComment)
+    })
+    const data = await res.json()
+    if (data && !data.message) dispatch(setNewComment(data))
+    return data
+}
+
+export const updateComment = (commentId, newComment) => async (dispatch) => {
+    const res = await csrfFetch(`/api/comments/${commentId}`, {
+        method: 'PUT',
+        body: JSON.stringify(newComment)
+    })
+    const data = await res.json()
+    if (data && !data.message) dispatch(setUpdateComment(data))
+
+    return res
+}
+
+export const deleteComment = (commentId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/comments/${commentId}`, {
+        method: 'DELETE'
+    })
+    const data = await res.json()
+    if (data && data.message) dispatch(setDeleteComment(commentId))
+
+    return res
+}
+
 export const uploadImage = (postId, image) => async (dispatch) => {
     const formData = new FormData();
+    if (image.length) {
+        for (let images of image) {
+            formData.append('image', images)
+        }
+
+        console.log(image)
+
+        const res = await csrfFetch(`/api/posts/images/${postId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            body: formData
+        })
+        const data = await res.json()
+        if (data && !data.error) {
+            console.log(data)
+            return dispatch(setNewImage(data))
+        }
+        return
+    }
+
     if (image) formData.append("image", image);
-    const res = await csrfFetch(`api/posts/${postId}/images`, {
+    const res = await csrfFetch(`/api/posts/${postId}/image`, {
         method: "POST",
         headers: {
             "Content-Type": "multipart/form-data",
@@ -76,7 +165,7 @@ export const uploadImage = (postId, image) => async (dispatch) => {
         body: formData,
     })
     const data = await res.json();
-  dispatch(setNewImage(data));
+    dispatch(setNewImage(data));
 }
 
 export const getAllPosts = () => async (dispatch) => {
@@ -137,6 +226,8 @@ export const createPost = (newPost) => async (dispatch) => {
 const initialState = {}
 
 export const postsReducer = (state = initialState, action) => {
+    const currentState = { ...state }
+    const currentPosts = { ...currentState.allPosts }
     switch (action.type) {
         case GET_ALL_POSTS:
             return { ...state, allPosts: { ...action.payload } }
@@ -144,35 +235,44 @@ export const postsReducer = (state = initialState, action) => {
             return { ...state, singlePost: { ...action.payload } }
         case UPDATE_POST:
             const postId = action.payload.id
-            const updatedState = { ...state }
-            const updaedPosts = { ...updatedState.allPosts }
-            updaedPosts[postId] = { ...action.payload }
-            return { ...updatedState, allPosts: { ...updaedPosts } }
+            currentPosts[postId] = { ...action.payload }
+            return { ...currentState, allPosts: { ...currentPosts } }
         case DELETE_POST:
             const deleteId = action.payload
-            const currentState = { ...state }
-            const currentPosts = { ...currentState.allPosts }
             delete currentPosts[deleteId]
             return { ...state, allPosts: { ...currentPosts } }
-        case GET_FRIEND_POSTS:
-            return { ...state, friendPosts: { ...action.payload } }
         case CREATE_POST:
-            const id = action.payload.id
-            const newState = { ...state }
-            const newPosts = { ...newState.allPosts }
-            newPosts[id] = { ...action.payload }
-            console.log('post payload',action.payload)
-            return { ...newState, allPosts: { ...newPosts } }
+            const createId = action.payload.id
+            currentPosts[createId] = { ...action.payload }
+            console.log('post payload', action.payload)
+            return { ...currentState, allPosts: { ...currentPosts } }
         case CREATE_POST_IMAGE:
             const imgPostId = action.payload.postId
             console.log(action.payload)
-            console.log('image postid',imgPostId)
-            const imageState = {...state}
-            const imagePosts = {...imageState.allPosts}
-            const imgPost = imagePosts[imgPostId]
-            imagePosts[imgPostId] = {...imgPost, url: action.payload.url, data: action.payload.data}
-
-            return {...imageState, allPosts: {...imagePosts}}
+            console.log('image postid', imgPostId)
+            const imgPost = currentPosts[imgPostId]
+            currentPosts[imgPostId] = { ...imgPost, PostImage: action.payload }
+            return { ...currentState, allPosts: { ...currentPosts } }
+        case UPDATE_COMMENT:
+            const comment = action.payload
+            const commentId = comment.id
+            const post = currentPosts[comment.postId]
+            post[commentId] = {...comment}
+            currentPosts[post.id] = {...post}
+            return { ...currentState, allPosts: { ...currentPosts } }
+        case DELETE_COMMENT:
+            const deleteCommentId = action.payload
+            delete currentPosts[deleteCommentId]
+            return { ...state, allPosts: { ...currentPosts } }
+        case CREATE_COMMENT:
+            const newComment = action.payload
+            const id = newComment.id
+            const newPost = currentPosts[newComment.postId]
+            console.log(newPost)
+            newPost.Comments.push(newComment)
+            currentPosts[newPost.id] = {...newPost}
+            console.log('post payload', action.payload)
+            return { ...currentState, allPosts: { ...currentPosts } }
         default:
             return state
     }

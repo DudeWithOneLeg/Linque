@@ -4,6 +4,9 @@
     border-radius: 10px;
     background-color: #283845;
     padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .name-body {
@@ -44,10 +47,21 @@
 .post-body {
     padding-top: 20px;
     font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post-body > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .post-body > p {
     overflow-wrap: break-word;
+    justify-self: flex-start;
+    text-align: left;
 }
 
 .post-engagement {
@@ -75,6 +89,7 @@
     cursor: pointer;
 }
 
+
 .post-like-button > img {
     width: 30px;
     height: 30px;
@@ -90,14 +105,14 @@
     flex-direction: row;
     align-items: flex-end;
     width: 100%;
-
-    margin: 0px;
+    margin: -5px;
+    padding: 5px 0px 0px 0px;
     border-bottom: solid gray 1px;
 
 }
 
 .new-post {
-    height: 35px;
+    height: 55px;
     width: 100%;
     margin-top: 20px;
     border-radius: 5px;
@@ -110,16 +125,63 @@
 
 .save-new-post {
     align-self: flex-end;
+    border-radius: 10px;
+    background-color: rgb(34, 32, 32);
+    border: none;
+    color: white;
+    align-self: flex-end;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.save-new-post > img {
+    height: 30px;
+}
+
+.save-new-post:hover {
+    background-color: rgb(71, 71, 71);
 }
 
 .post-image {
-    width: 100%
+    width: 100%;
 }
 
 canvas {
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
+}
+
+.loading {
+    height: 30px;
+    width: 30px;
+    border-radius: 100%;
+    justify-self: center;
+    align-self: center;
+    /* transition-duration: 0.8s;
+    transition-property: transform;
+    transform: rotate(360deg); */
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.image-loading {
+    height: 100px;
+    width: 100px;
+    border-radius: 100%;
+    justify-self: center;
+    align-self: center;
+    /* transition-duration: 0.8s;
+    transition-property: transform;
+    transform: rotate(360deg); */
+    animation: rotate 1s linear infinite;
 }

@@ -19,7 +19,7 @@ const languages = {
     "ka": "Georgian", "de": "German", "el": "Greek", "gn": "Guarani", "gu": "Gujarati",
     "ht": "Haitian Creole", "ha": "Hausa", "haw": "Hawaiian", "he": "Hebrew", "hi": "Hindi",
     "hmn": "Hmong", "hu": "Hungarian", "is": "Icelandic", "ig": "Igbo", "ilo": "Ilocano",
-    "id": "Indonesian", "ga": "Irish", "it": "Italian", "ja": "Japanese", "jv": "Javanese",
+    "id": "Indonesian", "iw": "Hebrew","ga": "Irish", "it": "Italian", "ja": "Japanese", "jv": "Javanese",
     "kn": "Kannada", "kk": "Kazakh", "km": "Khmer", "rw": "Kinyarwanda", "gom": "Konkani",
     "ko": "Korean", "kri": "Krio", "ku": "Kurdish", "ckb": "Kurdish (Sorani)", "ky": "Kyrgyz",
     "lo": "Lao", "la": "Latin", "lv": "Latvian", "ln": "Lingala", "lt": "Lithuanian",
@@ -114,6 +114,8 @@ export default function ChatBot() {
 
     }, [messages])
 
+    console.log(messages)
+
     return (
         showBot ? <div id='chat-box'>
             <div id='chatbox-header'>
@@ -143,7 +145,8 @@ export default function ChatBot() {
             </div> : <div id='convo'>
                 <div id='messages'>
                     {
-                        messages && Object.values(messages).map((message) => {
+                        (messages !== null && messages !== undefined) && Object.values(messages).map((message) => {
+
 
                             if (message.user) {
 
@@ -189,6 +192,12 @@ export default function ChatBot() {
 
                         })
                     }
+                    { messages && Object.values(messages)[Object.values(messages).length - 1].user && <div className="bot-message-container">
+                                    <div className="bot-message">
+                                        Thinking...
+                                        </div>
+                                </div>
+                            }
                 </div>
 
                 <div id='input-div'>

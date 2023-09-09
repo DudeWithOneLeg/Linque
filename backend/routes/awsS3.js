@@ -29,7 +29,7 @@ const multer = require('multer')
 //  AWS_SECRET_ACCESS_KEY
 //  and aws will automatically use those environment variables
 
-const s3 = new AWS.S3({ apiVersion: "2006-03-01" , region: 'us-east-2'})
+const s3 = new AWS.S3({ apiVersion: "2006-03-01", region: 'us-east-2' })
 
 //------------------------Public Upload---------------
 
@@ -43,7 +43,7 @@ const singlePublicFileUpload = async (file) => {
 		Bucket: S3_BUCKET,
 		Key: Key,
 		Body: buffer,
-		ACL:'public-read'
+		ACL: 'public-read'
 	};
 	const result = await s3.upload(uploadParams).promise();
 
@@ -51,6 +51,14 @@ const singlePublicFileUpload = async (file) => {
 
 	return result.Location;
 }
+
+const multiplePublicFileUpload = async (files) => {
+	return await Promise.all(
+		files.map((file) => {
+			return singlePublicFileUpload(file);
+		})
+	);
+};
 
 const extractKeyFromUrl = (fileUrl) => {
 	const parsedUrl = url.parse(fileUrl)
@@ -73,16 +81,21 @@ const singlePublicFileDelete = async (file) => {
 
 const storage = multer.memoryStorage({
 	destination: function (req, file, callback) {
-	  callback(null, "");
+		callback(null, "");
 	},
-  });
+});
 
 
 const singleMulterUpload = (nameOfKey) =>
 	multer({ storage: storage }).single(nameOfKey);
 
+const multipleMulterUpload = (nameOfKey) =>
+	multer({ storage: storage }).array(nameOfKey);
+
 module.exports = {
 	s3,
 	singlePublicFileUpload,
 	singleMulterUpload,
+	multiplePublicFileUpload,
+	multipleMulterUpload
 };

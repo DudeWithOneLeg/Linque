@@ -5,14 +5,19 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { Op } = require('sequelize');
 const { use } = require('./comments');
-const { singleMulterUpload, singlePublicFileUpload } = require('../awsS3')
+const SerpApi = require('google-search-results-nodejs');
+const { singleMulterUpload, singlePublicFileUpload, multiplePublicFileUpload, multipleMulterUpload } = require('../awsS3')
 const vision = require('@google-cloud/vision');
+const axios = require('axios');
+const util = require('util')
+
+const SERP_API_KEY = process.env.SERP_API_KEY;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const isPostAuthor = (req, res, next) => {
     console.log(req.body)
-    const { id: userId} = req.user
-    const { post: {userId: authorId} } = req
+    const { id: userId } = req.user
+    const { post: { userId: authorId } } = req
 
     if (authorId !== userId) {
         res.status(403)
@@ -33,7 +38,6 @@ async function detectObjects(url) {
 
     // Performs label detection on the image file
     const [result] = await client.objectLocalization(url);
-    console.log(result)
     const objects = result.localizedObjectAnnotations;
     const arr = []
     objects.forEach(object => {
@@ -43,7 +47,7 @@ async function detectObjects(url) {
         arr.push(obj)
     });
     return arr
-  }
+}
 
 const validateFriends = async (req, res, next) => {
 
@@ -57,7 +61,7 @@ const validateFriends = async (req, res, next) => {
 
     const friend = await Friend.findOne({
         where: {
-            [Op.or]: [[{toUserId: userId}, {fromUserId: friendId}], [{toUserId: friendId}, {fromUserId: userId}]],
+            [Op.or]: [[{ toUserId: userId }, { fromUserId: friendId }], [{ toUserId: friendId }, { fromUserId: userId }]],
             status: 'friends'
         }
     })
@@ -85,7 +89,8 @@ const postExists = async (req, res, next) => {
                 model: Comment,
                 include: User
             },
-            User
+            User,
+            { model: PostImage }
         ]
     })
 
@@ -108,11 +113,13 @@ const router = express.Router();
 //Create a post
 router.post('/', [requireAuth], async (req, res) => {
     const user = req.user
-    const { body } = req.body
+    const { body, hasImage } = req.body
+    console.log('yoo has image ', hasImage)
 
     const post = await Post.create({
         userId: user.id,
         body,
+        hasImage
     })
 
     const newPost = await Post.findOne({
@@ -120,15 +127,16 @@ router.post('/', [requireAuth], async (req, res) => {
             id: post.id
         },
         include: [
-            {model: User},
+            { model: User },
             {
                 model: Comment,
                 include: [User]
-            }
+            },
+            { model: PostImage }
         ]
     })
 
-console.log(post)
+    console.log(post)
     res.status(200)
     return res.json(newPost)
 
@@ -191,7 +199,7 @@ router.get('/:postId/comments', [requireAuth, postExists, validateFriends], asyn
 
 router.post('/:postId/comments', [requireAuth, postExists, validateFriends], async (req, res) => {
     const { body } = req.body
-    const {id: userId } = req.user
+    const { id: userId } = req.user
     const { postId } = req.params
 
     await Comment.create({
@@ -218,18 +226,124 @@ router.post('/:postId/comments', [requireAuth, postExists, validateFriends], asy
 
 })
 
-router.post('/:postId/images', [requireAuth, postExists, isPostAuthor, singleMulterUpload('image')], async (req, res) => {
+router.post('/:postId/image', [requireAuth, postExists, isPostAuthor, singleMulterUpload('image')], async (req, res) => {
     const url = await singlePublicFileUpload(req.file);
     const { postId } = req.params
     const { id: userId } = req.user
-    const data = await detectObjects(url)
+    let data = await detectObjects(url)
+
+    const arr = []
+
+    data.forEach(object => {
+        if (object.name !== 'Person') arr.push(object)
+    })
 
     const postImage = await PostImage.create({
-        url, postId, userId, data: JSON.stringify(data)
+        url, postId, userId, data: JSON.stringify(arr), results: null
     })
-    console.log(postId)
     res.status(200)
-    return res.json({...postImage.dataValues, data: data})
+    console.log(postImage.dataValues)
+    return res.json({ ...postImage.dataValues })
+
+})
+
+router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], async (req, res) => {
+
+    const { postId } = req.params
+
+    const image = await PostImage.findOne({
+        where: {
+            postId: postId
+        }
+    })
+
+    if (image.data) {
+        const data = JSON.parse(image.data)
+        if (data.results && data.results.length) {
+
+
+            return res.json({
+                error: 'This image already has data'
+            })
+        }
+    }
+
+    const urls = await multiplePublicFileUpload(req.files)
+
+
+
+    //temporary limit
+    const obj = {}
+    const imageData = JSON.parse(image.data)
+
+
+    const func = async () => {
+        return new Promise(async (resolve) => {
+          if (urls.length) {
+
+
+            for (let i = 0; i < urls.length; i++) {
+              const image = urls[i];
+              const itemIndex = urls.indexOf(image);
+              const search = new SerpApi.GoogleSearch(SERP_API_KEY);
+              console.log()
+
+              let callback = async function (data) {
+                if (data.search_metadata.status === 'Success') {
+
+                    if (data.shopping_results && data.shopping_results.length) {
+                        const matches = data.shopping_results.slice(0, 4);
+                        obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name };
+                        console.log('callback',obj);
+                      }
+                    else if (data.visual_matches && data.visual_matches.length) {
+                      const matches = data.visual_matches.slice(0, 4);
+                      obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name };
+                      console.log('callback',obj);
+                    }
+                }
+
+                if (i === urls.length - 1) {
+                  // Resolve the promise when all async operations are done
+                  resolve(obj);
+                }
+              };
+
+              await search.json({ url: image, engine: 'google_lens' }, callback);
+            }
+          } else {
+            // Resolve immediately if no async operations were performed
+            resolve({});
+          }
+        });
+      };
+
+    const results = await func()
+
+
+
+
+
+        console.log('OBJECTS', results)
+        if (!results || !Object.values(results).length) {
+            res.status(404)
+            return res.json({
+                error: 'No results'
+            })
+        }
+        const newImage = await image.update({
+                results: JSON.stringify(results)
+            })
+            console.log(newImage)
+        res.status(200)
+        return res.json(newImage)
+
+
+
+
+
+
+
 
 })
 

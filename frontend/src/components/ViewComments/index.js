@@ -4,7 +4,7 @@ import './index.css'
 export default function ViewComments({comments, postId}) {
     return (
         <div className='view-comments'>
-            <CreateComment postId={postId}/>
+            <CreateComment postId={postId} key={postId}/>
             {
                 comments.length > 0 && comments.slice(0, 2).map(comment => {
                     return <div className='comment'>
