@@ -14,6 +14,20 @@ const util = require('util')
 const SERP_API_KEY = process.env.SERP_API_KEY;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const flatten = (arr) => {
+
+    const obj = {}
+    for (let el of arr) {
+        if (el.results) {
+            console.log(el.results)
+            el.data = JSON.parse(el.results)
+        }
+        obj[el.id] = el
+    }
+    return obj
+}
+
 const isPostAuthor = (req, res, next) => {
     console.log(req.body)
     const { id: userId } = req.user
@@ -136,6 +150,8 @@ router.post('/', [requireAuth], async (req, res) => {
         ]
     })
 
+
+
     console.log(post)
     res.status(200)
     return res.json(newPost)
@@ -146,6 +162,10 @@ router.post('/', [requireAuth], async (req, res) => {
 router.get('/:postId', [requireAuth, postExists, validateFriends], async (req, res) => {
 
     const { post } = req
+
+    if (post.Comments) {
+        post.Comments = flatten(post.Comments)
+    }
 
     res.status(200)
 
@@ -161,12 +181,27 @@ router.put('/:postId', [requireAuth, postExists, isPostAuthor], async (req, res)
 
     const { post: oldPost } = req
 
-    const newPost = await oldPost.update({
-        body
-    })
+    const comments = oldPost.Comments
+    const user = oldPost.User
+    const image = oldPost.PostImage
+
+    await oldPost.destroy()
+
+
+
+    const newPost = await Post.create({ id: oldPost.id, body: body, userId: oldPost.userId, hasImage: oldPost.hasImage })
+
+    newPost.User = user
+    newPost.Comments = comments
+
+    console.log(newPost)
+
+    if (newPost.Comments) {
+        newPost.Comments = flatten(newPost.Comments)
+    }
 
     res.status(200)
-    return res.json(newPost)
+    return res.json({ ...newPost.dataValues, Comments: comments, User: user, PostImage: image})
 
 })
 
@@ -202,27 +237,23 @@ router.post('/:postId/comments', [requireAuth, postExists, validateFriends], asy
     const { id: userId } = req.user
     const { postId } = req.params
 
-    await Comment.create({
+    const comment = await Comment.create({
         body: body,
         userId: userId,
         postId: postId
     })
 
-    const post = await Post.findOne({
+    const newComment = await Comment.findOne({
         where: {
-            id: postId
+            id: comment.id
         },
-        include: [
-            {
-                model: Comment,
-                include: User
-            },
-            User
-        ]
+        include: [User]
     })
 
+
+
     res.status(200)
-    return res.json(post)
+    return res.json(newComment)
 
 })
 
@@ -279,44 +310,47 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
     const func = async () => {
         return new Promise(async (resolve) => {
-          if (urls.length) {
+            if (urls.length) {
 
 
-            for (let i = 0; i < urls.length; i++) {
-              const image = urls[i];
-              const itemIndex = urls.indexOf(image);
-              const search = new SerpApi.GoogleSearch(SERP_API_KEY);
-              console.log()
+                for (let i = 0; i < urls.length; i++) {
+                    const image = urls[i];
+                    const itemIndex = urls.indexOf(image);
+                    const search = new SerpApi.GoogleSearch(SERP_API_KEY);
 
-              let callback = async function (data) {
-                if (data.search_metadata.status === 'Success') {
 
-                    if (data.shopping_results && data.shopping_results.length) {
-                        const matches = data.shopping_results.slice(0, 4);
-                        obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name };
-                        console.log('callback',obj);
-                      }
-                    else if (data.visual_matches && data.visual_matches.length) {
-                      const matches = data.visual_matches.slice(0, 4);
-                      obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name };
-                      console.log('callback',obj);
-                    }
+                    let callback = async function (data) {
+                        console.log(data)
+
+                        if (data.search_metadata.status === 'Success') {
+
+                            if (data.shopping_results && data.shopping_results.length) {
+                                const matches = data.shopping_results.slice(0, 4);
+                                obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name };
+                                console.log('callback', obj);
+                            }
+                            else if (data.visual_matches && data.visual_matches.length) {
+                                const matches = data.visual_matches.slice(0, 4);
+                                obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name };
+                                console.log('callback', obj);
+                            }
+                        }
+
+                        if (i === urls.length - 1) {
+                            resolve(obj);
+                        }
+                    };
+
+                    await search.json({ url: image, engine: 'google_lens' }, callback);
+
+
+
                 }
-
-                if (i === urls.length - 1) {
-                  // Resolve the promise when all async operations are done
-                  resolve(obj);
-                }
-              };
-
-              await search.json({ url: image, engine: 'google_lens' }, callback);
+            } else {
+                resolve({});
             }
-          } else {
-            // Resolve immediately if no async operations were performed
-            resolve({});
-          }
-        });
-      };
+        }).catch((e) => console.log(e))
+    };
 
     const results = await func()
 
@@ -324,19 +358,16 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
 
 
-        console.log('OBJECTS', results)
-        if (!results || !Object.values(results).length) {
-            res.status(404)
-            return res.json({
-                error: 'No results'
-            })
-        }
-        const newImage = await image.update({
-                results: JSON.stringify(results)
-            })
-            console.log(newImage)
-        res.status(200)
-        return res.json(newImage)
+    console.log('OBJECTS', results)
+    // if (!results || !Object.values(results).length) {
+
+    // }
+    const newImage = await image.update({
+        results: JSON.stringify(results)
+    })
+    console.log(newImage)
+    res.status(200)
+    return res.json(newImage)
 
 
 

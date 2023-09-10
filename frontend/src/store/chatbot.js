@@ -4,7 +4,6 @@ import { csrfFetch } from './csrf'
 
 
 export const flatten = (arr) => {
-console.log(arr)
     const obj = {}
     for (let el of arr) {
         if (el.data) el.data = JSON.parse(el.data)
@@ -17,6 +16,13 @@ const GET_ALL_CONVOS = 'getConvos/all'
 const DELETE_CONVO = 'deleteConvo/one'
 const GET_SINGLE_CONVO = 'getConvo/one'
 const CREATE_MESSAGE = 'create/message'
+const CLEAR_MESSAGES = 'clear/messages'
+
+const removeMessages = () => {
+    return {
+        type: CLEAR_MESSAGES
+    }
+}
 
 const setAllConvos = (convos) => {
     return {
@@ -45,6 +51,10 @@ const setNewMessage = (message) => {
         type: CREATE_MESSAGE,
         payload: message
     }
+}
+
+export const clearMessages = () => async (dispatch) => {
+    return dispatch(removeMessages())
 }
 
 export const getAllConvos = () => async (dispatch) => {
@@ -120,7 +130,8 @@ export const ChatBotReducer = (state = initialState, action) => {
             newConvo[id] = {...object}
 
             return {...newState, singleConvo: {...newConvo}}
-
+        case CLEAR_MESSAGES:
+            return {...state, singleConvo: null}
         default:
             return state
     }

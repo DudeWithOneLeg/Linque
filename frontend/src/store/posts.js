@@ -117,17 +117,17 @@ export const updateComment = (commentId, newComment) => async (dispatch) => {
         body: JSON.stringify(newComment)
     })
     const data = await res.json()
-    if (data && !data.message) dispatch(setUpdateComment(data))
+    if (data && !data.message) dispatch(setNewPost(data))
 
     return res
 }
 
-export const deleteComment = (commentId) => async (dispatch) => {
-    const res = await csrfFetch(`/api/comments/${commentId}`, {
+export const deleteComment = (comment) => async (dispatch) => {
+    const res = await csrfFetch(`/api/comments/${comment.id}`, {
         method: 'DELETE'
     })
     const data = await res.json()
-    if (data && data.message) dispatch(setDeleteComment(commentId))
+    if (data && data.message) dispatch(setDeleteComment(comment))
 
     return res
 }
@@ -244,12 +244,9 @@ export const postsReducer = (state = initialState, action) => {
         case CREATE_POST:
             const createId = action.payload.id
             currentPosts[createId] = { ...action.payload }
-            console.log('post payload', action.payload)
             return { ...currentState, allPosts: { ...currentPosts } }
         case CREATE_POST_IMAGE:
             const imgPostId = action.payload.postId
-            console.log(action.payload)
-            console.log('image postid', imgPostId)
             const imgPost = currentPosts[imgPostId]
             currentPosts[imgPostId] = { ...imgPost, PostImage: action.payload }
             return { ...currentState, allPosts: { ...currentPosts } }
@@ -261,17 +258,22 @@ export const postsReducer = (state = initialState, action) => {
             currentPosts[post.id] = {...post}
             return { ...currentState, allPosts: { ...currentPosts } }
         case DELETE_COMMENT:
-            const deleteCommentId = action.payload
-            delete currentPosts[deleteCommentId]
+            const deletedComment = action.payload
+            const deleteCommentId = deletedComment.id
+            const deletedPost =  currentPosts[deletedComment.postId]
+            const deletedComments = deletedPost.Comments
+            delete deletedComments[deleteCommentId]
+            deletedPost.Comments = {...deletedComments}
+            currentPosts[deletedComment.postId] = deletedPost
             return { ...state, allPosts: { ...currentPosts } }
         case CREATE_COMMENT:
             const newComment = action.payload
             const id = newComment.id
             const newPost = currentPosts[newComment.postId]
-            console.log(newPost)
-            newPost.Comments.push(newComment)
+            const comments = {...newPost.Comments}
+            comments[id] = newComment
+            newPost.Comments = {...comments}
             currentPosts[newPost.id] = {...newPost}
-            console.log('post payload', action.payload)
             return { ...currentState, allPosts: { ...currentPosts } }
         default:
             return state

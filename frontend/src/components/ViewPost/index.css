@@ -185,3 +185,15 @@ canvas {
     transform: rotate(360deg); */
     animation: rotate 1s linear infinite;
 }
+
+.edit-post-buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.edit-post-buttons-container > * {
+    height: 40px;
+    width: 40px;
+}

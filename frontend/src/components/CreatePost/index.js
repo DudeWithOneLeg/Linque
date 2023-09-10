@@ -12,7 +12,7 @@ export default function CreatePost({ user }) {
     const handleSubmit = () => {
         console.log(typeof image === 'object')
         console.log(image)
-        dispatch(postActions.createPost({body, hasImage: typeof image === 'object' ? true : false})).then(data => {
+        dispatch(postActions.createPost({body, hasImage: image ? true : false})).then(data => {
             if (image) {
 
                 dispatch(postActions.uploadImage(data.id, image))

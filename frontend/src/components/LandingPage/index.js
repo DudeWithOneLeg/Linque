@@ -83,8 +83,10 @@ export default function LandingPage() {
                         id='get-started'
                         onClick={() => handleGetStarted()}
                     >Get Started</button>
-                }</div>}
-            <Microphone soundRef={soundRef} />
+                }</div>} {
+                    !sessionUser && <Microphone soundRef={soundRef} />
+                }
+
         </div>
     )
 }

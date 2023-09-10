@@ -39,9 +39,27 @@
 .comment-user-info {
     font-size: 14px;
     height: fit-content;
+    margin: 0px;
 }
 
 .comment-content {
     overflow: break-word;
     height: fit-content;
+}
+
+.comment-edit {
+    width: 17px;
+    height: 17px;
+    padding-left: 20px;
+}
+
+.comment-edit:hover {
+    cursor: pointer;
+}
+
+.comment-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
