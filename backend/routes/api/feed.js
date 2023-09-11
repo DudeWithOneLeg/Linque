@@ -3,6 +3,19 @@ const { requireAuth } = require('../../utils/auth');
 const { User, Friend, Post, Comment, PostImage } = require('../../db/models');
 const { Op } = require('sequelize');
 
+const flatten = (arr) => {
+
+    const obj = {}
+    for (let el of arr) {
+        if (el.results) {
+            console.log(el.results)
+            el.data = JSON.parse(el.results)
+        }
+        obj[el.id] = el
+    }
+    return obj
+}
+
 const router = express.Router();
 
 //Get all posts only if friends
@@ -54,6 +67,9 @@ router.get('/', requireAuth, async (req, res) => {
         if (post.PostImage) {
             post.url = post.PostImage.url,
             post.data = JSON.parse(post.PostImage.data)
+        }
+        if (post.Comments) {
+            post.Comments = flatten(post.Comments)
         }
         newPosts.push(post)
     })

@@ -1,6 +1,6 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { User, Friend, Post, Comment } = require('../../db/models');
+const { User, Friend, Post, Comment, PostImage } = require('../../db/models');
 
 const router = express.Router()
 
@@ -47,8 +47,31 @@ router.put('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (
         body
     })
 
+    const comments = await Comment.findAll({
+        where: {
+            postId: comment.postId
+        }
+    })
+
+    const post = await Post.findOne({
+        where: {
+            id: comment.postId
+        },
+        include: [
+            {
+                model: Comment,
+                include: User
+            },
+            User,
+            {
+                model: PostImage
+            }
+        ]
+    })
+    console.log(comments, post.Comments)
+
     res.status(200)
-    return res.json(newComment)
+    return res.json(post)
 })
 
 router.delete('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (req, res) => {

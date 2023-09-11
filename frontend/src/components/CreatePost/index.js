@@ -10,12 +10,18 @@ export default function CreatePost({ user }) {
     const dispatch = useDispatch()
 
     const handleSubmit = () => {
-        dispatch(postActions.createPost({body})).then(data => {
-            dispatch(postActions.uploadImage(data.id, image))
+        console.log(typeof image === 'object')
+        console.log(image)
+        dispatch(postActions.createPost({body, hasImage: image ? true : false})).then(data => {
+            if (image) {
+
+                dispatch(postActions.uploadImage(data.id, image))
+            }
         })
 
         setBody("")
-        setImage(null)
+        setImage('')
+        setImageForm(false)
     }
 
     return (
@@ -51,7 +57,7 @@ export default function CreatePost({ user }) {
                     id="image"
                     type="file"
                     accept="image/*"
-                    onChange={(e) => {setImage(e.target.files[0]); }}
+                    onChange={(e) => {setImage(e.target.files[0])}}
                 />
                     </div>
                 }

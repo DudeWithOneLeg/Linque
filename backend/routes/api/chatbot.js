@@ -30,7 +30,7 @@ async function detectLanguage(text) {
   };
 const features = {extractDocumentSentiment: true}
   // Detects the sentiment of the text
-  const [result] = await client.annotateText({document, features});
+  const [result] = await translate.detect(text);
 
 
 
@@ -314,6 +314,17 @@ const fetchGPT = async (prompt, res, body, req) => {
                     }
                 }
             ` },
+            { "role": "user", "content": "app acedmy in the news" },
+            {
+                "role": "assistant", "content": `
+                {
+                    "message": "This s the news for App Acedmy",
+                    "api": {
+                        "tbm": "nws",
+                        "q": "app academy"
+                    }
+                }
+            ` },
             { "role": "user", "content": prompt }
         ]
     }
@@ -330,9 +341,9 @@ const fetchGPT = async (prompt, res, body, req) => {
 
         else object.message = gptRes
 
+        console.log(object)
 
-
-        if (object.api) {
+        if (Object.values(object).length && object.api && Object.values(object.api).length) {
             searchResults(object, res, body, req)
         }
 
@@ -375,8 +386,13 @@ const searchResults = (object, res, body, req) => {
         }
 
         if (engine === 'google_scholar') {
+            if (data.organic_results) {
 
-            const article = data.organic_results[0]
+                const article = data.organic_results[0]
+                object.data = data.organic_results
+                console.log(article)
+            }
+
             // const data2 = await axios.get(article.link, {responseType: 'document'})
             // await new Promise(resolve => setTimeout(resolve, 5000));
             // // const res2 = await res.json()
@@ -384,18 +400,19 @@ const searchResults = (object, res, body, req) => {
 
             //object.message = article.snippet
 
-            object.data = data.organic_results
 
-            console.log(article)
         }
 
         if (engine === 'google_events') {
+            if (data.events_results) {
 
-            const event = data.events_results[0]
+                const event = data.events_results[0]
 
-            object.message = `${event.title} on ${event.date.start_date} at ${event.address}. ${event.description}`
-            object.data = data.events_results
-            console.log(event)
+                object.message = `${event.title} on ${event.date.start_date} at ${event.address}. ${event.description}`
+                object.data = data.events_results
+                console.log(event)
+            }
+
         }
 
         if (engine === 'google_maps') {
@@ -413,26 +430,38 @@ const searchResults = (object, res, body, req) => {
 
         if (engine === 'google') {
 
-            const result = data.organic_results[0]
-            object.message = data.organic_results[0].snippet
-            object.data = data.organic_results
+            if (data.organic_results) {
+
+                const result = data.organic_results[0]
+                object.message = data.organic_results[0].snippet
+                object.data = data.organic_results
+            }
+
 
 
         }
 
         if (engine === 'google_shopping') {
 
-            const product = data.shopping_results[0]
-            object.message = `I found a ${product.title} at ${product.source} for ${product.price}`
-            object.data = data.shopping_results
+            if (data.shopping_results) {
+
+                const product = data.shopping_results[0]
+                object.message = `I found a ${product.title} at ${product.source} for ${product.price}`
+                object.data = data.shopping_results
+            }
+
 
         }
 
         if (engine === 'google_images') {
 
-            const imageResults = data.images_results
+            if (data.images_results) {
 
-            object.data = {images: {...imageResults.slice(0, 4)}, metaData: {...data.search_metadata}}
+                const imageResults = data.images_results
+
+                object.data = {images: {...imageResults.slice(0, 4)}, metaData: {...data.search_metadata}}
+            }
+
 
         }
         console.log(object)

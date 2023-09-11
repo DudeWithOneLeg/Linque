@@ -5,7 +5,6 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import './index.css'
 
 export default function Microphone({ soundRef }) {
-    console.log('rendering')
     const [mic, setMic] = useState(false)
     const dispatch = useDispatch()
     const {
@@ -67,7 +66,7 @@ export default function Microphone({ soundRef }) {
                 id='microphone'
                 src='/images/microphone.png'
                 onClick={() => tglMic()}
-                style={listening ? { backgroundColor: 'black', color: 'white' } : { backgroundColor: 'white' }}
+                style={listening ? { backgroundColor: 'rgb(152, 74, 74)'} : { backgroundColor: 'white' }}
             />
         </>
 

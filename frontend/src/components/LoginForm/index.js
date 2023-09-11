@@ -48,6 +48,11 @@ export default function LoginForm() {
                 {errors.credential && <p class='errors'>{errors.credential}</p>}
                 <button
                 className="example" type='submit'>Login</button>
+                <button
+                className="example" type='submit' onClick={() => dispatch(sessionActions.login({
+                    credential: 'demo@lition.com',
+                    password: 'password'
+                }))}>Demo Login</button>
             </form>
         </div>
 

@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    hasImage: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true
     }
   }
   , {
