@@ -21,6 +21,7 @@ export default function SignupForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(firstName, lastName)
         if (password === confirmPassword) {
             setErrors({});
             return dispatch(

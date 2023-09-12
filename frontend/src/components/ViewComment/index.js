@@ -23,7 +23,7 @@ export default function ViewComment({ comment, userId }) {
                 <div className='comment-container'>
                     <h3 className='comment-user-info'>{comment.User.firstName} {comment.User.lastName}</h3>
                     {
-                        userId === comment.userId && <img className='comment-edit' src='/images/edit.png' onClick={() => setEdit(!edit)} />
+                        userId === comment.userId && <img className='comment-edit' src='/images/edit.png' onClick={() => setEdit(!edit)} alt='edit-comment'/>
                     }
                 </div>
                 {
@@ -41,11 +41,13 @@ export default function ViewComment({ comment, userId }) {
                             <img
                                 src='/images/save.png'
                                 className='edit-send'
+                                alt='send-edit'
                                 onClick={() => { dispatch(commentActions.updateComment(comment.id, { body })); setEdit(false) }}
                             />
                             <img
                                 src='/images/trash.png'
                                 className='edit-delete'
+                                alt='delete-post'
                                 onClick={() => {dispatch(commentActions.deleteComment(comment)); setEdit(false); setBody(comment.body)}}
                             />
                         </div>

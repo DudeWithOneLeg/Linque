@@ -1,0 +1,28 @@
+#direct-message {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 600px;
+    width: 300px;
+    border-radius: 0px 10px 0px 0px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(221, 20, 20);
+}
+
+#dm-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+    background-color: rgb(110, 198, 168);
+    border-radius: 0px 10px 0px 0px;
+}
+
+#dm-main {
+    height: 100%;
+    border: solid black;
+}

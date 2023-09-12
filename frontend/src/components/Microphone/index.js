@@ -65,8 +65,9 @@ export default function Microphone({ soundRef }) {
             <img
                 id='microphone'
                 src='/images/microphone.png'
+                alt='mircophone'
                 onClick={() => tglMic()}
-                style={listening ? { backgroundColor: 'rgb(152, 74, 74)'} : { backgroundColor: 'white' }}
+                style={listening ? { backgroundColor: 'rgb(152, 74, 74)'} : {}}
             />
         </>
 

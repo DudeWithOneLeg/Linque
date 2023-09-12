@@ -13,10 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Friend.hasMany(models.UserConvo, {
         foreignKey: 'friendshipId'
-      }),
-      Friend.hasMany(models.User, {
-        foreignKey: 'id'
       })
+      Friend.belongsTo(models.User, { foreignKey: 'toUserId', as: 'toUser' });
+Friend.belongsTo(models.User, { foreignKey: 'fromUserId', as: 'fromUser' });
     }
   }
   Friend.init({

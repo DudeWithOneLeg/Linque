@@ -2,6 +2,7 @@ const express = require('express')
 const { requireAuth } = require('../../utils/auth');
 const { User, Friend, Post, Comment } = require('../../db/models');
 const { Op } = require('sequelize');
+const friend = require('../../db/models/friend');
 
 const router = express.Router()
 
@@ -31,7 +32,7 @@ const validateFriends = async (req, res, next) => {
         where: {
             [Op.or]: [[{ toUserId: userId }, { fromUserId: friendId }], [{ toUserId: friendId }, { fromUserId: userId }]],
         },
-        
+
     })
 
     if (!friend) {
@@ -46,6 +47,52 @@ const validateFriends = async (req, res, next) => {
     return next()
 
 }
+
+router.get('/', [requireAuth], async (req, res) => {
+
+    const { id: userId } = req.user
+    console.log(userId)
+
+    console.log(userId)
+
+    const friends = await User.findByPk(userId, {
+        include: [
+          {
+            model: Friend,
+            as: 'friendshipsTo',
+            include: [
+              {
+                model: User,
+                as: 'fromUser',
+              },
+            ],
+          },
+          {
+            model: Friend,
+            as: 'friendshipsFrom',
+            include: [
+              {
+                model: User,
+                as: 'toUser',
+              },
+            ],
+          },
+        ],
+      })
+
+
+    if (!friends) {
+        res.status(404)
+        return res.json({
+            message: 'You have no friends'
+        })
+    }
+
+    const realFriends = friends.friendshipsFrom.concat(friends.friendshipsTo)
+
+    res.status(200)
+    return res.json(realFriends)
+})
 
 //Get friendship
 router.get('/:userId', [requireAuth, userExists, validateFriends], async (req, res) => {

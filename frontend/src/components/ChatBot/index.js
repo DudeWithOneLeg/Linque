@@ -1,19 +1,25 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import * as chatBotActions from '../../store/chatbot'
+import * as speechActions from '../../store/speech'
 import { useDispatch, useSelector } from "react-redux"
 import ViewChatBotConvos from "../ViewChatBotConvos"
 import ViewChatBotMessages from "../ViewChatBotMessages"
+import Microphone from "../Microphone"
 import './index.css'
 
 export default function ChatBot() {
 
+    const dispatch = useDispatch()
+
     const [body, setBody] = useState('')
     const [showBot, setShowBot] = useState(false)
     const [showConvos, setShowConvos] = useState(true)
-    const dispatch = useDispatch()
+    const soundRef = useRef(null)
+
 
     const convos = useSelector(state => state.chatBot.allConvos)
     const messages = useSelector(state => state.chatBot.singleConvo)
+    const speech = useSelector(state => state.speech.speech)
 
     const messageDiv = document.getElementById('messages')
 
@@ -23,10 +29,15 @@ export default function ChatBot() {
         messageDiv.scrollTop = messageDiv.scrollHeight
     }
 
-    const handleClick = async () => {
+    const handleClick = async (speech) => {
 
+        if (!body && !speech) {
+            console.log('nada')
+            return
+        }
 
-        const newBody = { body: body, user: true }
+        const newBody = { body: body ? body : speech, user: true }
+        dispatch(speechActions.clearSpeech())
         if (messages) {
             newBody.chatBotConvoId = Object.values(messages)[0].chatBotConvoId
         }
@@ -55,6 +66,7 @@ export default function ChatBot() {
             audio.setAttribute("controls", "");
             console.log(audio.duration)
             audio.style.height = '30px'
+            audio.ref = soundRef
 
             //append audio
             div.appendChild(audio);
@@ -92,15 +104,24 @@ export default function ChatBot() {
         }
     }, [showConvos])
 
+    useEffect(() => {
+        console.log('useffect')
+        if (speech && speech.length) {
+            console.log('useeffect if')
+            setBody(speech)
+            handleClick(speech)
+        }
+    },[speech])
+
 
     return (
         showBot ? <div id='chat-box'>
             <div id='chatbox-header'>
-                {!showConvos && <img src='/images/back.png' onClick={() => {setShowConvos(true); dispatch(chatBotActions.getAllConvos())}} id='back-button' />}
+                {!showConvos && <img src='/images/back.png' onClick={() => {setShowConvos(true); dispatch(chatBotActions.getAllConvos())}} id='back-button' alt='back'/>}
                 <h4>Chat Bot</h4>
                 <div id='minimize' onClick={() => setShowBot(false)}><div></div></div>
             </div>
-            {showConvos ? <div>
+            {showConvos ? <div id='convo-container'>
                 <div
                     onClick={() => { setShowConvos(false); dispatch(chatBotActions.clearMessages())}}
                     className="chatbot-conversation"
@@ -122,7 +143,10 @@ export default function ChatBot() {
                         onChange={(e) => setBody(e.target.value)}
                         value={body}
                     />
-                    <img src='/images/send.png' id='send-message-button' onClick={handleClick} />
+                    <div className="input-container">
+                        <Microphone soundRef={soundRef}/>
+                        <img src='/images/send.png' id='send-message-button' alt='send' onClick={handleClick} />
+                    </div>
                 </div>
             </div>}
         </div> : <div id='bot-button' onClick={() => setShowBot(true)}>
