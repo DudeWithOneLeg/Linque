@@ -5,13 +5,17 @@ import { speechReducer } from './speech';
 import { postsReducer } from './posts';
 import { ChatBotReducer } from './chatbot';
 import { mapReducer } from './googleMaps';
+import { friendsReducer } from './friends';
+import { messageReducer } from './messages';
 
 const rootReducer = combineReducers({
   session: sessionReducer,
   speech: speechReducer,
   posts: postsReducer,
   chatBot: ChatBotReducer,
-  map: mapReducer
+  map: mapReducer,
+  friend: friendsReducer,
+  message: messageReducer
 });
 
 

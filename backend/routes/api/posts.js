@@ -301,8 +301,6 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
     const urls = await multiplePublicFileUpload(req.files)
 
-
-
     //temporary limit
     const obj = {}
     const imageData = JSON.parse(image.data)
@@ -326,17 +324,18 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
                             if (data.shopping_results && data.shopping_results.length) {
                                 const matches = data.shopping_results.slice(0, 4);
-                                obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name };
+                                obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name, image: image };
                                 console.log('callback', obj);
                             }
                             else if (data.visual_matches && data.visual_matches.length) {
                                 const matches = data.visual_matches.slice(0, 4);
-                                obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name };
+                                obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name, image: image };
                                 console.log('callback', obj);
                             }
                         }
 
                         if (i === urls.length - 1) {
+                            console.log(urls, urls[i])
                             resolve(obj);
                         }
                     };
@@ -359,12 +358,15 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
 
     console.log('OBJECTS', results)
+
     // if (!results || !Object.values(results).length) {
 
     // }
+
     const newImage = await image.update({
         results: JSON.stringify(results)
     })
+
     console.log(newImage)
     res.status(200)
     return res.json(newImage)

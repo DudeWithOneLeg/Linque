@@ -154,6 +154,7 @@ const fetchGPT = async (prompt, res, body, req) => {
                 Always put your response in the "message" key
                 You now have the ability so surf the internet using the following parameters, including images
                 Given a prompt, decide which engine to use and fill out the parameters
+                if using quotes inside the message, use single quotes
 
                 const user = me
                 const prompt = <user> prompt
@@ -523,7 +524,7 @@ router.post('/', [requireAuth], async (req, res) => {
     if (!chatBody.chatBotConvoId) {
         const convo = await ChatBotConvo.create({
             userId: userId,
-            title: 'test',
+            title: chatBody.body,
             summary: 'test'
         })
         options.chatBotConvoId = convo.id

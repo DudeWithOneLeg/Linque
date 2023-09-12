@@ -35,6 +35,7 @@ export default function ViewObjects({ results }) {
                                 {
                                     objects[object.name] ? <img src={objects[object.name]} className="object-icons" /> : <p>{object.name}</p>
                                 }
+                                {/* <img src={object.image}/> */}
                             </div>
                         })
                     }
@@ -47,6 +48,7 @@ export default function ViewObjects({ results }) {
                         data.map((result) => {
                             return <a href={result.link} target='_blank' className="result-card">
                                 <img src={result.thumbnail} className="result-image" />
+
                                 <div className="result-info">
                                     <p>{result.title.length > 30 ? result.title.split('').slice(0, 40).join('') + '...' : result.title}</p>
                                     <p className="result-price">{result.price && result.price.value}</p>

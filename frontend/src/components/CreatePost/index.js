@@ -10,8 +10,6 @@ export default function CreatePost({ user }) {
     const dispatch = useDispatch()
 
     const handleSubmit = () => {
-        console.log(typeof image === 'object')
-        console.log(image)
         dispatch(postActions.createPost({body, hasImage: image ? true : false})).then(data => {
             if (image) {
 
@@ -29,7 +27,7 @@ export default function CreatePost({ user }) {
 
             <div id='create-post-input'>
 
-                <img className='profile-image' src='https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU=' />
+                <img className='profile-image' src='https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU=' alt='profile'/>
                 <textarea
                 value={body}
                 onChange={(e) => setBody(e.target.value)}

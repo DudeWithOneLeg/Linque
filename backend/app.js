@@ -7,10 +7,57 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { ValidationError } = require('sequelize');
 const { environment } = require('./config');
+const { Message } = require('./db/models')
+const socketIo = require('socket.io');
+const http = require('http');
+
+const KEY = process.env.REACT_APP_SOCKET_KEY
+
+const app = express()
+const server = http.createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }
+});
 
 const isProduction = environment === 'production';
 
-const app = express()
+io.on('connection', (socket) => {
+  console.log('A user connected', socket.id);
+
+  socket.on('join room', (message) => {
+    socket.join(message.room)
+    
+    console.log('joined room:', message.room)
+  })
+
+  socket.on('leave room', (room) => {
+    socket.leave(room)
+    console.log(socket.rooms)
+    console.log('left room:', room)
+  })
+
+  socket.on('chat message', async (message) => {
+
+    const room = message.room
+    delete message.room
+
+    console.log('Rooms:',socket.rooms)
+    console.log(message)
+    await Message.create(message)
+
+    io.to(room).emit('chat message',message);
+  });
+
+  socket.on('disconnect', () => {
+
+    console.log('User disconnected');
+  });
+});
 
 app.use('/audio', express.static('audio'))
 
@@ -79,4 +126,4 @@ app.use((err, _req, res, _next) => {
   });
 });
 
-module.exports = app;
+module.exports = server;

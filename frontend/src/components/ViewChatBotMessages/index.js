@@ -3,6 +3,7 @@ import ImagesCard from "../ImagesCard"
 import TextCard from "../TextCard"
 import ProductsCard from "../ProductsCard"
 import GoogleMaps from "../GoogleMaps"
+import { useSelector } from "react-redux"
 
 const languages = {
     "af": "Afrikaans", "sq": "Albanian", "am": "Amharic", "ar": "Arabic", "hy": "Armenian",
@@ -35,6 +36,9 @@ const languages = {
 };
 
 export default function ViewChatBotMessages({messages}) {
+
+    const message = useSelector(state => state.chatBot.singleConvo)
+
     return (
         <div id='messages'>
                     {
@@ -82,10 +86,10 @@ export default function ViewChatBotMessages({messages}) {
                                     }
                                 }
                             }
-
+                            return <></>
                         })
                     }
-                    {messages && Object.values(messages).length && Object.values(messages)[Object.values(messages).length - 1].user == 1 && <div className="bot-message-container">
+                    {messages && messages[0] && Object.values(messages)[Object.values(messages).length - 1].user === true && <div className="bot-message-container">
                         <div className="bot-message">
                             Thinking...
                         </div>

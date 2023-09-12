@@ -6,8 +6,11 @@ import SignupForm from "../SignupForm/index.css"
 import Navigation from "../Navigaton"
 import Microphone from "../Microphone"
 import Feed from "../Feed"
+import { io } from "socket.io-client"
 
 export default function LandingPage() {
+
+    const socket = io('http://localhost:8000');
 
     const speech = useSelector(state => state.speech.speech)
     const soundRef = useRef(null)
@@ -17,7 +20,11 @@ export default function LandingPage() {
 
     const sessionUser = useSelector(state => state.session.user)
 
-    //Open login forms on user command
+    socket.on('chat message', (message) => {
+        console.log(message)
+        console.log(`${sessionUser.firstName} recieved ${message.body}`);
+      });
+
     useEffect(() => {
         if (speech) {
 
@@ -35,6 +42,8 @@ export default function LandingPage() {
         }
 
     }, [speech])
+
+
 
 
     useEffect(() => {

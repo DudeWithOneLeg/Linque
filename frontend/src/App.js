@@ -5,14 +5,13 @@ import * as sessionActions from "./store/session";
 import LandingPage from "./components/LandingPage";
 import Navigation from "./components/Navigaton";
 import ChatBot from "./components/ChatBot";
+import DirectMessage from "./components/DirectMessage";
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
 
   const sessionUser = useSelector(state => state.session.user)
-
-  
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
@@ -25,7 +24,8 @@ function App() {
         <Route exact path='/'>
           {sessionUser && <Navigation />}
           <LandingPage />
-          {sessionUser&& <ChatBot />}
+          {sessionUser && <ChatBot />}
+          {sessionUser && <DirectMessage />}
         </Route>
       </Switch>
     </>
