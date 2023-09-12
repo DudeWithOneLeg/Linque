@@ -15,87 +15,87 @@ export default function ViewPost({ post, userId }) {
     const posts = useSelector(state => state.posts.allPosts)
 
     useEffect(() => {
-        if (post.PostImage) {
-            const newArr = []
-            const imgDiv = document.getElementById(post.url)
-            const img = document.getElementById(post.PostImage.url + 'image')
+        // if (post.PostImage) {
+        //     const newArr = []
+        //     const imgDiv = document.getElementById(post.url)
+        //     const img = document.getElementById(post.PostImage.url + 'image')
 
-            img.onload = () => {
-                if (post.PostImage) {
-                    if (!post.PostImage.results) {
+        //     img.onload = () => {
+        //         if (post.PostImage) {
+        //             if (!post.PostImage.results) {
 
-                        console.log('useEffect ran',post.PostImage.data)
-                            const objects = JSON.parse(post.PostImage.data)
-                            console.log(objects)
-                            for (let object of objects) {
-                                if (object.name !== 'Person') {
-                                    console.log(object.name)
-                                    const canvas = document.createElement('canvas')
-                                    canvas.className = 'object-outline'
+        //                 console.log('useEffect ran',post.PostImage.data)
+        //                     const objects = JSON.parse(post.PostImage.data)
+        //                     console.log(objects)
+        //                     for (let object of objects) {
+        //                         if (object.name !== 'Person') {
+        //                             console.log(object.name)
+        //                             const canvas = document.createElement('canvas')
+        //                             canvas.className = 'object-outline'
 
-                                    const naturalWidth = img.naturalWidth
-                                    const naturalHeight = img.naturalHeight
+        //                             const naturalWidth = img.naturalWidth
+        //                             const naturalHeight = img.naturalHeight
 
-                                    //box size && position
-                                    const left = object.data[0].x * naturalWidth
-                                    const top = object.data[0].y * naturalHeight
+        //                             //box size && position
+        //                             const left = object.data[0].x * naturalWidth
+        //                             const top = object.data[0].y * naturalHeight
 
-                                    const width = (object.data[1].x * naturalWidth) - (object.data[0].x * naturalWidth)
-                                    const height = (object.data[2].y * naturalHeight) - (object.data[0].y * naturalHeight)
-                                    canvas.width = width
-                                    canvas.height = height
+        //                             const width = (object.data[1].x * naturalWidth) - (object.data[0].x * naturalWidth)
+        //                             const height = (object.data[2].y * naturalHeight) - (object.data[0].y * naturalHeight)
+        //                             canvas.width = width
+        //                             canvas.height = height
 
-                                    //drawing canvas and boxes
-                                    const ctx = canvas.getContext("2d");
+        //                             //drawing canvas and boxes
+        //                             const ctx = canvas.getContext("2d");
 
-                                    // ctx.strokeRect(left, top, width, height)
+        //                             // ctx.strokeRect(left, top, width, height)
 
-                                    //extracting the cropped image
-                                    ctx.drawImage(img, left, top, width, height, 0, 0, width, height)
-
-
-                                    const croppedDataURL = canvas.toDataURL("image/png")
-                                    function dataURLtoFile(dataurl, filename) {
-                                        let arr = dataurl.split(','),
-                                            mime = arr[0].match(/:(.*?);/)[1],
-                                            bstr = atob(arr[arr.length - 1]),
-                                            n = bstr.length,
-                                            u8arr = new Uint8Array(n);
-                                        while (n--) {
-                                            u8arr[n] = bstr.charCodeAt(n);
-                                        }
-                                        return new File([u8arr], filename, { type: mime });
-                                    }
+        //                             //extracting the cropped image
+        //                             ctx.drawImage(img, left, top, width, height, 0, 0, width, height)
 
 
-                                    const file = dataURLtoFile(croppedDataURL, 'hello.png');
+        //                             const croppedDataURL = canvas.toDataURL("image/png")
+        //                             function dataURLtoFile(dataurl, filename) {
+        //                                 let arr = dataurl.split(','),
+        //                                     mime = arr[0].match(/:(.*?);/)[1],
+        //                                     bstr = atob(arr[arr.length - 1]),
+        //                                     n = bstr.length,
+        //                                     u8arr = new Uint8Array(n);
+        //                                 while (n--) {
+        //                                     u8arr[n] = bstr.charCodeAt(n);
+        //                                 }
+        //                                 return new File([u8arr], filename, { type: mime });
+        //                             }
 
 
-
-                                    newArr.push(file)
-                                    console.log(object.name, croppedDataURL)
-                                    //imgDiv.appendChild(canvas)
-                                }
+        //                             const file = dataURLtoFile(croppedDataURL, 'hello.png');
 
 
 
-
-                            }
-
-                            console.log('new array',newArr)
-                            if (newArr.length) {
-
-                                dispatch(postActions.uploadImage(post.id, newArr))
-                            }
-
-                    }
+        //                             newArr.push(file)
+        //                             console.log(object.name, croppedDataURL)
+        //                             //imgDiv.appendChild(canvas)
+        //                         }
 
 
 
 
-                }
-            }
-        }
+        //                     }
+
+        //                     console.log('new array',newArr)
+        //                     if (newArr.length) {
+
+        //                         dispatch(postActions.uploadImage(post.id, newArr))
+        //                     }
+
+        //             }
+
+
+
+
+        //         }
+        //     }
+        // }
 
 
 
