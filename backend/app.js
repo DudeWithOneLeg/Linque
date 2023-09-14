@@ -94,7 +94,7 @@ const server = http.createServer(app);
 const isProduction = environment === 'production';
 let url = 'http://localhost:3000'
     if (isProduction) {
-        url = `https://linque.onrender.com:${process.env.PORT}`
+        url = `https://linque.onrender.com`
     }
 const io = require("socket.io")(server, {
   cors: {

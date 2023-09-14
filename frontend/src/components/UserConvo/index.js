@@ -15,7 +15,7 @@ export default function UserConvo({ selectedFriend, translate }) {
     const messages = useSelector(state => state.message.allMessages)
     let url = 'http://localhost:8000'
     if (NODE_ENV === 'production') {
-        url = `https://linque.onrender.com:${process.env.PORT}`
+        url = `https://linque.onrender.com`
     }
     const socket = io(url);
     const [message, setMessage] = useState({})
