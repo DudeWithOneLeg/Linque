@@ -80,6 +80,12 @@ export default function LandingPage() {
                 </audio>
                 {!login && !signup && <div id='landing-title-container'>
                     <p id='landing-title'>Linque</p>
+                    {
+                    domErr && <button
+                        id='get-started'
+                        onClick={() => handleGetStarted()}
+                    >Get Started</button>
+                }
                 </div>}
                 {
                     login && <LoginForm />
@@ -87,12 +93,7 @@ export default function LandingPage() {
                 {
                     signup && <SignupForm />
                 }
-                {
-                    domErr && !signup && !login && <button
-                        id='get-started'
-                        onClick={() => handleGetStarted()}
-                    >Get Started</button>
-                }</div>} {
+                </div>} {
                 !sessionUser && <div id='landing-mic'>
                     <Microphone soundRef={soundRef} />
                 </div>

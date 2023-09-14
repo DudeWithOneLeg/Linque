@@ -1,4 +1,4 @@
-#login-form {
+#login-component {
     display: flex;
     justify-content: center;
     padding-bottom: 20px;
@@ -6,7 +6,7 @@
     backdrop-filter: blur(10px);
 }
 
-form {
+#login-form {
     display: flex;
     flex-direction: column;
 }
@@ -22,11 +22,11 @@ input[type="text"], input[type="password"] {
     background-color: gray;
 }
 
-form > input {
+#login-form > input {
     background-color: gray;
 }
 
-form > * {
+#login-form > * {
     height: 35px;
     width: 250px;
     margin-top: 20px;
@@ -37,11 +37,11 @@ form > * {
     font-size: 18px;
 }
 
-form > button {
+#login-form > button {
     background-color: rgb(17, 17, 17);
 }
 
-form > button:hover {
+#login-form > button:hover {
     cursor: pointer;
     background-color: rgb(92, 91, 91);
 }

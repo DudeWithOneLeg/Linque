@@ -6,8 +6,7 @@ const fs = require('fs')
 const util = require('util');
 const writeFile = util.promisify(fs.writeFile);
 const SerpApi = require('google-search-results-nodejs');
-const {Translate} = require('@google-cloud/translate').v2;
-const language = require('@google-cloud/language');
+const { Translate } = require('@google-cloud/translate').v2;
 
 const PROJECT_ID = process.env.PROJECT_ID;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -17,36 +16,25 @@ const SERP_API_KEY = process.env.SERP_API_KEY;
 const router = express.Router()
 
 // Instantiates a client
-const translate = new Translate({PROJECT_ID});
-const client = new language.LanguageServiceClient();
+const translate = new Translate({ PROJECT_ID });
 
 async function detectLanguage(text) {
 
+    // Detects the sentiment of the text
+    const [result] = await translate.detect(text);
 
-
-  const document = {
-    content: text,
-    type: 'PLAIN_TEXT',
-  };
-const features = {extractDocumentSentiment: true}
-  // Detects the sentiment of the text
-  const [result] = await translate.detect(text);
-
-
-
-  return result.language
-  }
+    return result.language
+}
 
 async function translateText(text, target) {
 
+    // The target language
 
-  // The target language
-
-  // Translates some text into Russian
-  const [translation] = await translate.translate(text, target);
-  console.log(`Text: ${text}`);
-  console.log(`Translation: ${translation}`);
-  return translation
+    // Translates some text into Russian
+    const [translation] = await translate.translate(text, target);
+    console.log(`Text: ${text}`);
+    console.log(`Translation: ${translation}`);
+    return translation
 }
 
 
@@ -117,8 +105,8 @@ const writeAudio = (buffer, object, res, body, req) => {
                 })
 
                 res.status(200);
-                console.log({...data, data: JSON.parse(data.data)})
-                return res.json({...data, data: JSON.parse(data.data)});
+                console.log({ ...data, data: JSON.parse(data.data) })
+                return res.json({ ...data, data: JSON.parse(data.data) });
 
             }
 
@@ -461,7 +449,7 @@ const searchResults = (object, res, body, req) => {
 
                 const imageResults = data.images_results
 
-                object.data = {images: {...imageResults.slice(0, 4)}, metaData: {...data.search_metadata}}
+                object.data = { images: { ...imageResults.slice(0, 4) }, metaData: { ...data.search_metadata } }
             }
 
 
@@ -520,6 +508,9 @@ router.post('/', [requireAuth], async (req, res) => {
 
     const language = await detectLanguage(chatBody.body)
 
+    const translated = await translateText(chatBody.body, language)
+    console.log('TRANSLATED', translated)
+
     const options = { ...chatBody, user: true }
 
     if (!chatBody.chatBotConvoId) {
@@ -531,7 +522,7 @@ router.post('/', [requireAuth], async (req, res) => {
         options.chatBotConvoId = convo.id
     }
 
-    const chat = await ChatBotMessage.create({...options, language: language})
+    const chat = await ChatBotMessage.create({ ...options, language: language })
 
     res.status(200)
     return res.json(chat)
@@ -543,7 +534,7 @@ router.post('/gpt', [requireAuth], async (req, res) => {
 
 
 
-   return await fetchGPT(body.body, res, body, req)
+    return await fetchGPT(body.body, res, body, req)
 
 })
 

@@ -4,7 +4,7 @@ import * as speechActions from '../../store/speech'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import './index.css'
 
-export default function Microphone({ soundRef }) {
+export default function Microphone({ soundRef, defaultLanguage }) {
     const [mic, setMic] = useState(false)
     const dispatch = useDispatch()
     const {
@@ -36,7 +36,9 @@ export default function Microphone({ soundRef }) {
     //Keep speech recognition on when mic enabled
     useEffect(() => {
         if (!listening && mic) {
-            SpeechRecognition.startListening({ language: 'en' })
+            const options = {}
+            if (defaultLanguage) options.language = defaultLanguage
+            SpeechRecognition.startListening(options)
         }
     }, [listening])
 

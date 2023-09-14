@@ -15,29 +15,8 @@ router.get('/:convoId', [requireAuth], async (req, res) => {
         }
     })
 
-    const { id: userId } = req.user
 
-    // const friend = await User.findOne({
-    //     where: {
-    //         id: userId
-    //     },
-    //     include: [
-    //         {
-    //             model: Friend,
-    //             where: {
-    //                 [Op.or]: [[{ toUserId: userId }], [ { fromUserId: userId }]],
-    //                 status: 'friends'
-    //             },
-    //             include: [
-    //                 {
-    //                     model: UserConvo,
-    //                     include: Message
-    //                 }
-    //             ]
-    //         }
-    //     ]
-    // })
-    console.log(messages)
+
     res.status(200)
     return res.json(messages)
 

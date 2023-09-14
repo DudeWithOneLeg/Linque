@@ -28,70 +28,81 @@ module.exports = {
         lastName: 'lition',
         username: 'demolition',
         email: 'demo@lition.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       },
       {
         firstName: 'Michael',
         lastName: 'Scott',
         username: 'TheOfficeFanatic',
         email: 'michael.scott@dundermifflin.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'ko',
+        voice_id: 'aVIgfot5azBxMe2OlWbe'
       },
       {
         firstName: 'Leonardo',
         lastName: 'DiCaprio',
         username: 'LeoTheGreat',
         email: 'hollywood_star@oscarsaremylife.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       },
       {
         firstName: 'Jennifer',
         lastName: 'Lawrence',
         username: 'JLawFanatic',
         email: 'lawrence_of_laughter@funnyactress.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       },
       {
         firstName: 'Johnny',
         lastName: 'Depp',
         username: 'CaptainSparrow',
         email: 'pirate_johnny@rum_and_movies.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       },
       {
         firstName: 'Meryl',
         lastName: 'Streep',
         username: 'MerylMagic',
         email: 'award_queen@merylsmania.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       },
       {
         firstName: 'Beyoncé',
         lastName: 'Knowles',
         username: 'QueenBee',
         email: 'beyhive_ruler@musicbuzz.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       },
       {
         firstName: 'Brad',
         lastName: 'Pitt',
         username: 'BradStar',
         email: 'hollywood_heartthrob@funnyflicks.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       },
       {
         firstName: 'Taylor',
         lastName: 'Swift',
         username: 'SwiftieForever',
         email: 'pop_princess@shakingitoff.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       },
       {
         firstName: 'Tom',
         lastName: 'Hanks',
         username: 'TomTheActor',
         email: 'hanks_for_laughing@comedymovies.com',
-        hashedPassword: bcrypt.hashSync('password')
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US'
       }
     ]
 

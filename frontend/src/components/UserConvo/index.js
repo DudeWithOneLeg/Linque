@@ -2,11 +2,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, useRef } from 'react';
 import * as messageActions from '../../store/messages'
 import { io } from "socket.io-client"
+import { languageCodes } from '../SignupForm/index.css/languages';
 import './index.css'
 
 const KEY = process.env.REACT_APP_SOCKET_KEY
 
-export default function UserConvo({ selectedFriend }) {
+export default function UserConvo({ selectedFriend, translate }) {
 
     const dispatch = useDispatch()
 
@@ -17,48 +18,55 @@ export default function UserConvo({ selectedFriend }) {
     const [body, setBody] = useState('')
 
     const friend = selectedFriend.toUser ? selectedFriend.toUser : selectedFriend.fromUser
-    const room = friend.id
+    const room = selectedFriend.id
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        const messageDiv = document.getElementById('user-conversation')
+            console.log('this hit')
         const message = {
             body,
-            room: friend.id,
+            room,
             senderId: user.id,
-            convoId: selectedFriend.id
+            convoId: selectedFriend.id,
+            voice_id: user.voice_id,
+            friendLanguage: friend.defaultLanguage,
+            defaultLanguage: user.defaultLanguage,
+            translate
         }
+
         socket.emit('chat message', (message))
+
+        // await dispatch(messageActions.setMessage({
+        //     body: message.body,
+        //     senderId: user.id,
+        //     convoId: selectedFriend.id
+        // }))
+        messageDiv.scrollTop = messageDiv.scrollHeight
     }
 
 
 
-    // //Emit events to the server
-    // useEffect(() => {
-    //     socket.on('connect', () => {
-    //         socket.emit('join room', { room, key: KEY });
-    //         // socket.to(KEY + selectedFriend.id).emit('chat message', selectedFriend);
-
-    //         // Listen for events from the server
-    //         socket.on('chat message', (message) => {
-    //           console.log(`${user.firstName} recieved ${message}`);
-    //         });
-    //     })
-    // },[])
-
     useEffect(() => {
 
         socket.on('connect', () => {
-            socket.emit('join room', { room: user.id });
+            socket.emit('join room', { room });
 
             socket.on('chat message', (message) => {
-                const messageDiv = document.getElementById('user-conversation')
-                dispatch(messageActions.setMessage({
-                    body: message.body,
-                    senderId: user.id,
-                    convoId: selectedFriend.id
-                }))
-                messageDiv.scrollTop = messageDiv.scrollHeight
                 console.log(message)
-                console.log(`${user.firstName} recieved ${message.body}`);
+                const messageDiv = document.getElementById('user-conversation')
+                const newMessage = {
+                    body: message.body,
+                    senderId: message.senderId,
+                    convoId: message.convoId,
+                    language: message.language
+                }
+
+                if (message.audio) {
+                    newMessage.audio = message.audio
+                }
+
+                dispatch(messageActions.setMessage(newMessage))
+                messageDiv.scrollTop = messageDiv.scrollHeight
             });
         })
 
@@ -77,18 +85,24 @@ export default function UserConvo({ selectedFriend }) {
                 {
                     messages && Object.values(messages).length && Object.values(messages).map((message) => {
                         if (message.senderId !== user.id) {
-                            return <div className="user-message-container">
-                                    <p className="friend-message-language">language</p>
-                                    <div className="user-message">
-                                        {message.body}
-                                    </div>
-                                </div>
-                        }
-                        else {
                             return <div className="bot-message-container">
-                                <p className="user-message-language">language</p>
+                                <p className="user-message-language">{message.language ? languageCodes[message.language] : ''}</p>
                                 <div className="bot-message">
                                     {message.body}
+                                    {
+                                        message.audio ? <audio src={message.audio} controls playbackRate={.9}/> : <></>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        else {
+                            return <div className="user-message-container">
+                                <p className="friend-message-language">{message.language ? languageCodes[message.language] : ''}</p>
+                                <div className="user-message">
+                                    {message.body}
+                                    {
+                                        message.audio ? <audio src={message.audio} autoPlay controls/> : <></>
+                                    }
                                 </div>
                             </div>
                         }

@@ -7,7 +7,7 @@
 #user-conversation {
     height: 85%;
     overflow-y: scroll;
-    padding: 0px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
 }
 
 #dm-input-container {
@@ -70,4 +70,13 @@
 
 #user-conversation::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+.bot-message, .user-message {
+    display: flex;
+    flex-direction: column;
+}
+
+.bot-message > audio, .user-message > audio {
+    height: 30px;
 }

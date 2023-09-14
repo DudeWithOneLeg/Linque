@@ -39,6 +39,14 @@ module.exports = {
         allowNull:false,
         type: Sequelize.STRING.BINARY
       },
+      voice_id: {
+        type: Sequelize.STRING,
+        defaultValue: "ThT5KcBeYPX3keUQqHPh"
+      },
+      defaultLanguage: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

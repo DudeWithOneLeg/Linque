@@ -61,6 +61,14 @@ User.hasMany(models.Friend, { foreignKey: 'fromUserId', as: 'friendshipsFrom' })
         validate: {
           len: [60, 60]
         }
+      },
+      voice_id: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      defaultLanguage: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     },
     {

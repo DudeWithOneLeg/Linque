@@ -28,6 +28,8 @@
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "express-validator": "^7.0.1",
+    "File": "^0.10.2",
+    "file-api": "^0.10.4",
     "form-data": "^4.0.0",
     "formidable": "^3.5.1",
     "fs": "^0.0.1-security",
