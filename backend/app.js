@@ -21,7 +21,9 @@ const File = FileAPI.File
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const PROJECT_ID = process.env.PROJECT_ID;
-const SOCKET_URL = process.env.SOCKET_URL
+const NODE_ENV = process.env.NODE_ENV
+
+
 
 const translate = new Translate({ PROJECT_ID });
 
@@ -88,9 +90,9 @@ const KEY = process.env.REACT_APP_SOCKET_KEY
 
 const app = express()
 const server = http.createServer(app);
-let url = 'http://localhost:8000'
-    if (SOCKET_URL) {
-        url = SOCKET_URL
+let url = 'http://localhost:3000'
+    if (NODE_ENV === 'production') {
+        url = `https://linque.onrender.com:${process.env.PORT}`
     }
 const io = require("socket.io")(server, {
   cors: {

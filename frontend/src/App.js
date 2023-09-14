@@ -16,7 +16,8 @@ function App() {
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
-
+  const NODE_ENV = process.env.NODE_ENV
+  
 
   return (
     <>
