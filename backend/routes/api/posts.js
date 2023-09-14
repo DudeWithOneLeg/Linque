@@ -258,6 +258,7 @@ router.post('/:postId/comments', [requireAuth, postExists, validateFriends], asy
 })
 
 router.post('/:postId/image', [requireAuth, postExists, isPostAuthor, singleMulterUpload('image')], async (req, res) => {
+    console.log(req.file)
     const url = await singlePublicFileUpload(req.file);
     const { postId } = req.params
     const { id: userId } = req.user

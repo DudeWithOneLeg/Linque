@@ -113,9 +113,19 @@ router.post(
     '/',
     validateSignup,
     async (req, res) => {
-        const { email, password, username, firstName, lastName } = req.body;
+        const { email, password, username, firstName, lastName, voice_id } = req.body;
         const hashedPassword = bcrypt.hashSync(password);
-        const user = await User.create({ email, username, hashedPassword, firstName, lastName });
+        const newUser = {
+            email,
+            username,
+            hashedPassword,
+            firstName,
+            lastName
+        }
+
+        if (voice_id) newUser.voice_id = voice_id
+
+        const user = await User.create(newUser);
 
         const safeUser = {
             id: user.id,
@@ -143,7 +153,7 @@ router.post('/voice', singleMulterUpload('file'), async (req, res) => {
     form.append('files', fs.createReadStream('output.ogg'), {
         filename: 'sample1.ogg',
         contentType: 'audio/ogg',
-      })
+    })
 
     console.log('Fetching audio...')
     console.log(form.getHeaders())
@@ -157,7 +167,10 @@ router.post('/voice', singleMulterUpload('file'), async (req, res) => {
             'xi-api-key': ELEVENLABS_API_KEY
         }
     }).then(response => {
-        console.log(response)
+        if (response.data && response.data.voice_id) {
+            res.status(200)
+            return res.json(response.data)
+        }
 
     })
         .catch(error => console.error(error)).catch(() => {
@@ -180,7 +193,7 @@ router.get('/:userId/posts', [requireAuth, userExists, validateFriends], async (
             {
                 model: Post,
                 include: [
-                    {model: User},
+                    { model: User },
                     {
                         model: Comment,
                         include: [User]

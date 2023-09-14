@@ -28,6 +28,14 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      language: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      audio: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

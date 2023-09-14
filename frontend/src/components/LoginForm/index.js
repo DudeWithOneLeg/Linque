@@ -33,8 +33,8 @@ export default function LoginForm() {
     }
 
     return (
-        <div id='login-form'>
-            <form onSubmit={handleSubmit}>
+        <div id='login-component'>
+            <form onSubmit={handleSubmit} id='login-form'>
                 <input
                 type='text'
                 placeholder='Usrname or Email'

@@ -10,6 +10,78 @@ const { environment } = require('./config');
 const { Message } = require('./db/models')
 const socketIo = require('socket.io');
 const http = require('http');
+const axios = require('axios');
+const fs = require('fs')
+const util = require('util');
+const writeFile = util.promisify(fs.writeFile);
+const { Translate } = require('@google-cloud/translate').v2;
+const { singleMulterUpload, singlePublicFileUpload } = require('./routes/awsS3')
+const FileAPI = require('file-api')
+const File = FileAPI.File
+
+const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
+const PROJECT_ID = process.env.PROJECT_ID;
+
+const translate = new Translate({ PROJECT_ID });
+
+async function detectLanguage(text) {
+
+  // Detects the sentiment of the text
+  const [result] = await translate.detect(text);
+
+  return result.language
+}
+
+async function translateText(text, target) {
+
+  // The target language
+
+  // Translates some text into Russian
+  const [translation] = await translate.translate(text, target);
+  console.log(`Text: ${text}`);
+  console.log(`Translation: ${translation}`);
+  return translation
+}
+
+const voiceApi = async (text, voice_id) => {
+  let file
+  console.log("---------------------------------------");
+  console.log('Fetching audio...')
+
+  const API_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${voice_id}`
+  const voice = {
+    text: text,
+    "voice_id": voice_id,
+    "voice_settings": {
+      "stability": 1,
+      "similarity_boost": 1
+    }
+  };
+
+  //Fetch voice
+  await axios.post(`${API_ENDPOINT}`, voice, {
+    headers: {
+      'Content-Type': 'application/json',
+      'xi-api-key': ELEVENLABS_API_KEY
+    },
+    responseType: 'arraybuffer'
+  }).then(response => {
+    if (response.data) {
+      file = new File({
+        buffer: response.data,
+        name: 'audio.ogg',
+        type: 'audio/ogg',
+        originalname: 'audio.ogg',
+        mimetype: 'audio/ogg'
+      })
+    }
+
+  })
+    .catch(error => console.error(error)).catch(() => {
+      console.log('FAILED :(')
+    })
+  return file
+}
 
 const KEY = process.env.REACT_APP_SOCKET_KEY
 
@@ -46,11 +118,35 @@ io.on('connection', (socket) => {
     const room = message.room
     delete message.room
 
-    console.log('Rooms:',socket.rooms)
-    console.log(message)
-    await Message.create(message)
 
-    io.to(room).emit('chat message',message);
+    if (message.translate) {
+      if (message.defaultLanguage !== message.friendLanguage) {
+        message.body = await translateText(message.body, message.friendLanguage)
+        message.language = await detectLanguage(message.body)
+        const file = await voiceApi(message.body, message.voice_id)
+        return await singlePublicFileUpload(file).then(async url => {
+          message.audio = url
+          console.log('Rooms:', socket.rooms)
+          await Message.create(message)
+
+          socket.in(room).emit('chat message', message);
+          socket.emit('chat message', message)
+
+        })
+      }
+    }
+    else {
+      message.language = await detectLanguage(message.body)
+
+
+      console.log('Rooms:', socket.rooms)
+      await Message.create(message)
+
+      io.in(room).emit('chat message', message);
+    }
+
+
+
   });
 
   socket.on('disconnect', () => {
@@ -70,26 +166,26 @@ app.use(express.json());
 
 //security middleware
 if (!isProduction) {
-    // enable cors only in development
-    app.use(cors());
+  // enable cors only in development
+  app.use(cors());
 }
 
 // helmet helps set a variety of headers to better secure your app
 app.use(
-    helmet.crossOriginResourcePolicy({
-        policy: "cross-origin"
-    })
+  helmet.crossOriginResourcePolicy({
+    policy: "cross-origin"
+  })
 );
 
 // Set the _csrf token and create req.csrfToken method
 app.use(
-    csurf({
-        cookie: {
-            secure: isProduction,
-            sameSite: isProduction && "Lax",
-            httpOnly: true
-        }
-    })
+  csurf({
+    cookie: {
+      secure: isProduction,
+      sameSite: isProduction && "Lax",
+      httpOnly: true
+    }
+  })
 );
 
 const routes = require('./routes');
@@ -97,11 +193,11 @@ const routes = require('./routes');
 app.use(routes.router);
 
 app.use((_req, _res, next) => {
-    const err = new Error("The requested resource couldn't be found.");
-    err.title = "Resource Not Found";
-    err.errors = { message: "The requested resource couldn't be found." };
-    err.status = 404;
-    next(err);
+  const err = new Error("The requested resource couldn't be found.");
+  err.title = "Resource Not Found";
+  err.errors = { message: "The requested resource couldn't be found." };
+  err.status = 404;
+  next(err);
 });
 
 app.use((err, _req, _res, next) => {

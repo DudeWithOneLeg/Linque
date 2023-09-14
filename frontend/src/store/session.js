@@ -2,7 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
-const ADD_VOICE = "session/removeUser";
+const ADD_VOICE = "session/addVoice";
 
 const setVoice = (voiceId) => {
   return {
@@ -24,8 +24,8 @@ export const createVoice = (blob) => async (dispatch) => {
     body: form
   })
   const data = await res.json()
-  dispatch(setVoice(data.voiceId))
-  return console.log(data)
+  dispatch(setVoice(data.voice_id))
+  return data
 }
 
 export const restoreUser = () => async (dispatch) => {
@@ -63,16 +63,22 @@ export const login = (user) => async (dispatch) => {
 };
 
 export const signup = (user) => async (dispatch) => {
-  const { username, firstName, lastName, email, password } = user;
-  const response = await csrfFetch("/api/users", {
-    method: "POST",
-    body: JSON.stringify({
-      username,
+  const { username, firstName, lastName, email, password, defaultLanguage } = user;
+  const newUser = {
+    username,
       firstName,
       lastName,
       email,
       password,
-    }),
+      defaultLanguage
+  }
+
+  if (user.voice_id) newUser.voice_id = user.voice_id
+  console.log(newUser)
+
+  const response = await csrfFetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify(newUser),
   });
   const data = await response.json();
   dispatch(setUser(data.user));
@@ -100,6 +106,8 @@ const sessionReducer = (state = initialState, action) => {
       newState = Object.assign({}, state);
       newState.user = null;
       return newState;
+    case ADD_VOICE:
+      return {...state, voice_id: action.payload}
     default:
       return state;
   }

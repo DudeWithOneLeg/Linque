@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../../store/session";
+import { languageNames, languageCodes } from './languages';
 import './index.css'
 
 export default function SignupForm() {
@@ -21,47 +22,8 @@ export default function SignupForm() {
   const [recording, setRecording] = useState(false)
   const recordRef = useRef(null)
   const audioRef = useRef(null)
-  const [chunk, setChunk] = useState(null)
-
-
-
-  // useEffect(() => {
-  //   if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-  //     console.log("getUserMedia supported.");
-  //     navigator.mediaDevices
-  //       .getUserMedia(
-
-  //         {
-  //           audio: true,
-  //         },
-  //       )
-
-
-  //       .then((stream) => {
-  //          const mediaRecorder = new MediaRecorder(stream);
-  //          mediaRecorder.ondataavailable = (e) => {
-  //           setChunk(e.data)
-  //           const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-  //           const audioURL = window.URL.createObjectURL(blob);
-  //           console.log(audioURL)
-  //           console.log(chunks)
-  //         };
-  //         console.log(stream)
-  //         recordRef.current = mediaRecorder
-  //         console.log(mediaRecorder.state);
-  //       })
-
-
-
-  //       .catch((err) => {
-  //         console.error(`The following getUserMedia error occurred: ${err}`);
-  //       });
-  //   } else {
-  //     console.log("getUserMedia not supported on your browser!");
-  //   }
-  // }, [])
-
-
+  const [voice_id, setVoiceId] = useState(null)
+  const [defaultLanguage, setDefaultLanguage] = useState(null)
 
   const handleMic = () => {
 
@@ -107,25 +69,15 @@ export default function SignupForm() {
 
               const audioFile = new File([blob], filename, { type: "audio/ogg" });
               console.log(audioFile)
-              dispatch(sessionActions.createVoice(audioFile))
-
-
+              dispatch(sessionActions.createVoice(audioFile)).then(data => {
+                if (data && data.voice_id) {
+                  setVoiceId(data.voice_id)
+                }
+              })
 
               const audioURL = window.URL.createObjectURL(blob);
               console.log(audioURL)
 
-                //dispatch(sessionActions.createVoice(file))
-                // You can now work with the binary data as needed
-
-
-              // reader.readAsArrayBuffer(blob)
-              // const buffer = await blob.arrayBuffer()
-              // const unt = new Uint8Array(buffer)
-              // console.log(unt)
-              // const audioBuffer = Buffer.from(buffer, 'binary')
-              // console.log(audioURL)
-              // audioRef.current.src = audioURL
-              // audioRef.current.load()
               console.log(recordRef.current.state)
             };
 
@@ -154,14 +106,18 @@ export default function SignupForm() {
     console.log(firstName, lastName)
     if (password === confirmPassword) {
       setErrors({});
-      return dispatch(
-        sessionActions.signup({
+      const newUser = {
           email,
           username,
           firstName,
           lastName,
           password,
-        })
+        }
+        if (voice_id) newUser.voice_id = voice_id
+        if (defaultLanguage) newUser.defaultLanguage = defaultLanguage
+        console.log(newUser)
+      return dispatch(
+        sessionActions.signup(newUser)
       ).catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
@@ -176,8 +132,8 @@ export default function SignupForm() {
 
 
   return (
-    <div id='signup-form'>
-      <form onSubmit={handleSubmit}>
+    <div id='signup'>
+      <form onSubmit={handleSubmit} id='signup-form'>
         <input
           onChange={(e) => setFirstname(e.target.value)}
           placeholder='First name'
@@ -211,10 +167,21 @@ export default function SignupForm() {
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
         {errors.confirmPassword && <p class='errors'>{errors.confirmPassword}</p>}
+        <select onChange={(e) => setDefaultLanguage(e.target.value)}>
+        <option value="" disabled selected>Default Language</option>
+          {
+            languageNames.map((name) => {
+              return <option value={languageCodes[name]}>{name}</option>
+            })
+          }
+        </select>
         {
-          navigator.mediaDevices && navigator.mediaDevices.getUserMedia && <img src='/images/microphone.png' id='sign-up-mic' onClick={handleMic} />
+          navigator.mediaDevices && navigator.mediaDevices.getUserMedia && !recording && <img src='/images/microphone.png' className='sign-up-mic' onClick={handleMic} />
         }
-        <audio controls ref={audioRef} />
+        {
+          recording && <img src='/images/stop-record.png' className='sign-up-mic' onClick={() => {setRecording(false); recordRef.current.stop()}} id='stop-record'/>
+        }
+        <audio controls ref={audioRef} id='signup-audio'/>
         <button type='submit'>Sign up</button>
       </form>
     </div>

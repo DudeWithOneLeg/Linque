@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
     results: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    alt: {
+      type: DataTypes.STRING,
+      allowNull: true
     }
   }
   , {

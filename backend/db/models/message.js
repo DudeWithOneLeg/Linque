@@ -27,7 +27,15 @@ module.exports = (sequelize, DataTypes) => {
     convoId: {
       type: DataTypes.INTEGER,
       allowNull: false
-    }
+    },
+    language: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    audio: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
   }
   , {
     sequelize,
