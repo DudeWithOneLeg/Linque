@@ -13,11 +13,11 @@ export default function UserConvo({ selectedFriend, translate }) {
 
     const user = useSelector(state => state.session.user)
     const messages = useSelector(state => state.message.allMessages)
-    let url = 'http://localhost:8000'
+    // let url = 'http://localhost:8000'
     // if (NODE_ENV === 'production') {
     //     url = `https://linque.onrender.com`
     // }
-    const socket = io(url);
+    const socket = io('http://localhost:8000');
     const [message, setMessage] = useState({})
     const [body, setBody] = useState('')
 
