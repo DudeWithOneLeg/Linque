@@ -21,6 +21,7 @@ const File = FileAPI.File
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const PROJECT_ID = process.env.PROJECT_ID;
+const SOCKET_URL = process.env.SOCKET_URL
 
 const translate = new Translate({ PROJECT_ID });
 
@@ -89,7 +90,7 @@ const app = express()
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: process.env.SOCKET_URL ? process.env.SOCKET_URL : "http://localhost:3000",
+    origin: SOCKET_URL ? SOCKET_URL : "http://localhost:3000",
     methods: ["GET", "POST"],
     allowedHeaders: ["*"],
     credentials: true
