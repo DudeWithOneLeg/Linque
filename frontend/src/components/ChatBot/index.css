@@ -3,13 +3,17 @@
     bottom: 0px;
     right: 0px;
     height: 40px;
-    background-color: #F29559;
+    background-color: #c98457;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px 0px 0px 0px;
     width: 300px;
     cursor: pointer;
+}
+
+#bot-button:hover {
+    background-color: #f09b63;
 }
 
 #bot-button>h2 {
@@ -20,7 +24,6 @@
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     margin: 0px;
     right: 0px;
     bottom: 0px;
@@ -28,7 +31,8 @@
     height: 90vh;
     width: 30vw;
     background-color: #b9e6ff;
-    border-radius: 10px;
+    border-radius: 10px 0px 0px 0px;
+    box-shadow: -5px -5px 20px gray;
 }
 
 #chatbox-header {
@@ -70,6 +74,7 @@
     padding: 10px;
     margin-bottom: 10px;
     backdrop-filter: blur(1px);
+    width: fit-content;
 }
 
 #messages {
@@ -104,14 +109,20 @@
 
 .chatbot-conversation {
     height: 20px;
-    padding: 10px;
-    background-color: #283845;
+    padding: 10px 10px 10px 10px;
+    background-color: #5b83a3;
     color: white;
     border-radius: 7px;
     margin-bottom: 10px;
     display: flex;
+    align-self: flex-start;
     align-items: center;
     cursor: pointer;
+    box-shadow: 1px 1px 4px gray, -2px -2px 4px gray;
+}
+
+.chatbot-conversation:hover {
+    background-color: #70a3cd;
 }
 
 #send-message-button {
@@ -187,7 +198,8 @@
     height: 90%;
     width: 100%;
     bottom: 0px;
-    padding: 10px 10px 0px 10px;
+    padding: 10px 100px 0px 10px;
+    font-size: 17px;
 }
 
 iframe {
@@ -237,5 +249,5 @@ a {
 }
 
 #convo-container {
-    padding: 0px 5px 0px 5px;
+    padding: 10px 7px 0px 5px;
 }

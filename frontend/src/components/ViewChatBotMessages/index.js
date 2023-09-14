@@ -47,7 +47,7 @@ export default function ViewChatBotMessages({messages}) {
 
                             if (message.user) {
 
-                                return <div className="user-message-container">
+                                return <div className="user-message-container" key={message.id}>
                                     <p className="user-message-language">{languages[message.language]}</p>
                                     <div className="user-message">
                                         {message.body}
@@ -56,7 +56,7 @@ export default function ViewChatBotMessages({messages}) {
                             }
                             else {
                                 if (!message.engine) {
-                                    return <div className="bot-message-container">
+                                    return <div className="bot-message-container" key={message.id}>
                                         <p className="message-language">{languages[message.language]}</p>
                                         <div className="bot-message">
                                             {message.body}

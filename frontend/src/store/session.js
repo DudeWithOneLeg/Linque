@@ -2,6 +2,31 @@ import { csrfFetch } from "./csrf";
 
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
+const ADD_VOICE = "session/removeUser";
+
+const setVoice = (voiceId) => {
+  return {
+    type: ADD_VOICE,
+    payload: voiceId
+  }
+}
+
+export const createVoice = (blob) => async (dispatch) => {
+  // const base64String = btoa(String.fromCharCode.apply(null, array));
+  // console.log(base64String)
+  const form = new FormData()
+  form.append('file', blob)
+  const res = await csrfFetch('/api/users/voice', {
+    method: 'POST',
+    headers: {
+      "Content-Type": "multipart/form-data",
+  },
+    body: form
+  })
+  const data = await res.json()
+  dispatch(setVoice(data.voiceId))
+  return console.log(data)
+}
 
 export const restoreUser = () => async (dispatch) => {
   const response = await csrfFetch("/api/session");

@@ -1,6 +1,9 @@
 #login-form {
     display: flex;
     justify-content: center;
+    padding-bottom: 20px;
+    z-index: 4;
+    backdrop-filter: blur(10px);
 }
 
 form {
@@ -17,7 +20,6 @@ input[type="text"], input[type="password"] {
     color: white;
     font-size: 18px;
     background-color: gray;
-    padding-left: 10px;
 }
 
 form > input {
@@ -42,6 +44,10 @@ form > button {
 form > button:hover {
     cursor: pointer;
     background-color: rgb(92, 91, 91);
+}
+
+.example {
+    width: 100%;
 }
 
 .errors {

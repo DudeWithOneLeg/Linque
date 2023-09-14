@@ -51,9 +51,6 @@ const validateFriends = async (req, res, next) => {
 router.get('/', [requireAuth], async (req, res) => {
 
     const { id: userId } = req.user
-    console.log(userId)
-
-    console.log(userId)
 
     const friends = await User.findByPk(userId, {
         include: [

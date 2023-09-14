@@ -19,7 +19,7 @@ const io = require("socket.io")(server, {
   cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
+    allowedHeaders: ["*"],
     credentials: true
   }
 });
@@ -27,11 +27,11 @@ const io = require("socket.io")(server, {
 const isProduction = environment === 'production';
 
 io.on('connection', (socket) => {
-  console.log('A user connected', socket.id);
+  // console.log('A user connected', socket.id);
 
   socket.on('join room', (message) => {
     socket.join(message.room)
-    
+
     console.log('joined room:', message.room)
   })
 
@@ -55,15 +55,17 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
 
-    console.log('User disconnected');
+    // console.log('User disconnected');
   });
 });
 
 app.use('/audio', express.static('audio'))
 
+// app.use(express.raw({ type: 'application/octet-stream' }));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(express.json());
 
 //security middleware

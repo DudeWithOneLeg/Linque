@@ -76,6 +76,7 @@ const voiceApi = async (object, res, body, req) => {
         responseType: 'arraybuffer'
     }).then(response => {
         if (response.data) {
+            console.log(response.data)
             writeAudio(response.data, object, res, body, req)
         }
 
