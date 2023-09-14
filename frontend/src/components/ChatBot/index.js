@@ -131,7 +131,7 @@ export default function ChatBot() {
                 {
                     convos && Object.values(convos).map((convo) => {
 
-                        return <ViewChatBotConvos convo={convo} setShowConvos={setShowConvos}/>
+                        return <ViewChatBotConvos convo={convo} setShowConvos={setShowConvos} key={convo.id}/>
                     })
                 }
             </div> : <div id='convo'>

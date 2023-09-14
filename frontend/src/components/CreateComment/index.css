@@ -1,5 +1,5 @@
 .create-comment > textarea {
-    background-color: gray;
+    background-color: rgb(162, 161, 161);
     width: 100%;
     margin-right: -50px;
     border-radius: 20px;

@@ -23,7 +23,7 @@ export default function LandingPage() {
     socket.on('chat message', (message) => {
         console.log(message)
         console.log(`${sessionUser.firstName} recieved ${message.body}`);
-      });
+    });
 
     useEffect(() => {
         if (speech) {
@@ -78,14 +78,14 @@ export default function LandingPage() {
                 <audio ref={soundRef} id='audio' src='/audio/welcome.mp3' preload="auto">
 
                 </audio>
-                <div id='landing-title-container'>
+                {!login && !signup && <div id='landing-title-container'>
                     <p id='landing-title'>Linque</p>
-                </div>
+                </div>}
                 {
-                    login === true && <LoginForm />
+                    login && <LoginForm />
                 }
                 {
-                    signup === true && <SignupForm />
+                    signup && <SignupForm />
                 }
                 {
                     domErr && !signup && !login && <button
@@ -93,9 +93,12 @@ export default function LandingPage() {
                         onClick={() => handleGetStarted()}
                     >Get Started</button>
                 }</div>} {
-                    !sessionUser && <Microphone soundRef={soundRef} />
-                }
-
+                !sessionUser && <div id='landing-mic'>
+                    <Microphone soundRef={soundRef} />
+                </div>
+            }
+            {!sessionUser && <img id='landing-img' src='/images/landing-img.jpg'/>}
+            {sessionUser && <img id='landing-img' src='/images/home-img.webp'/>}
         </div>
     )
 }

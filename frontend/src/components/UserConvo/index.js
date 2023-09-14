@@ -77,20 +77,20 @@ export default function UserConvo({ selectedFriend }) {
                 {
                     messages && Object.values(messages).length && Object.values(messages).map((message) => {
                         if (message.senderId !== user.id) {
-                            return <div className="bot-message-container">
-                                <p className="message-language">language</p>
-                                <div className="bot-message">
-                                    {message.body}
-                                </div>
-                            </div>
-                        }
-                        else {
                             return <div className="user-message-container">
-                                    <p className="user-message-language">language</p>
+                                    <p className="friend-message-language">language</p>
                                     <div className="user-message">
                                         {message.body}
                                     </div>
                                 </div>
+                        }
+                        else {
+                            return <div className="bot-message-container">
+                                <p className="user-message-language">language</p>
+                                <div className="bot-message">
+                                    {message.body}
+                                </div>
+                            </div>
                         }
                     })
                 }

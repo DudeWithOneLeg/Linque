@@ -7,7 +7,7 @@
 #user-conversation {
     height: 85%;
     overflow-y: scroll;
-    padding: 0px 5px 5px 0px;
+    padding: 0px 10px 10px 10px;
 }
 
 #dm-input-container {
@@ -22,14 +22,52 @@
 }
 
 #dm-input {
+    font-size: 15px;
     height: 100%;
     width: 80%;
     border-radius: 5px;
+    padding-right: 30px;
     background-color: antiquewhite;
 }
 
 #dm-send {
     width: 35px;
     cursor: pointer;
-    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.user-message-language {
+    color: white;
+    margin-left: 10px;
+}
+
+.friend-message-language {
+    color: white;
+    margin: 0px;
+    padding-right: 10px;
+    justify-self: flex-end;
+    align-self: flex-end;
+    width: fit-content;
+    font-size: 14px;
+}
+
+#user-conversation::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+#user-conversation::-webkit-scrollbar-track {
+    background: #465775;
+    padding: 0px 2px 0px 2px;
+}
+
+
+#user-conversation::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+
+#user-conversation::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

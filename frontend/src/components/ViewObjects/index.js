@@ -20,7 +20,6 @@ export default function ViewObjects({ results }) {
 
 
     results = JSON.parse(results)
-    console.log(results)
 
     return (
         <div className="results">
@@ -31,7 +30,9 @@ export default function ViewObjects({ results }) {
                             return <div className='objects' onClick={() => {
                                 setData(object.matches)
                                 setShowResults(true)
-                            }}>
+                            }}
+                            key={object.image}
+                            >
                                 {
                                     objects[object.name] ? <img src={objects[object.name]} className="object-icons" /> : <p>{object.name}</p>
                                 }

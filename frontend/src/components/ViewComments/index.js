@@ -11,9 +11,9 @@ export default function ViewComments({ comments, postId, userId }) {
         <div className='view-comments'>
             <CreateComment postId={postId} key={postId} />
             {
-                comments && Object.values(comments).length && Object.values(comments).slice(0, 2).map(comment => {
-                    return <ViewComment comment={comment} userId={userId}/>
-                })
+                Object.values(comments).length ? Object.values(comments).slice(0, 2).map(comment => {
+                    return <ViewComment comment={comment} userId={userId} key={comment.id}/>
+                }): <></>
             }
         </div>
     )

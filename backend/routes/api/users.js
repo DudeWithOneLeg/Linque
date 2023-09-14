@@ -5,6 +5,14 @@ const { User, Post, Comment, Friend, UserEvent, PostImage } = require('../../db/
 const { Op } = require('sequelize')
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const FormData = require('form-data')
+const axios = require('axios');
+const fs = require('fs')
+const util = require('util');
+const writeFile = util.promisify(fs.writeFile);
+const { singleMulterUpload, singlePublicFileUpload, multiplePublicFileUpload, multipleMulterUpload } = require('../awsS3')
+
+const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 
 const validateSignup = [
     check('firstName')
@@ -122,6 +130,42 @@ router.post(
         });
     }
 );
+
+router.post('/voice', singleMulterUpload('file'), async (req, res) => {
+
+    const file = req.file
+
+    await writeFile('output.ogg', file.buffer)
+
+
+    const form = new FormData()
+    form.append('name', 'test')
+    form.append('files', fs.createReadStream('output.ogg'), {
+        filename: 'sample1.ogg',
+        contentType: 'audio/ogg',
+      })
+
+    console.log('Fetching audio...')
+    console.log(form.getHeaders())
+
+    const API_ENDPOINT = 'https://api.elevenlabs.io/v1/voices/add'
+
+    //Fetch voice
+    await axios.post(`${API_ENDPOINT}`, form, {
+        headers: {
+            ...form.getHeaders(),
+            'xi-api-key': ELEVENLABS_API_KEY
+        }
+    }).then(response => {
+        console.log(response)
+
+    })
+        .catch(error => console.error(error)).catch(() => {
+            console.log('FAILED :(')
+        })
+
+
+})
 
 //Get friends posts
 router.get('/:userId/posts', [requireAuth, userExists, validateFriends], async (req, res) => {
