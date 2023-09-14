@@ -90,8 +90,10 @@ const KEY = process.env.REACT_APP_SOCKET_KEY
 
 const app = express()
 const server = http.createServer(app);
+
+const isProduction = environment === 'production';
 let url = 'http://localhost:3000'
-    if (NODE_ENV === 'production') {
+    if (isProduction) {
         url = `https://linque.onrender.com:${process.env.PORT}`
     }
 const io = require("socket.io")(server, {
@@ -102,8 +104,6 @@ const io = require("socket.io")(server, {
     credentials: true
   }
 });
-
-const isProduction = environment === 'production';
 
 io.on('connection', (socket) => {
   // console.log('A user connected', socket.id);
