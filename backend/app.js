@@ -96,7 +96,6 @@ let url = 'http://localhost:3000'
 if (isProduction) {
   url = `https://linque.onrender.com`
 }
-console.log(url)
 const io = require("socket.io")(server, {
   cors: {
     origin: url,
