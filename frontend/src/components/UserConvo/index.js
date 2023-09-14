@@ -18,7 +18,7 @@ export default function UserConvo({ selectedFriend, translate }) {
     const [body, setBody] = useState('')
 
     const friend = selectedFriend.toUser ? selectedFriend.toUser : selectedFriend.fromUser
-    const room = friend.id
+    const room = selectedFriend.id
 
     const handleSubmit = async () => {
         const messageDiv = document.getElementById('user-conversation')
@@ -36,11 +36,11 @@ export default function UserConvo({ selectedFriend, translate }) {
 
         socket.emit('chat message', (message))
 
-        await dispatch(messageActions.setMessage({
-            body: message.body,
-            senderId: user.id,
-            convoId: selectedFriend.id
-        }))
+        // await dispatch(messageActions.setMessage({
+        //     body: message.body,
+        //     senderId: user.id,
+        //     convoId: selectedFriend.id
+        // }))
         messageDiv.scrollTop = messageDiv.scrollHeight
     }
 
@@ -49,7 +49,7 @@ export default function UserConvo({ selectedFriend, translate }) {
     useEffect(() => {
 
         socket.on('connect', () => {
-            socket.emit('join room', { room: user.id });
+            socket.emit('join room', { room });
 
             socket.on('chat message', (message) => {
                 console.log(message)
