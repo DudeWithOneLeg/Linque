@@ -88,9 +88,13 @@ const KEY = process.env.REACT_APP_SOCKET_KEY
 
 const app = express()
 const server = http.createServer(app);
+let url = 'http://localhost:8000'
+    if (SOCKET_URL) {
+        url = SOCKET_URL
+    }
 const io = require("socket.io")(server, {
   cors: {
-    origin: SOCKET_URL ? SOCKET_URL : "http://localhost:3000",
+    origin: url,
     methods: ["GET", "POST"],
     allowedHeaders: ["*"],
     credentials: true

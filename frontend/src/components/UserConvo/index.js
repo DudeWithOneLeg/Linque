@@ -5,7 +5,7 @@ import { io } from "socket.io-client"
 import { languageCodes } from '../SignupForm/index.css/languages';
 import './index.css'
 
-const KEY = process.env.REACT_APP_SOCKET_KEY
+const SOCKET_URL = process.env.SOCKET_URL
 
 export default function UserConvo({ selectedFriend, translate }) {
 
@@ -13,7 +13,11 @@ export default function UserConvo({ selectedFriend, translate }) {
 
     const user = useSelector(state => state.session.user)
     const messages = useSelector(state => state.message.allMessages)
-    const socket = io('http://localhost:8000');
+    let url = 'http://localhost:8000'
+    if (SOCKET_URL) {
+        url = SOCKET_URL
+    }
+    const socket = io(url);
     const [message, setMessage] = useState({})
     const [body, setBody] = useState('')
 
