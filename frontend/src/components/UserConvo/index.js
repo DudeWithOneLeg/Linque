@@ -5,7 +5,7 @@ import { io } from "socket.io-client"
 import { languageCodes } from '../SignupForm/index.css/languages';
 import './index.css'
 
-const NODE_ENV = process.env.NODE_ENV
+// const NODE_ENV = process.env.NODE_ENV
 
 export default function UserConvo({ selectedFriend, translate }) {
 
@@ -14,9 +14,9 @@ export default function UserConvo({ selectedFriend, translate }) {
     const user = useSelector(state => state.session.user)
     const messages = useSelector(state => state.message.allMessages)
     let url = 'http://localhost:8000'
-    if (NODE_ENV === 'production') {
-        url = `https://linque.onrender.com`
-    }
+    // if (NODE_ENV === 'production') {
+    //     url = `https://linque.onrender.com`
+    // }
     const socket = io(url);
     const [message, setMessage] = useState({})
     const [body, setBody] = useState('')

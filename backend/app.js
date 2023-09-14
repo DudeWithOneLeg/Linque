@@ -86,16 +86,17 @@ const voiceApi = async (text, voice_id) => {
   return file
 }
 
-const KEY = process.env.REACT_APP_SOCKET_KEY
+
 
 const app = express()
 const server = http.createServer(app);
 
 const isProduction = environment === 'production';
 let url = 'http://localhost:3000'
-    if (isProduction) {
-        url = `https://linque.onrender.com`
-    }
+if (isProduction) {
+  url = `https://linque.onrender.com`
+}
+console.log(url)
 const io = require("socket.io")(server, {
   cors: {
     origin: url,
