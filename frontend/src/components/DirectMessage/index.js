@@ -16,7 +16,7 @@ export default function DirectMessage() {
     return (
         <div id='direct-message'>
             <div id='dm-header'>
-                {showConvo && show && <img src='/images/back.png' onClick={() => {setShowConvo(false); socket.emit('leave room', selectedFriend.id)}} id='dm-back'/>}
+                {showConvo && show && <img src='/images/back.png' onClick={() => {setShowConvo(false);}} id='dm-back'/>}
                 <p onClick={() => {setShow(!show); setShowConvo(showConvo)}}>Direct Messages</p>
                 {showConvo && show && <img src='/images/translate.png' id='translate-toggle' onClick={() => setTranslate(!translate)} className={translate ? 'translate-toggle-active' : ''}/>}
             </div>
