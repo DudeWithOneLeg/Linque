@@ -6,6 +6,7 @@ const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const axios = require('axios')
 
 const validateLogin = [
   check('credential')
@@ -27,10 +28,7 @@ router.post(
 
     const user = await User.unscoped().findOne({
       where: {
-        [Op.or]: {
-          username: credential,
           email: credential
-        }
       }
     });
 
@@ -47,10 +45,10 @@ router.post(
     const safeUser = {
       id: user.id,
       email: user.email,
-      username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
-      defaultLanguage: user.defaultLanguage
+      defaultLanguage: user.defaultLanguage,
+      pfp: user.pfp
     };
 
     if (user.voice_id) {
@@ -83,10 +81,10 @@ router.get(
       const safeUser = {
         id: user.id,
         email: user.email,
-        username: user.username,
         firstName: user.firstName,
         lastName: user.lastName,
-        defaultLanguage: user.defaultLanguage
+        defaultLanguage: user.defaultLanguage,
+        pfp: user.pfp
       };
 
       if (user.voice_id) {
@@ -99,5 +97,63 @@ router.get(
     } else return res.json({ user: null });
   }
 );
+
+router.post('/oauth', async (req, res) => {
+  const { token: access_token } = req.body
+  const response = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
+    headers: {
+      "Authorization": `Bearer ${access_token}`,
+    }
+  }).catch(e => {
+    console.log(e)
+  })
+
+  const authUser = response.data
+
+  const user = await User.findOne({
+    where: {
+        googleAccId: authUser.id
+    }
+  });
+
+  if (user) {
+    const safeUser = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      defaultLanguage: user.defaultLanguage,
+      pfp: user.pfp
+    };
+
+    if (user.voice_id) {
+      safeUser.voice_id = user.voice_id
+    }
+
+    await setTokenCookie(res, safeUser);
+
+    return res.json({
+      user: safeUser,
+      exists: true
+    });
+  }
+
+  const newUser = {
+    email: authUser.email,
+    pfp: authUser.picure,
+    googleAccId: authUser.id
+  }
+
+  if (authUser.locale) newUser.defaultLanguage = authUser.locale
+  if (authUser.given_name || authUser.name) newUser.firstName = authUser.given_name || authUser.name
+  if (authUser.family_name) newUser.lastName = authUser.family_name
+  if (authUser.picture) newUser.pfp = authUser.picture
+
+  console.log(authUser)
+
+  res.status(200)
+  return res.json(newUser)
+
+})
 
 module.exports = router;

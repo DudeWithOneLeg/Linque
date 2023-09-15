@@ -3,11 +3,19 @@ import { csrfFetch } from "./csrf";
 const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
 const ADD_VOICE = "session/addVoice";
+const ADD_AUTH_USER = 'session/oauth'
 
 const setVoice = (voiceId) => {
   return {
     type: ADD_VOICE,
     payload: voiceId
+  }
+}
+
+const setAuth = (newUser) => {
+  return {
+    type: ADD_AUTH_USER,
+    payload: newUser
   }
 }
 
@@ -35,7 +43,7 @@ export const restoreUser = () => async (dispatch) => {
   return response;
 };
 
-const setUser = (user) => {
+export const setUser = (user) => {
   return {
     type: SET_USER,
     payload: user,
@@ -62,10 +70,21 @@ export const login = (user) => async (dispatch) => {
   return response;
 };
 
+export const oauth = (token) => async (dispatch) => {
+  const res = await csrfFetch('/api/session/oauth', {
+    method: 'POST',
+    body: JSON.stringify({token})
+  })
+  const data = await res.json()
+  if (data && !data.errors) {
+    dispatch(setAuth(data))
+    return data
+  }
+}
+
 export const signup = (user) => async (dispatch) => {
-  const { username, firstName, lastName, email, password, defaultLanguage } = user;
+  const { firstName, lastName, email, password, defaultLanguage, pfp } = user;
   const newUser = {
-    username,
       firstName,
       lastName,
       email,
@@ -74,6 +93,8 @@ export const signup = (user) => async (dispatch) => {
   }
 
   if (user.voice_id) newUser.voice_id = user.voice_id
+  if (user.googleAccId) newUser.googleAccId = user.googleAccId
+  if (pfp) newUser.pfp = pfp
   console.log(newUser)
 
   const response = await csrfFetch("/api/users", {
@@ -108,6 +129,8 @@ const sessionReducer = (state = initialState, action) => {
       return newState;
     case ADD_VOICE:
       return {...state, voice_id: action.payload}
+    case ADD_AUTH_USER:
+      return {...state, oauth: action.payload}
     default:
       return state;
   }

@@ -6,6 +6,10 @@ import LandingPage from "./components/LandingPage";
 import Navigation from "./components/Navigaton";
 import ChatBot from "./components/ChatBot";
 import DirectMessage from "./components/DirectMessage";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import GoogleLoginComp from "./components/GoogleLoginComp";
+
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
 function App() {
   const dispatch = useDispatch();
@@ -16,11 +20,12 @@ function App() {
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
-  
+
+
 
 
   return (
-    <>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Switch>
         <Route exact path='/'>
           {sessionUser && <Navigation />}
@@ -28,8 +33,11 @@ function App() {
           {sessionUser && <ChatBot />}
           {sessionUser && <DirectMessage />}
         </Route>
+        {/* <Route exact path='/oauth/callback'>
+          <GoogleLoginComp />
+        </Route> */}
       </Switch>
-    </>
+      </GoogleOAuthProvider>
   );
 }
 

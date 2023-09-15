@@ -51,6 +51,8 @@ const voiceApi = async (text, voice_id) => {
   console.log("---------------------------------------");
   console.log('Fetching audio...')
 
+  console.log('voiceId', voice_id)
+
   const API_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${voice_id}`
   const voice = {
     text: text,
@@ -92,21 +94,23 @@ const app = express()
 const server = http.createServer(app);
 
 const isProduction = environment === 'production';
-// let url = 'http://localhost:3000'
-// if (isProduction) {
-//   url = `https://linque.onrender.com`
-// }
+
 const io = require("socket.io")(server, {
   cors: {
-    origin: 'http://localhost:3000',
-    methods: ["GET", "POST"],
-    allowedHeaders: ["*"],
-    credentials: true
+    origin: `https://linque.onrender.com`,
+    methods: ["GET", "POST"]
   }
 });
 
+// const io = require("socket.io")(server, {
+//   cors: {
+//     origin: 'http://localhost:3000',
+//     methods: ["GET", "POST"]
+//   }
+// });
+
 io.on('connection', (socket) => {
-  // console.log('A user connected', socket.id);
+  console.log('A user connected', socket.id);
 
   socket.on('join room', (message) => {
     socket.join(message.room)
@@ -130,6 +134,7 @@ io.on('connection', (socket) => {
       if (message.defaultLanguage !== message.friendLanguage) {
         message.body = await translateText(message.body, message.friendLanguage)
         message.language = await detectLanguage(message.body)
+        console.log(message.voice_id)
         const file = await voiceApi(message.body, message.voice_id)
         return await singlePublicFileUpload(file).then(async url => {
           message.audio = url

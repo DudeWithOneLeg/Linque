@@ -25,14 +25,6 @@ const validateSignup = [
         .exists({ checkFalsy: true })
         .isEmail()
         .withMessage('Please provide a valid email.'),
-    check('username')
-        .exists({ checkFalsy: true })
-        .isLength({ min: 4 })
-        .withMessage('Please provide a username with at least 4 characters.'),
-    check('username')
-        .not()
-        .isEmail()
-        .withMessage('Username cannot be an email.'),
     check('password')
         .exists({ checkFalsy: true })
         .isLength({ min: 6 })
@@ -113,25 +105,35 @@ router.post(
     '/',
     validateSignup,
     async (req, res) => {
-        const { email, password, username, firstName, lastName, voice_id } = req.body;
+        const { email, password, firstName, lastName, voice_id, googleAccId, pfp, defaultLanguage } = req.body;
         const hashedPassword = bcrypt.hashSync(password);
         const newUser = {
             email,
-            username,
             hashedPassword,
             firstName,
-            lastName
+            lastName,
         }
 
         if (voice_id) newUser.voice_id = voice_id
+        if (googleAccId) newUser.googleAccId = googleAccId
+        if (defaultLanguage) newUser.defaultLanguage = defaultLanguage
+        if (pfp) newUser.pfp = pfp
 
         const user = await User.create(newUser);
 
         const safeUser = {
             id: user.id,
             email: user.email,
-            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            pfp: user.pfp,
+            defaultLanguage: user.defaultLanguage
         };
+
+        if (user.voice_id) safeUser.voice_id = user.voice_id
+
+        console.log(safeUser)
+
 
         await setTokenCookie(res, safeUser);
 
@@ -146,7 +148,6 @@ router.post('/voice', singleMulterUpload('file'), async (req, res) => {
     const file = req.file
 
     await writeFile('output.ogg', file.buffer)
-
 
     const form = new FormData()
     form.append('name', 'test')

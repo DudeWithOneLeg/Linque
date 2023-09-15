@@ -13,11 +13,13 @@ export default function UserConvo({ selectedFriend, translate }) {
 
     const user = useSelector(state => state.session.user)
     const messages = useSelector(state => state.message.allMessages)
-    // let url = 'http://localhost:8000'
-    // if (NODE_ENV === 'production') {
-    //     url = `https://linque.onrender.com`
-    // }
-    const socket = io('http://localhost:8000');
+
+    
+
+    const socket = io('https://linque.onrender.com')
+
+    // const socket = io('http://localhost:8000');
+
     const [message, setMessage] = useState({})
     const [body, setBody] = useState('')
 
@@ -32,7 +34,7 @@ export default function UserConvo({ selectedFriend, translate }) {
             room,
             senderId: user.id,
             convoId: selectedFriend.id,
-            voice_id: user.voice_id,
+            voice_id: friend.voice_id,
             friendLanguage: friend.defaultLanguage,
             defaultLanguage: user.defaultLanguage,
             translate

@@ -35,18 +35,6 @@ User.hasMany(models.Friend, { foreignKey: 'fromUserId', as: 'friendshipsFrom' })
         allowNull: false,
         type: DataTypes.STRING
       },
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          len: [4, 30],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
-            }
-          }
-        }
-      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -67,6 +55,14 @@ User.hasMany(models.Friend, { foreignKey: 'fromUserId', as: 'friendshipsFrom' })
         allowNull: true
       },
       defaultLanguage: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      pfp: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      googleAccId: {
         type: DataTypes.STRING,
         allowNull: true
       }
