@@ -1,15 +1,14 @@
-import { GoogleLogin } from '@react-oauth/google';
-import jwt_decode from "jwt-decode";
+
 import { useGoogleLogin } from '@react-oauth/google';
 import * as sessionActions from '../../store/session'
-import { csrfFetch } from '../../store/csrf';
-import axios from 'axios'
 import './index.css'
 import { useDispatch } from 'react-redux';
 
 export default function GoogleLoginComp({setSignup}) {
 
   const dispatch = useDispatch()
+
+  console.log(useGoogleLogin)
 
   const login = useGoogleLogin({
     onSuccess: async tokenResponse => {
