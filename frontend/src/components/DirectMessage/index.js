@@ -12,11 +12,6 @@ export default function DirectMessage() {
     const [room, setRoom] = useState(null)
     const [translate, setTranslate] = useState(false)
     const [show, setShow] = useState(false)
-    const url = ''
-    if (process.env.NODE_ENV && process.env.NODE_ENV === 'production' ) {
-        url = 'http://localhost:10000'
-    }
-    const socket = io('http://localhost:8000');
 
     return (
         <div id='direct-message'>
