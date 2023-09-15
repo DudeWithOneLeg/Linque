@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../../store/session";
 import { languageNames, languageCodes } from './languages';
+import GoogleLoginComp from '../../GoogleLoginComp';
+
 import './index.css'
 
 export default function SignupForm() {
@@ -11,11 +13,15 @@ export default function SignupForm() {
 
   const dispatch = useDispatch()
   const sessionUser = useSelector((state) => state.session.user);
+  const authUser = useSelector(state => state.session.oauth)
 
-  const [firstName, setFirstname] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
+  if (authUser.exists) dispatch(sessionActions.setUser(authUser.user))
+
+  const [firstName, setFirstname] = useState(authUser.firstName || '' )
+  const [lastName, setLastName] = useState(authUser.lastName || '')
+  const [email, setEmail] = useState(authUser.email || '')
+  const [googleAccId, setGoogleAccId] = useState(authUser.googleAccId || '')
+  const [pfp, setPfp] = useState(authUser.pfp || '')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [errors, setErrors] = useState({})
@@ -108,13 +114,15 @@ export default function SignupForm() {
       setErrors({});
       const newUser = {
           email,
-          username,
           firstName,
           lastName,
           password,
         }
         if (voice_id) newUser.voice_id = voice_id
         if (defaultLanguage) newUser.defaultLanguage = defaultLanguage
+        if (googleAccId) newUser.googleAccId = googleAccId
+        if (pfp) newUser.pfp = pfp
+
         console.log(newUser)
       return dispatch(
         sessionActions.signup(newUser)
@@ -131,7 +139,8 @@ export default function SignupForm() {
   }
 
 
-  return (
+
+  return !Object.values(authUser) ? (
     <div id='signup'>
       <form onSubmit={handleSubmit} id='signup-form'>
         <input
@@ -145,15 +154,60 @@ export default function SignupForm() {
         />
         {errors.lastName && <p className='errors'>{errors.lastName}</p>}
         <input
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder='Username'
-        />
-        {errors.username && <p className='errors'>{errors.username}</p>}
-        <input
           onChange={(e) => setEmail(e.target.value)}
           placeholder='Email'
         />
         {errors.email && <p className='errors'>{errors.email}</p>}
+        <input
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder='Password'
+          type='password'
+        />
+        {errors.password && <p className='errors'>{errors.password}</p>}
+        <input
+          id='confirm-password'
+          placeholder="Confirm Password"
+          type='password'
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        {errors.confirmPassword && <p class='errors'>{errors.confirmPassword}</p>}
+        <select onChange={(e) => setDefaultLanguage(e.target.value)}>
+        <option value="" disabled selected>Default Language</option>
+          {
+            languageNames.map((name) => {
+              return <option value={languageCodes[name]}>{name}</option>
+            })
+          }
+        </select>
+        {
+          navigator.mediaDevices && navigator.mediaDevices.getUserMedia && !recording && <img src='/images/microphone.png' className='sign-up-mic' onClick={handleMic} />
+        }
+        {
+          recording && <img src='/images/stop-record.png' className='sign-up-mic' onClick={() => {setRecording(false); recordRef.current.stop()}} id='stop-record'/>
+        }
+        <audio controls ref={audioRef} id='signup-audio'/>
+        <button type='submit'>Sign up</button>
+      </form>
+    </div>
+
+  ) : (
+    <div id='signup'>
+      <form onSubmit={handleSubmit} id='signup-form'>
+        {!authUser.firstName && <input
+          onChange={(e) => setFirstname(e.target.value)}
+          placeholder='First name'
+        />}
+        {errors.firstName && !authUser.firstName && <p className='errors'>{errors.firstName}</p>}
+        {!authUser.lastName && <input
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder='Last name'
+        />}
+        {errors.lastName && !authUser.lastName && <p className='errors'>{errors.lastName}</p>}
+        {!authUser.email && <input
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder='Email'
+        />}
+        {errors.email && !authUser.lastName && <p className='errors'>{errors.email}</p>}
         <input
           onChange={(e) => setPassword(e.target.value)}
           placeholder='Password'

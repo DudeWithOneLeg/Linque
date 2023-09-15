@@ -25,11 +25,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      username: {
-        allowNull:false,
-        uniwue: true,
-        type: Sequelize.STRING(30)
-      },
       email: {
         allowNull:false,
         unique: true,
@@ -44,6 +39,14 @@ module.exports = {
         defaultValue: "ThT5KcBeYPX3keUQqHPh"
       },
       defaultLanguage: {
+        type: Sequelize.STRING,
+        allowNull: 'en'
+      },
+      pfp: {
+        type: Sequelize.STRING,
+        defaultValue: 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU='
+      },
+      googleAccId: {
         type: Sequelize.STRING,
         allowNull: true
       },

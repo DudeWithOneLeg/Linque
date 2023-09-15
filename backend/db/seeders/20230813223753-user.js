@@ -26,7 +26,6 @@ module.exports = {
       {
         firstName: 'Demo',
         lastName: 'lition',
-        username: 'demolition',
         email: 'demo@lition.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'
@@ -34,7 +33,6 @@ module.exports = {
       {
         firstName: 'Michael',
         lastName: 'Scott',
-        username: 'TheOfficeFanatic',
         email: 'michael.scott@dundermifflin.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'ko',
@@ -43,7 +41,6 @@ module.exports = {
       {
         firstName: 'Leonardo',
         lastName: 'DiCaprio',
-        username: 'LeoTheGreat',
         email: 'hollywood_star@oscarsaremylife.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'
@@ -51,7 +48,6 @@ module.exports = {
       {
         firstName: 'Jennifer',
         lastName: 'Lawrence',
-        username: 'JLawFanatic',
         email: 'lawrence_of_laughter@funnyactress.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'
@@ -59,7 +55,6 @@ module.exports = {
       {
         firstName: 'Johnny',
         lastName: 'Depp',
-        username: 'CaptainSparrow',
         email: 'pirate_johnny@rum_and_movies.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'
@@ -67,7 +62,6 @@ module.exports = {
       {
         firstName: 'Meryl',
         lastName: 'Streep',
-        username: 'MerylMagic',
         email: 'award_queen@merylsmania.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'
@@ -75,7 +69,6 @@ module.exports = {
       {
         firstName: 'Beyoncé',
         lastName: 'Knowles',
-        username: 'QueenBee',
         email: 'beyhive_ruler@musicbuzz.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'
@@ -83,7 +76,6 @@ module.exports = {
       {
         firstName: 'Brad',
         lastName: 'Pitt',
-        username: 'BradStar',
         email: 'hollywood_heartthrob@funnyflicks.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'
@@ -91,7 +83,6 @@ module.exports = {
       {
         firstName: 'Taylor',
         lastName: 'Swift',
-        username: 'SwiftieForever',
         email: 'pop_princess@shakingitoff.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'
@@ -99,7 +90,6 @@ module.exports = {
       {
         firstName: 'Tom',
         lastName: 'Hanks',
-        username: 'TomTheActor',
         email: 'hanks_for_laughing@comedymovies.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US'

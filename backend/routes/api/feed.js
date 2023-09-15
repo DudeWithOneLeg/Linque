@@ -60,10 +60,13 @@ router.get('/', requireAuth, async (req, res) => {
         ]
     })
 
+
+
     const newPosts = []
 
     posts.forEach(post => {
         post = post.toJSON()
+        console.log(post.User)
         if (post.PostImage) {
             post.url = post.PostImage.url,
             post.data = JSON.parse(post.PostImage.data)

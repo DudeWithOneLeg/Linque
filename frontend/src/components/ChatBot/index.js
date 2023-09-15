@@ -106,7 +106,7 @@ export default function ChatBot() {
 
     useEffect(() => {
         console.log('useffect')
-        if (speech && speech.length) {
+        if (speech && speech.length && !showConvos) {
             console.log('useeffect if')
             setBody(speech)
             handleClick(speech)

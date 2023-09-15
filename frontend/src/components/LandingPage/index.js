@@ -6,6 +6,7 @@ import SignupForm from "../SignupForm/index.css"
 import Navigation from "../Navigaton"
 import Microphone from "../Microphone"
 import Feed from "../Feed"
+import GoogleLoginComp from "../GoogleLoginComp"
 import { io } from "socket.io-client"
 
 export default function LandingPage() {
@@ -27,7 +28,6 @@ export default function LandingPage() {
 
     useEffect(() => {
         if (speech) {
-
             console.log(speech.toLowerCase().includes('log') && speech.toLowerCase().includes('in'))
         }
         if (speech && speech.length && speech.toLowerCase().includes('log') && speech.toLowerCase().includes('in')) {
@@ -86,10 +86,16 @@ export default function LandingPage() {
                         onClick={() => handleGetStarted()}
                     >Get Started</button>
                 }
-                </div>}
                 {
-                    login && <LoginForm />
+                    !signup && <LoginForm />
                 }
+                {
+                    !signup && <p>or</p>
+                }
+                {
+                    !signup && <GoogleLoginComp setSignup={setSignup}/>
+                }
+                </div>}
                 {
                     signup && <SignupForm />
                 }
