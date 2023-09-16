@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import * as sessionActions from '../../store/session'
+import { googleLogout } from '@react-oauth/google';
 import './index.css'
 
 export default function ProfileDropdown({sessionUser}) {
@@ -14,6 +15,7 @@ export default function ProfileDropdown({sessionUser}) {
 
     const logout = () => {
         dispatch(sessionActions.logout())
+        googleLogout();
     }
 
     return (

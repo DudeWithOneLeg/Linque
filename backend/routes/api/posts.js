@@ -258,6 +258,7 @@ router.post('/:postId/comments', [requireAuth, postExists, validateFriends], asy
 })
 
 router.post('/:postId/image', [requireAuth, postExists, isPostAuthor, singleMulterUpload('image')], async (req, res) => {
+
     console.log(req.file)
     const url = await singlePublicFileUpload(req.file);
     const { postId } = req.params
@@ -371,13 +372,6 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
     console.log(newImage)
     res.status(200)
     return res.json(newImage)
-
-
-
-
-
-
-
 
 })
 

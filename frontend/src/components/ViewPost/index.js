@@ -9,6 +9,7 @@ export default function ViewPost({ post, userId }) {
 
     const [edit, setEdit] = useState(false)
     const [body, setBody] = useState(post.body)
+    const [newImage, setNewImage] = useState(null)
 
     const dispatch = useDispatch()
 
@@ -122,14 +123,14 @@ export default function ViewPost({ post, userId }) {
 
 
                     </div>
-                    {post.userId === userId && <img onClick={() => setEdit(!edit)} src='/images/edit.png' alt='edit' className='post-edit' />}
+                    {post.userId === userId && <img onClick={() => setEdit(!edit)} src='/images/icons/edit.png' alt='edit' className='post-edit' />}
 
                 </div>
                 <div className='post-body'>
                     {!edit && post && <div>
                         <p>{post.body && post.body}</p>
                         {
-                            post.hasImage && !post.PostImage && <img src='/images/pic-loading.png' className='image-loading' alt='loading-picture'/>
+                            post.hasImage && !post.PostImage && <img src='/images/icons/pic-loading.png' className='image-loading' alt='loading-picture'/>
                         }
                         {
                             post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }}>
@@ -139,29 +140,51 @@ export default function ViewPost({ post, userId }) {
 
                         }
                     </div>}
-                    {post.userId === userId && edit && <div className=''>
+                    {post.userId === userId && edit && <div className='new-post-container'>
                         <textarea value={body} className='new-post' onChange={(e) => setBody(e.target.value)} ></textarea>
                         <div className='edit-post-buttons-container'>
                             <img
-                                src='/images/save.png'
+                                src='/images/icons/save.png'
                                 className='edit-send'
                                 alt='send-edit'
                                 onClick={() => {
                                     dispatch(postActions.updatePost(post.id, { body }))
+                                    if (newImage) {
+                                        console.log(newImage)
+                                        dispatch(postActions.uploadImage(post.id, newImage))
+                                    }
                                     setEdit(false)
                                 }}
                             />
 
 
                                 <img
-                                    src='/images/trash.png'
+                                    src='/images/icons/trash.png'
                                     className='edit-delete'
                                     onClick={() => {
                                         dispatch(postActions.deletePost(post.id))
+
                                     }}
                                 />
 
                         </div>
+                        {
+                            post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }} className='edit-post-image-container'>
+                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image edit-post-image' crossOrigin='anonymous' alt='post'/>
+                                <img src='/images/icons/delete-image.png' id='delete-image-button' onClick={() => {
+                                    dispatch(postActions.deleteImage(post.PostImage))
+                                    setNewImage(null)
+                                    }}/>
+                            </div>
+                        }
+                        {
+                            post && edit && !post.PostImage && <input
+                            id="image"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {setNewImage(e.target.files[0])}}
+                        />
+                        }
                     </div>}
                 </div>
 

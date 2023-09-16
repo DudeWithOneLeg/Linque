@@ -15,13 +15,13 @@ export default function SignupForm() {
   const sessionUser = useSelector((state) => state.session.user);
   const authUser = useSelector(state => state.session.oauth)
 
-  if (authUser.exists) dispatch(sessionActions.setUser(authUser.user))
+  if (authUser && authUser.exists) dispatch(sessionActions.setUser(authUser.user))
 
-  const [firstName, setFirstname] = useState(authUser.firstName || '' )
-  const [lastName, setLastName] = useState(authUser.lastName || '')
-  const [email, setEmail] = useState(authUser.email || '')
-  const [googleAccId, setGoogleAccId] = useState(authUser.googleAccId || '')
-  const [pfp, setPfp] = useState(authUser.pfp || '')
+  const [firstName, setFirstname] = useState(authUser && authUser.firstName || '' )
+  const [lastName, setLastName] = useState(authUser && authUser.lastName || '')
+  const [email, setEmail] = useState(authUser && authUser.email || '')
+  const [googleAccId, setGoogleAccId] = useState(authUser && authUser.googleAccId || '')
+  const [pfp, setPfp] = useState(authUser && authUser.pfp || '')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [errors, setErrors] = useState({})
@@ -121,12 +121,17 @@ export default function SignupForm() {
         if (voice_id) newUser.voice_id = voice_id
         if (defaultLanguage) newUser.defaultLanguage = defaultLanguage
         if (googleAccId) newUser.googleAccId = googleAccId
-        if (pfp) newUser.pfp = pfp
+        if (typeof pfp !== 'object') newUser.pfp = pfp
 
         console.log(newUser)
       return dispatch(
         sessionActions.signup(newUser)
-      ).catch(async (res) => {
+      ).then(user => {
+        if (typeof pfp === 'object') {
+
+          dispatch(sessionActions.uploadImage(user.id, pfp))
+        }
+      }).catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
           setErrors(data.errors);
@@ -140,9 +145,18 @@ export default function SignupForm() {
 
 
 
-  return !Object.values(authUser) ? (
+  return !authUser ? (
     <div id='signup'>
       <form onSubmit={handleSubmit} id='signup-form'>
+      <div id='signup-image-container'>
+        <p>Photo</p>
+                        <input
+                    id="signup-image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {setPfp(e.target.files[0])}}
+                />
+                    </div>
         <input
           onChange={(e) => setFirstname(e.target.value)}
           placeholder='First name'
@@ -180,10 +194,10 @@ export default function SignupForm() {
           }
         </select>
         {
-          navigator.mediaDevices && navigator.mediaDevices.getUserMedia && !recording && <img src='/images/microphone.png' className='sign-up-mic' onClick={handleMic} />
+          navigator.mediaDevices && navigator.mediaDevices.getUserMedia && !recording && <img src='/images/icons/microphone.png' className='sign-up-mic' onClick={handleMic} />
         }
         {
-          recording && <img src='/images/stop-record.png' className='sign-up-mic' onClick={() => {setRecording(false); recordRef.current.stop()}} id='stop-record'/>
+          recording && <img src='/images/icons/stop-record.png' className='sign-up-mic' onClick={() => {setRecording(false); recordRef.current.stop()}} id='stop-record'/>
         }
         <audio controls ref={audioRef} id='signup-audio'/>
         <button type='submit'>Sign up</button>
@@ -233,7 +247,7 @@ export default function SignupForm() {
           navigator.mediaDevices && navigator.mediaDevices.getUserMedia && !recording && <img src='/images/microphone.png' className='sign-up-mic' onClick={handleMic} />
         }
         {
-          recording && <img src='/images/stop-record.png' className='sign-up-mic' onClick={() => {setRecording(false); recordRef.current.stop()}} id='stop-record'/>
+          recording && <img src='/images/icons/stop-record.png' className='sign-up-mic' onClick={() => {setRecording(false); recordRef.current.stop()}} id='stop-record'/>
         }
         <audio controls ref={audioRef} id='signup-audio'/>
         <button type='submit'>Sign up</button>

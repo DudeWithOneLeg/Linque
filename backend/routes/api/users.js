@@ -10,7 +10,7 @@ const axios = require('axios');
 const fs = require('fs')
 const util = require('util');
 const writeFile = util.promisify(fs.writeFile);
-const { singleMulterUpload, singlePublicFileUpload, multiplePublicFileUpload, multipleMulterUpload } = require('../awsS3')
+const { singleMulterUpload, singlePublicFileUpload } = require('../awsS3')
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 
@@ -275,6 +275,27 @@ router.get('/:userId/events', [requireAuth, validateFriends], async (req, res) =
 
     res.status(200)
     return res.json(events)
+
+})
+
+router.post('/:userId/image', [requireAuth, singleMulterUpload('image')], async (req, res) => {
+
+    const image = req.file
+
+    const { userId } = req.params
+
+    const url = await singlePublicFileUpload(image)
+
+    const user = await User.findByPk(userId)
+
+    await user.update({
+        pfp: url
+    })
+
+    res.status(200)
+    return res.json({
+        pfp: url
+    })
 
 })
 

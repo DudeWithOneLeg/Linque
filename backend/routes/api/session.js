@@ -99,20 +99,12 @@ router.get(
 );
 
 router.post('/oauth', async (req, res) => {
-  const { token: access_token } = req.body
-  const response = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
-    headers: {
-      "Authorization": `Bearer ${access_token}`,
-    }
-  }).catch(e => {
-    console.log(e)
-  })
-
-  const authUser = response.data
+  const { newUser: authUser } = req.body
+  console.log(authUser)
 
   const user = await User.findOne({
     where: {
-        googleAccId: authUser.id
+        googleAccId: authUser.sub
     }
   });
 
@@ -138,10 +130,11 @@ router.post('/oauth', async (req, res) => {
     });
   }
 
+
   const newUser = {
     email: authUser.email,
     pfp: authUser.picure,
-    googleAccId: authUser.id
+    googleAccId: authUser.sub
   }
 
   if (authUser.locale) newUser.defaultLanguage = authUser.locale

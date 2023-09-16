@@ -40,7 +40,7 @@ module.exports = {
       },
       defaultLanguage: {
         type: Sequelize.STRING,
-        allowNull: 'en'
+        defaultValue: 'en'
       },
       pfp: {
         type: Sequelize.STRING,

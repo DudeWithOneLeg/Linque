@@ -1,16 +1,30 @@
 import { useState } from "react"
+import { useGoogleOneTapLogin } from "@react-oauth/google";
 import * as sessionActions from "../../store/session";
 import { useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router-dom";
+import jwt_decode from 'jwt-decode'
 import './index.css'
 
-export default function LoginForm() {
+export default function LoginForm({setSignup}) {
     const dispatch = useDispatch()
     const sessionUser = useSelector((state) => state.session.user);
 
     const [errors, setErrors] = useState({});
     const [credential, setCredential] = useState("")
     const [password, setPassword] = useState("")
+
+    useGoogleOneTapLogin({
+        onSuccess: async credentialResponse => {
+            const newUser = jwt_decode(credentialResponse.credential)
+            await dispatch(sessionActions.oauth(newUser))
+            setSignup(true)
+        },
+        onError: () => {
+          console.log('Login Failed');
+        },
+        
+      });
 
     if (sessionUser) return <Redirect to="/" />;
 

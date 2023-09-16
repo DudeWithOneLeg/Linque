@@ -10,6 +10,7 @@ const eventsRouter = require('./events.js')
 const messagesRouter = require('./messages.js')
 const conversationsRouter = require('./conversations.js')
 const chatBotConvosRouter = require('./chatbot.js')
+const postImageRouter = require('./post-images.js')
 
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -39,6 +40,8 @@ router.use('/messages', messagesRouter)
 router.use('/conversations', conversationsRouter)
 
 router.use('/chatbot', chatBotConvosRouter)
+
+router.use('/postImages', postImageRouter)
 
 router.get('/set-token-cookie', async (_req, res) => {
   const user = await User.findOne({

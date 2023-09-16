@@ -117,7 +117,7 @@ export default function ChatBot() {
     return (
         showBot ? <div id='chat-box'>
             <div id='chatbox-header'>
-                {!showConvos && <img src='/images/back.png' onClick={() => {setShowConvos(true); dispatch(chatBotActions.getAllConvos())}} id='back-button' alt='back'/>}
+                {!showConvos && <img src='/images/icons/back.png' onClick={() => {setShowConvos(true); dispatch(chatBotActions.getAllConvos())}} id='back-button' alt='back'/>}
                 <h4>Chat Bot</h4>
                 <div id='minimize' onClick={() => setShowBot(false)}><div></div></div>
             </div>

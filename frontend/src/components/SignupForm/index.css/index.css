@@ -68,3 +68,19 @@
 select {
     background-color: gray;
 }
+
+#signup-image-container {
+    background-color: gray;
+    height: 35px;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#signup-image > * {
+    width: 50px;
+}

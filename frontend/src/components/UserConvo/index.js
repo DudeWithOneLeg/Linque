@@ -14,7 +14,7 @@ export default function UserConvo({ selectedFriend, translate }) {
     const user = useSelector(state => state.session.user)
     const messages = useSelector(state => state.message.allMessages)
 
-    
+
 
     const socket = io('https://linque.onrender.com')
 
@@ -117,7 +117,7 @@ export default function UserConvo({ selectedFriend, translate }) {
             </div>
             <div id='dm-input-container'>
                 <textarea onChange={(e) => setBody(e.target.value)} id='dm-input' />
-                <img src='/images/send.png' onClick={handleSubmit} id='dm-send' />
+                <img src='/images/icons/send.png' onClick={handleSubmit} id='dm-send' />
             </div>
         </div>
     )

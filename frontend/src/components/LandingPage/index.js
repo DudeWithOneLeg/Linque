@@ -87,14 +87,14 @@ export default function LandingPage() {
                     >Get Started</button>
                 }
                 {
-                    !signup && <LoginForm />
+                    !signup && <LoginForm setSignup={setSignup}/>
                 }
                 {
                     !signup && <p>or</p>
                 }
-                {
+                {/* {
                     !signup && <GoogleLoginComp setSignup={setSignup}/>
-                }
+                } */}
                 </div>}
                 {
                     signup && <SignupForm />
@@ -104,8 +104,8 @@ export default function LandingPage() {
                     <Microphone soundRef={soundRef} />
                 </div>
             }
-            {!sessionUser && <img id='landing-img' src='/images/landing-img.jpg'/>}
-            {sessionUser && <img id='landing-img' src='/images/home-img.webp'/>}
+            {!sessionUser && <img id='landing-img' src='/images/icons/landing-img.jpg'/>}
+            {sessionUser && <img id='landing-img' src='/images/icons/home-img.webp'/>}
         </div>
     )
 }
