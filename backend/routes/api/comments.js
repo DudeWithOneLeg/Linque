@@ -73,16 +73,16 @@ router.put('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (
 
         const obj = {}
         for (let el of arr) {
-            
+
             obj[el.id] = el
         }
         return obj
     }
 
-
+    console.log(post)
 
     res.status(200)
-    return res.json({...post})
+    return res.json(post)
 })
 
 router.delete('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (req, res) => {
