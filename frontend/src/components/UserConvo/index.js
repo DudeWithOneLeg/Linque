@@ -34,7 +34,7 @@ export default function UserConvo({ selectedFriend, translate }) {
             room,
             senderId: user.id,
             convoId: selectedFriend.id,
-            voice_id: friend.voice_id,
+            voice_id: user.voice_id,
             friendLanguage: friend.defaultLanguage,
             defaultLanguage: user.defaultLanguage,
             translate
