@@ -14,7 +14,7 @@
     padding-left: 40px;
     height: 60px;
     width: fit-container;
-    z-index: 1;
+    z-index: 5;
     background-color: rgb(51, 50, 50);;
 }
 
@@ -27,4 +27,15 @@
 
 #login-signup > * {
     cursor: pointer;
+}
+
+.nav-page-icon {
+    height: 100%;
+}
+
+#nav-icon-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 200px;
 }

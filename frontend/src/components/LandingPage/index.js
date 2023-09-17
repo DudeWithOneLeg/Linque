@@ -11,7 +11,7 @@ import { io } from "socket.io-client"
 
 export default function LandingPage() {
 
-    const socket = io('http://localhost:8000');
+    // const socket = io('http://localhost:8000');
 
     const speech = useSelector(state => state.speech.speech)
     const soundRef = useRef(null)
@@ -19,12 +19,13 @@ export default function LandingPage() {
     const [signup, setSignup] = useState(false)
     const [domErr, setDomErr] = useState(null)
 
+
     const sessionUser = useSelector(state => state.session.user)
 
-    socket.on('chat message', (message) => {
-        console.log(message)
-        console.log(`${sessionUser.firstName} recieved ${message.body}`);
-    });
+    // socket.on('chat message', (message) => {
+    //     console.log(message)
+    //     console.log(`${sessionUser.firstName} recieved ${message.body}`);
+    // });
 
     useEffect(() => {
         if (speech) {
@@ -43,7 +44,9 @@ export default function LandingPage() {
 
     }, [speech])
 
-
+    useEffect(() => {
+        console.log(login)
+    },[login])
 
 
     useEffect(() => {
@@ -70,15 +73,12 @@ export default function LandingPage() {
     return (
         <div id='landing-page'>
 
-            {
-                sessionUser && <Feed />
-            }
             {!sessionUser && <div id='get-started-container'>
                 <Navigation setLogin={setLogin} setSignup={setSignup} />
-                <audio ref={soundRef} id='audio' src='/audio/welcome.mp3' preload="auto">
+                {/* <audio ref={soundRef} id='audio' src='/audio/welcome.mp3' preload="auto">
 
-                </audio>
-                {!login && !signup && <div id='landing-title-container'>
+                </audio> */}
+                {!signup && <div id='landing-title-container'>
                     <p id='landing-title'>Linque</p>
                     {
                     domErr && <button
@@ -86,26 +86,21 @@ export default function LandingPage() {
                         onClick={() => handleGetStarted()}
                     >Get Started</button>
                 }
-                {
-                    !signup && <LoginForm setSignup={setSignup}/>
-                }
-                {
-                    !signup && <p>or</p>
-                }
-                {/* {
-                    !signup && <GoogleLoginComp setSignup={setSignup}/>
-                } */}
+
+                    <LoginForm setSignup={setSignup}/>
+
                 </div>}
+                
                 {
-                    signup && <SignupForm />
+                    signup && ! sessionUser && <SignupForm />
                 }
                 </div>} {
-                !sessionUser && <div id='landing-mic'>
-                    <Microphone soundRef={soundRef} />
-                </div>
+                // !sessionUser && <div id='landing-mic'>
+                //     <Microphone soundRef={soundRef} />
+                // </div>
             }
             {!sessionUser && <img id='landing-img' src='/images/icons/landing-img.jpg'/>}
-            {sessionUser && <img id='landing-img' src='/images/icons/home-img.webp'/>}
+
         </div>
     )
 }

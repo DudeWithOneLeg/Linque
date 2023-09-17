@@ -135,15 +135,17 @@ io.on('connection', (socket) => {
         message.body = await translateText(message.body, message.friendLanguage)
         message.language = await detectLanguage(message.body)
         console.log(message.voice_id)
-        const file = await voiceApi(message.body, message.voice_id)
-        return await singlePublicFileUpload(file).then(async url => {
-          message.audio = url
-          console.log('Rooms:', socket.rooms)
-          await Message.create(message)
+        return await voiceApi(message.body, message.voice_id).then(async file => {
 
-          socket.in(room).emit('chat message', message);
-          socket.emit('chat message', message)
+          await singlePublicFileUpload(file).then(async url => {
+            message.audio = url
+            console.log('Rooms:', socket.rooms)
+            await Message.create(message)
 
+            socket.in(room).emit('chat message', message);
+            socket.emit('chat message', message)
+
+          })
         })
       }
     }

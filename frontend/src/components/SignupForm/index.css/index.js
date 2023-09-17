@@ -17,7 +17,7 @@ export default function SignupForm() {
 
   if (authUser && authUser.exists) dispatch(sessionActions.setUser(authUser.user))
 
-  const [firstName, setFirstname] = useState(authUser && authUser.firstName || '' )
+  const [firstName, setFirstname] = useState(authUser && authUser.firstName || '')
   const [lastName, setLastName] = useState(authUser && authUser.lastName || '')
   const [email, setEmail] = useState(authUser && authUser.email || '')
   const [googleAccId, setGoogleAccId] = useState(authUser && authUser.googleAccId || '')
@@ -26,10 +26,12 @@ export default function SignupForm() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [errors, setErrors] = useState({})
   const [recording, setRecording] = useState(false)
-  const recordRef = useRef(null)
-  const audioRef = useRef(null)
   const [voice_id, setVoiceId] = useState(null)
   const [defaultLanguage, setDefaultLanguage] = useState(null)
+  const [audioURL, setAudioURL] = useState('')
+
+  const recordRef = useRef(null)
+  const audioRef = useRef(null)
 
   const handleMic = () => {
 
@@ -82,7 +84,8 @@ export default function SignupForm() {
               })
 
               const audioURL = window.URL.createObjectURL(blob);
-              console.log(audioURL)
+              setAudioURL(audioURL)
+              audioRef.current.load()
 
               console.log(recordRef.current.state)
             };
@@ -113,17 +116,17 @@ export default function SignupForm() {
     if (password === confirmPassword) {
       setErrors({});
       const newUser = {
-          email,
-          firstName,
-          lastName,
-          password,
-        }
-        if (voice_id) newUser.voice_id = voice_id
-        if (defaultLanguage) newUser.defaultLanguage = defaultLanguage
-        if (googleAccId) newUser.googleAccId = googleAccId
-        if (typeof pfp !== 'object') newUser.pfp = pfp
+        email,
+        firstName,
+        lastName,
+        password,
+      }
+      if (voice_id) newUser.voice_id = voice_id
+      if (defaultLanguage) newUser.defaultLanguage = languageCodes[defaultLanguage]
+      if (googleAccId) newUser.googleAccId = googleAccId
+      if (typeof pfp !== 'object') newUser.pfp = pfp
 
-        console.log(newUser)
+      console.log(newUser)
       return dispatch(
         sessionActions.signup(newUser)
       ).then(user => {
@@ -148,15 +151,15 @@ export default function SignupForm() {
   return !authUser ? (
     <div id='signup'>
       <form onSubmit={handleSubmit} id='signup-form'>
-      <div id='signup-image-container'>
-        <p>Photo</p>
-                        <input
-                    id="signup-image"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {setPfp(e.target.files[0])}}
-                />
-                    </div>
+        <div id='signup-image-container'>
+          <p>Photo</p>
+          <input
+            id="signup-image"
+            type="file"
+            accept="image/*"
+            onChange={(e) => { setPfp(e.target.files[0]) }}
+          />
+        </div>
         <input
           onChange={(e) => setFirstname(e.target.value)}
           placeholder='First name'
@@ -186,7 +189,7 @@ export default function SignupForm() {
         />
         {errors.confirmPassword && <p class='errors'>{errors.confirmPassword}</p>}
         <select onChange={(e) => setDefaultLanguage(e.target.value)}>
-        <option value="" disabled selected>Default Language</option>
+          <option value="" disabled selected>Default Language</option>
           {
             languageNames.map((name) => {
               return <option value={languageCodes[name]}>{name}</option>
@@ -197,10 +200,23 @@ export default function SignupForm() {
           navigator.mediaDevices && navigator.mediaDevices.getUserMedia && !recording && <img src='/images/icons/microphone.png' className='sign-up-mic' onClick={handleMic} />
         }
         {
-          recording && <img src='/images/icons/stop-record.png' className='sign-up-mic' onClick={() => {setRecording(false); recordRef.current.stop()}} id='stop-record'/>
+          navigator.mediaDevices && navigator.mediaDevices.getUserMedia && <p id='script'>I let the positive overrule the negative.
+          He wiped his brow with his forearm.
+          Instead of fixing it, they give it a nickname.
+          About half the people who are infected also lose weight.
+          The second half of the book focuses on argument and essay writing.
+          We have the means to help ourselves.
+          The large items are put into containers for disposal.
+          He loves to watch me drink this stuff.
+          Still, it is an odd fashion choice.
+          Funding is always an issue after the fact.
+          Let us encourage each other.</p>
         }
-        <audio controls ref={audioRef} id='signup-audio'/>
-        <button type='submit'>Sign up</button>
+        {
+          recording && <img src='/images/icons/stop-record.png' className='sign-up-mic' onClick={() => { setRecording(false); recordRef.current.stop() }} id='stop-record' />
+        }
+        {audioURL && <audio controls ref={audioRef} id='signup-audio' src={audioURL}/>}
+        <button type='submit' id='signup-button'>Sign up</button>
       </form>
     </div>
 
@@ -236,7 +252,7 @@ export default function SignupForm() {
         />
         {errors.confirmPassword && <p class='errors'>{errors.confirmPassword}</p>}
         <select onChange={(e) => setDefaultLanguage(e.target.value)}>
-        <option value="" disabled selected>Default Language</option>
+          <option value="" disabled selected>Default Language</option>
           {
             languageNames.map((name) => {
               return <option value={languageCodes[name]}>{name}</option>
@@ -247,10 +263,23 @@ export default function SignupForm() {
           navigator.mediaDevices && navigator.mediaDevices.getUserMedia && !recording && <img src='/images/microphone.png' className='sign-up-mic' onClick={handleMic} />
         }
         {
-          recording && <img src='/images/icons/stop-record.png' className='sign-up-mic' onClick={() => {setRecording(false); recordRef.current.stop()}} id='stop-record'/>
+          navigator.mediaDevices && navigator.mediaDevices.getUserMedia && <p id='script'>I let the positive overrule the negative.
+          He wiped his brow with his forearm.
+          Instead of fixing it, they give it a nickname.
+          About half the people who are infected also lose weight.
+          The second half of the book focuses on argument and essay writing.
+          We have the means to help ourselves.
+          The large items are put into containers for disposal.
+          He loves to watch me drink this stuff.
+          Still, it is an odd fashion choice.
+          Funding is always an issue after the fact.
+          Let us encourage each other.</p>
         }
-        <audio controls ref={audioRef} id='signup-audio'/>
-        <button type='submit'>Sign up</button>
+        {
+          recording && <img src='/images/icons/stop-record.png' className='sign-up-mic' onClick={() => { setRecording(false); recordRef.current.stop() }} id='stop-record' />
+        }
+        {audioURL && <audio controls ref={audioRef} id='signup-audio' src={audioURL}/>}
+        <button type='submit' id='signup-button'>Sign up</button>
       </form>
     </div>
 

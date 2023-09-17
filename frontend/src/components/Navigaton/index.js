@@ -26,6 +26,18 @@ export default function Navigation({setLogin, setSignup}) {
 
             </div>}
             {
+                sessionUser && <div id='nav-icon-container'>
+                    <div>
+                    <img src='/images/icons/home.png' className='nav-page-icon'/>
+
+                    </div>
+                    <div>
+                    <img src='/images/icons/search.png' className='nav-page-icon'/>
+
+                    </div>
+                    </div>
+            }
+            {
                 sessionUser && <ProfileDropdown sessionUser={sessionUser}/>
             }
 

@@ -28,7 +28,8 @@ module.exports = {
         lastName: 'lition',
         email: 'demo@lition.com',
         hashedPassword: bcrypt.hashSync('password'),
-        defaultLanguage: 'en-US'
+        defaultLanguage: 'en-US',
+        pfp: 'https://scontent-sjc3-1.xx.fbcdn.net/v/t1.6435-1/162847764_213511100564880_413788499914735902_n.jpg?stp=dst-jpg_p320x320&_nc_cat=101&ccb=1-7&_nc_sid=c6021c&_nc_ohc=YN7DV1aHlQUAX_mJPJV&_nc_ht=scontent-sjc3-1.xx&oh=00_AfCvTcr5TMZQFjy3Biih-QQ-N6YVXqcsOsnBVOiRbxMFRQ&oe=652D9A58'
       },
       {
         firstName: 'Michael',

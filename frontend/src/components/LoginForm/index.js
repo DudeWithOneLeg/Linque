@@ -23,7 +23,7 @@ export default function LoginForm({setSignup}) {
         onError: () => {
           console.log('Login Failed');
         },
-        
+
       });
 
     if (sessionUser) return <Redirect to="/" />;

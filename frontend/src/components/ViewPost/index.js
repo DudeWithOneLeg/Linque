@@ -208,10 +208,10 @@ export default function ViewPost({ post, userId }) {
                 <ViewObjects results={post.PostImage.results} />
 
             </div>}
-            <ViewComments comments={post.Comments} postId={post.id} key={post.id} userId={userId} />
             {
                 post.PostImage && post.PostImage.data && !post.PostImage.results && <img src='/images/loading.png' className='loading' />
             }
+            <ViewComments comments={post.Comments} postId={post.id} key={post.id} userId={userId} />
 
         </div>
     )
