@@ -53,10 +53,10 @@ const voiceApi = async (text, voice_id) => {
 
   console.log('voiceId', voice_id)
 
-  const API_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${voice_id}`
+  const API_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${voice_id || 'ThT5KcBeYPX3keUQqHPh'}`
   const voice = {
     text: text,
-    "voice_id": voice_id,
+    "voice_id": voice_id|| 'ThT5KcBeYPX3keUQqHPh',
     "voice_settings": {
       "stability": 1,
       "similarity_boost": 1
