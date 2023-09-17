@@ -59,7 +59,7 @@ User.hasMany(models.Friend, { foreignKey: 'fromUserId', as: 'friendshipsFrom' })
         defaultValue: 'en'
       },
       pfp: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         defaultValue: 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=1024x1024&w=is&k=20&c=6XEZlH2FjqdpXUqjUK4y0LlWF6yViZVWn9HZJ-IR8gU='
       },
       googleAccId: {
