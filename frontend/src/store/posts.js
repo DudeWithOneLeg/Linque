@@ -20,6 +20,7 @@ const GET_FRIEND_POSTS = 'getPosts/friend'
 const CREATE_POST = 'create/post'
 const CREATE_POST_IMAGE = 'create/postImage'
 const CREATE_POST_IMAGES = 'create/postImages'
+const DELETE_POST_IMAGE = 'post/deleteImage'
 const UPDATE_COMMENT = 'comment/update'
 const DELETE_COMMENT = 'comment/delete'
 const CREATE_COMMENT = 'create/comment'
@@ -28,6 +29,13 @@ const setNewComment = (comment) => {
     return {
         type: CREATE_COMMENT,
         payload: comment
+    }
+}
+
+const setDeleteImage = (postId) => {
+    return {
+        type: DELETE_POST_IMAGE,
+        payload: postId
     }
 }
 
@@ -100,6 +108,17 @@ const setNewImage = (image) => {
         payload: image
     }
 }
+
+export const deleteImage = (image) => async (dispatch) => {
+    const res = await csrfFetch(`/api/postImages/${image.id}`, {
+        method: 'DELETE'
+    })
+    const data = await res.json()
+    if (data && data.message) dispatch(setDeleteImage(image.postId))
+
+    return res
+}
+
 
 export const createComment = (postId, newComment) => async (dispatch) => {
     const res = await csrfFetch(`/api/posts/${postId}/comments`, {
@@ -275,6 +294,10 @@ export const postsReducer = (state = initialState, action) => {
             newPost.Comments = {...comments}
             currentPosts[newPost.id] = {...newPost}
             return { ...currentState, allPosts: { ...currentPosts } }
+        case DELETE_POST_IMAGE:
+            const deletePostId = action.payload
+            currentPosts[deletePostId] = {...currentPosts[deletePostId], PostImage: null, hasImage: false}
+            return {...state, allPosts: currentPosts}
         default:
             return state
     }

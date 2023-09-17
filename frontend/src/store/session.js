@@ -4,6 +4,7 @@ const SET_USER = "session/setUser";
 const REMOVE_USER = "session/removeUser";
 const ADD_VOICE = "session/addVoice";
 const ADD_AUTH_USER = 'session/oauth'
+const CREATE_PROFILE_IMAGE = 'session/image'
 
 const setVoice = (voiceId) => {
   return {
@@ -16,6 +17,13 @@ const setAuth = (newUser) => {
   return {
     type: ADD_AUTH_USER,
     payload: newUser
+  }
+}
+
+const setNewImage = (image) => {
+  return {
+      type: CREATE_PROFILE_IMAGE,
+      payload: image
   }
 }
 
@@ -70,10 +78,10 @@ export const login = (user) => async (dispatch) => {
   return response;
 };
 
-export const oauth = (token) => async (dispatch) => {
+export const oauth = (newUser) => async (dispatch) => {
   const res = await csrfFetch('/api/session/oauth', {
     method: 'POST',
-    body: JSON.stringify({token})
+    body: JSON.stringify({newUser})
   })
   const data = await res.json()
   if (data && !data.errors) {
@@ -103,8 +111,23 @@ export const signup = (user) => async (dispatch) => {
   });
   const data = await response.json();
   dispatch(setUser(data.user));
-  return response;
+  return data.user;
 };
+
+export const uploadImage = (userId, image) => async (dispatch) => {
+  const formData = new FormData();
+
+  if (image) formData.append("image", image);
+  const res = await csrfFetch(`/api/users/${userId}/image`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "multipart/form-data",
+      },
+      body: formData,
+  })
+  const data = await res.json();
+  dispatch(setNewImage(data));
+}
 
 export const logout = () => async (dispatch) => {
   const response = await csrfFetch('/api/session', {
@@ -131,6 +154,10 @@ const sessionReducer = (state = initialState, action) => {
       return {...state, voice_id: action.payload}
     case ADD_AUTH_USER:
       return {...state, oauth: action.payload}
+    case CREATE_PROFILE_IMAGE:
+      const { pfp } = action.payload
+
+      return {...state, user: {...state.user, pfp}}
     default:
       return state;
   }

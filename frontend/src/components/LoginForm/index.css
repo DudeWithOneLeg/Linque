@@ -19,11 +19,11 @@ form > input::placeholder {
 input[type="text"], input[type="password"] {
     color: white;
     font-size: 18px;
-    background-color: gray;
+    background-color: rgb(177, 175, 175);
 }
 
 #login-form > input {
-    background-color: gray;
+    background-color: rgb(177, 175, 175);
 }
 
 #login-form > * {

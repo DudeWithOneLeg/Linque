@@ -66,7 +66,7 @@ export default function Microphone({ soundRef, defaultLanguage }) {
         <>
             <img
                 id='microphone'
-                src='/images/microphone.png'
+                src='/images/icons/microphone.png'
                 alt='mircophone'
                 onClick={() => tglMic()}
                 style={listening ? { backgroundColor: 'rgb(152, 74, 74)'} : {}}

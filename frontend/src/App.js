@@ -8,12 +8,14 @@ import ChatBot from "./components/ChatBot";
 import DirectMessage from "./components/DirectMessage";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginComp from "./components/GoogleLoginComp";
+import Feed from "./components/Feed";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [search, setSearch] = useState(false)
 
   const sessionUser = useSelector(state => state.session.user)
 
@@ -28,8 +30,9 @@ function App() {
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Switch>
         <Route exact path='/'>
-          {sessionUser && <Navigation />}
-          <LandingPage />
+          {sessionUser && <Navigation setSearch={setSearch}/>}
+          {!sessionUser && <LandingPage />}
+          {sessionUser && <Feed />}
           {sessionUser && <ChatBot />}
           {sessionUser && <DirectMessage />}
         </Route>
