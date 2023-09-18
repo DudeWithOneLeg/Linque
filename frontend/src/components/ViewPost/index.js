@@ -84,11 +84,11 @@ export default function ViewPost({ post, userId }) {
 
                             }
 
-                            // console.log('new array',newArr)
-                            // if (newArr.length) {
+                            console.log('new array',newArr)
+                            if (newArr.length) {
 
-                            //     dispatch(postActions.uploadImage(post.id, newArr))
-                            // }
+                                dispatch(postActions.uploadImage(post.id, newArr))
+                            }
 
                     }
 
