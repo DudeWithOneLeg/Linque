@@ -37,9 +37,13 @@
     padding-right: 5px;
 }
 
-.user-message-language {
+.user-message-language1 {
     color: white;
     margin-left: 10px;
+    justify-self: flex-end;
+    align-self: flex-end;
+    width: fit-content;
+    font-size: 14px;
 }
 
 .friend-message-language {

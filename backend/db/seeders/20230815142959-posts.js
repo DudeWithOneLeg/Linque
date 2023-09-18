@@ -50,7 +50,7 @@ module.exports = {
       },
       {
         body: "Training hard at the gym.",
-        userId: 3
+        userId: 1
       },
       {
         body: "Planning my next travel adventure.",
@@ -58,7 +58,7 @@ module.exports = {
       },
       {
         body: "Hello, friends! Just wanted to say hi.",
-        userId: 1
+        userId: 3
       },
     ]
     await queryInterface.bulkInsert(options, validPosts, {})

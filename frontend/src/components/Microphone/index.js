@@ -15,7 +15,7 @@ export default function Microphone({ soundRef, defaultLanguage }) {
     } = useSpeechRecognition();
 
     //Enable mic after welcome audio
-    if (soundRef.current) {
+    if (soundRef && soundRef.current) {
         soundRef.current.addEventListener('ended', () => {
             tglMic()
         })
