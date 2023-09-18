@@ -31,6 +31,7 @@
 
 .nav-page-icon {
     height: 100%;
+    cursor: pointer;
 }
 
 #nav-icon-container {

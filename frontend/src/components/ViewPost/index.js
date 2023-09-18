@@ -3,6 +3,7 @@ import ViewComments from '../ViewComments'
 import * as postActions from '../../store/posts'
 import { useDispatch, useSelector } from 'react-redux'
 import ViewObjects from '../ViewObjects'
+import OpengraphReactComponent from 'opengraph-react'
 import './index.css'
 
 export default function ViewPost({ post, userId }) {
@@ -123,11 +124,19 @@ export default function ViewPost({ post, userId }) {
 
 
                     </div>
-                    {post.userId === userId && <img onClick={() => setEdit(!edit)} src='/images/icons/edit.png' alt='edit' className='post-edit' />}
+                    {post.userId === userId && !edit && <img onClick={() => setEdit(true)} src='/images/icons/edit.png' alt='edit' className='post-edit' />}
+                    {post.userId === userId && edit && <p onClick={() => {
+                        setEdit(false)
+                        if (!body && !post.PostImage) {
+                            dispatch(postActions.deletePost(post.id))
+                        }
+                        }} className='post-edit-cancel'>Cancel</p>}
 
                 </div>
                 <div className='post-body'>
+
                     {!edit && post && <div>
+
                         <p>{post.body && post.body}</p>
                         {
                             post.hasImage && !post.PostImage && <img src='/images/icons/pic-loading.png' className='image-loading' alt='loading-picture'/>
@@ -142,6 +151,24 @@ export default function ViewPost({ post, userId }) {
                     </div>}
                     {post.userId === userId && edit && <div className='new-post-container'>
                         <textarea value={body} className='new-post' onChange={(e) => setBody(e.target.value)} ></textarea>
+
+                        {
+                            post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }} className='edit-post-image-container'>
+                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image edit-post-image' crossOrigin='anonymous' alt='post'/>
+                                <img src='/images/icons/delete-image.png' id='delete-image-button' onClick={() => {
+                                    dispatch(postActions.deleteImage(post.PostImage))
+                                    setNewImage(null)
+                                    }}/>
+                            </div>
+                        }
+                        {
+                            post && edit && !post.PostImage && <input
+                            id="image"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {setNewImage(e.target.files[0])}}
+                        />
+                        }
                         <div className='edit-post-buttons-container'>
                             <img
                                 src='/images/icons/save.png'
@@ -168,23 +195,6 @@ export default function ViewPost({ post, userId }) {
                                 />
 
                         </div>
-                        {
-                            post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }} className='edit-post-image-container'>
-                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image edit-post-image' crossOrigin='anonymous' alt='post'/>
-                                <img src='/images/icons/delete-image.png' id='delete-image-button' onClick={() => {
-                                    dispatch(postActions.deleteImage(post.PostImage))
-                                    setNewImage(null)
-                                    }}/>
-                            </div>
-                        }
-                        {
-                            post && edit && !post.PostImage && <input
-                            id="image"
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {setNewImage(e.target.files[0])}}
-                        />
-                        }
                     </div>}
                 </div>
 
@@ -209,7 +219,7 @@ export default function ViewPost({ post, userId }) {
 
             </div>}
             {
-                post.PostImage && post.PostImage.data && !post.PostImage.results && <img src='/images/loading.png' className='loading' />
+                post.PostImage && post.PostImage.data && !post.PostImage.results && <img src='/images/icons/loading.png' className='loading' />
             }
             <ViewComments comments={post.Comments} postId={post.id} key={post.id} userId={userId} />
 

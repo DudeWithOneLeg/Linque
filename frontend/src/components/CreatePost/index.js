@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import * as postActions from '../../store/posts'
 import { useDispatch } from 'react-redux'
+import OpengraphReactComponent from 'opengraph-react'
 import './index.css'
 
 export default function CreatePost({ user }) {
@@ -22,8 +23,10 @@ export default function CreatePost({ user }) {
         setImageForm(false)
     }
 
+
     return (
         <div id='create-post'>
+
 
             <div id='create-post-input'>
 
@@ -61,7 +64,7 @@ export default function CreatePost({ user }) {
                 }
 
                 <h2>
-                    Event
+                    Event (Dead)
                 </h2>
 
             </div>

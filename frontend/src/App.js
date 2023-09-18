@@ -9,6 +9,7 @@ import DirectMessage from "./components/DirectMessage";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginComp from "./components/GoogleLoginComp";
 import Feed from "./components/Feed";
+import Search from "./components/Search";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
 
@@ -30,11 +31,13 @@ function App() {
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <Switch>
         <Route exact path='/'>
-          {sessionUser && <Navigation setSearch={setSearch}/>}
+          {sessionUser && <Navigation setSearch={setSearch} search={search}/>}
           {!sessionUser && <LandingPage />}
-          {sessionUser && <Feed />}
-          {sessionUser && <ChatBot />}
-          {sessionUser && <DirectMessage />}
+          {sessionUser && !search && <Feed />}
+          {sessionUser && !search && <ChatBot />}
+          {sessionUser && !search && <DirectMessage />}
+          {sessionUser && search && <Search />}
+          {sessionUser && <img id='landing-img' src='/images/icons/home-img.webp'/>}
         </Route>
         {/* <Route exact path='/oauth/callback'>
           <GoogleLoginComp />

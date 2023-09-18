@@ -54,28 +54,28 @@ router.get('/', [requireAuth], async (req, res) => {
 
     const friends = await User.findByPk(userId, {
         include: [
-          {
-            model: Friend,
-            as: 'friendshipsTo',
-            include: [
-              {
-                model: User,
-                as: 'fromUser',
-              },
-            ],
-          },
-          {
-            model: Friend,
-            as: 'friendshipsFrom',
-            include: [
-              {
-                model: User,
-                as: 'toUser',
-              },
-            ],
-          },
+            {
+                model: Friend,
+                as: 'friendshipsTo',
+                include: [
+                    {
+                        model: User,
+                        as: 'fromUser',
+                    },
+                ],
+            },
+            {
+                model: Friend,
+                as: 'friendshipsFrom',
+                include: [
+                    {
+                        model: User,
+                        as: 'toUser',
+                    },
+                ],
+            },
         ],
-      })
+    })
 
 
     if (!friends) {
@@ -105,13 +105,15 @@ router.get('/:userId', [requireAuth, userExists, validateFriends], async (req, r
 router.put('/:friendshipId', [requireAuth], async (req, res) => {
 
     const { friendshipId } = req.params
+    const { id: userId } = req.user
 
     const friendship = await Friend.findOne({
         where: {
             id: friendshipId
-        },
-        include: [User]
+        }
     })
+
+    console.log(friendship)
 
     if (!friendship) {
         res.status(404)
@@ -122,6 +124,25 @@ router.put('/:friendshipId', [requireAuth], async (req, res) => {
 
     await friendship.update({
         status: 'friends'
+    })
+
+    res.status(200)
+    return res.json(friendship)
+
+})
+
+router.post('/:friendId', [requireAuth], async (req, res) => {
+
+    const { friendId } = req.params
+    const { id: userId } = req.user
+
+
+
+
+    const friendship = await Friend.create({
+        toUserId: Number(friendId),
+        fromUserId: userId,
+        status: 'pending'
     })
 
     res.status(200)

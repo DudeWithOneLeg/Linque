@@ -145,7 +145,7 @@ export default function ChatBot() {
                     />
                     <div className="input-container">
                         <Microphone soundRef={soundRef}/>
-                        <img src='/images/send.png' id='send-message-button' alt='send' onClick={handleClick} />
+                        <img src='/images/icons/send.png' id='send-message-button' alt='send' onClick={handleClick} />
                     </div>
                 </div>
             </div>}
