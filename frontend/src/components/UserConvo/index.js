@@ -2,17 +2,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, useRef } from 'react';
 import * as messageActions from '../../store/messages'
 import { io } from "socket.io-client"
-import { languageCodes } from '../SignupForm/index.css/languages';
+import { languageCodesReversed } from '../SignupForm/index.css/languages';
+import Microphone from '../Microphone';
 import './index.css'
 
 // const NODE_ENV = process.env.NODE_ENV
 
-export default function UserConvo({ selectedFriend, translate }) {
+export default function UserConvo({ selectedFriend, translate, showConvo }) {
 
     const dispatch = useDispatch()
 
     const user = useSelector(state => state.session.user)
     const messages = useSelector(state => state.message.allMessages)
+    const speech = useSelector(state => state.speech.speech)
 
 
 
@@ -41,6 +43,7 @@ export default function UserConvo({ selectedFriend, translate }) {
         }
 
         socket.emit('chat message', (message))
+        setBody('')
 
         // await dispatch(messageActions.setMessage({
         //     body: message.body,
@@ -82,6 +85,12 @@ export default function UserConvo({ selectedFriend, translate }) {
         dispatch(messageActions.getMessages(selectedFriend.id))
     }, [dispatch])
 
+    // useEffect(() => {
+    //     if (showConvo && speech && speech.length) {
+    //         setBody(speech)
+    //         console.log('bodyyy',body)
+    //     }
+    // },[speech])
 
 
     return (
@@ -89,10 +98,11 @@ export default function UserConvo({ selectedFriend, translate }) {
 
             <div id='user-conversation'>
                 {
-                    messages && Object.values(messages).length && Object.values(messages).map((message) => {
+                    messages && Object.values(messages).length ? Object.values(messages).map((message) => {
                         if (message.senderId !== user.id) {
+                            console.log(message.language)
                             return <div className="bot-message-container">
-                                <p className="user-message-language">{message.language ? languageCodes[message.language] : ''}</p>
+                                <p className="user-message-language1">{message.language ? languageCodesReversed[message.language] : ''}</p>
                                 <div className="bot-message">
                                     {message.body}
                                     {
@@ -103,7 +113,7 @@ export default function UserConvo({ selectedFriend, translate }) {
                         }
                         else {
                             return <div className="user-message-container">
-                                <p className="friend-message-language">{message.language ? languageCodes[message.language] : ''}</p>
+                                <p className="friend-message-language">{message.language ? languageCodesReversed[message.language] : ''}</p>
                                 <div className="user-message">
                                     {message.body}
                                     {
@@ -112,12 +122,13 @@ export default function UserConvo({ selectedFriend, translate }) {
                                 </div>
                             </div>
                         }
-                    })
+                    }) : <></>
                 }
             </div>
             <div id='dm-input-container'>
-                <textarea onChange={(e) => setBody(e.target.value)} id='dm-input' />
+                <textarea onChange={(e) => setBody(e.target.value)} id='dm-input' value={body}/>
                 <img src='/images/icons/send.png' onClick={handleSubmit} id='dm-send' />
+                {/* <div><Microphone defaultLanguage={user.defaultLanguage}/></div> */}
             </div>
         </div>
     )

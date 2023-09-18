@@ -22,7 +22,7 @@ export default function DirectMessage() {
             </div>
             {show && <div id='dm-main'>
                 {!showConvo && <FriendsList setShowConvo={setShowConvo} setSelectedFriend={setSelectedFriend} setRoom={setRoom}/>}
-                {showConvo && <UserConvo selectedFriend={selectedFriend} room={room} translate={translate}/>}
+                {showConvo && <UserConvo selectedFriend={selectedFriend} room={room} translate={translate} showConvo={showConvo}/>}
             </div>}
         </div>
     )
