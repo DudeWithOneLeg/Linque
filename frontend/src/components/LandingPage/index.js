@@ -28,9 +28,7 @@ export default function LandingPage() {
     // });
 
     useEffect(() => {
-        if (speech) {
-            console.log(speech.toLowerCase().includes('log') && speech.toLowerCase().includes('in'))
-        }
+
         if (speech && speech.length && speech.toLowerCase().includes('log') && speech.toLowerCase().includes('in')) {
             setSignup(false);
             setLogin(true);
@@ -44,9 +42,9 @@ export default function LandingPage() {
 
     }, [speech])
 
-    useEffect(() => {
-        console.log(login)
-    },[login])
+    // useEffect(() => {
+    //     console.log(login)
+    // },[login])
 
 
     useEffect(() => {
@@ -65,7 +63,7 @@ export default function LandingPage() {
 
     const handleGetStarted = () => {
         setDomErr(null)
-        console.log(soundRef.current.autoplay)
+        // console.log(soundRef.current.autoplay)
         soundRef.current.load()
         return soundRef.current.play()
     }
@@ -90,7 +88,7 @@ export default function LandingPage() {
                     <LoginForm setSignup={setSignup}/>
 
                 </div>}
-                
+
                 {
                     signup && ! sessionUser && <SignupForm />
                 }

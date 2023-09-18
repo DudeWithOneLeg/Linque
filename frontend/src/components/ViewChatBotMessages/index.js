@@ -89,7 +89,7 @@ export default function ViewChatBotMessages({messages}) {
                             return <></>
                         })
                     }
-                    {messages && messages[0] && Object.values(messages)[Object.values(messages).length - 1].user === true && <div className="bot-message-container">
+                    {messages && Object.values(messages)[0] && Object.values(messages)[Object.values(messages).length - 1].user === true && <div className="bot-message-container">
                         <div className="bot-message">
                             Thinking...
                         </div>

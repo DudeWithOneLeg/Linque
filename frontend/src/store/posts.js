@@ -136,7 +136,12 @@ export const updateComment = (commentId, newComment) => async (dispatch) => {
         body: JSON.stringify(newComment)
     })
     const data = await res.json()
-    if (data && !data.message) dispatch(setNewPost(data))
+    if (data && !data.message) {
+        if (data.Comments) {
+            data.Comments = flatten(data.Comments)
+        }
+        dispatch(setNewPost(data))
+    }
 
     return res
 }
@@ -190,7 +195,13 @@ export const uploadImage = (postId, image) => async (dispatch) => {
 export const getAllPosts = () => async (dispatch) => {
     const res = await csrfFetch('/api/feed')
     const data = await res.json()
-    if (data && !data.message) dispatch(setAllPosts(flatten(data)))
+    if (data && !data.message) {
+        for (let el of data) {
+            if (el.Comments) {
+            }
+        }
+        dispatch(setAllPosts(flatten(data)))
+    }
 
     return flatten(data)
 }
@@ -272,9 +283,8 @@ export const postsReducer = (state = initialState, action) => {
         case UPDATE_COMMENT:
             const comment = action.payload
             const commentId = comment.id
-            const post = currentPosts[comment.postId]
-            post[commentId] = {...comment}
-            currentPosts[post.id] = {...post}
+            const post = currentPosts[commentId]
+            currentPosts[post.id] = {...comment}
             return { ...currentState, allPosts: { ...currentPosts } }
         case DELETE_COMMENT:
             const deletedComment = action.payload

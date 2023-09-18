@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 options.tableName = 'Posts'
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -19,52 +19,52 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-   const validPosts = [
-    {
-      body: "Hello, friends! Just wanted to say hi.",
-      userId: 1
-    },
-    {
-      body: "Enjoying a beautiful day outside.",
-      userId: 2
-    },
-    {
-      body: "Working on an exciting new project.",
-      userId: 3
-    },
-    {
-      body: "Had a great time at the beach yesterday.",
-      userId: 4
-    },
-    {
-      body: "Trying out a new recipe in the kitchen.",
-      userId: 5
-    },
-    {
-      body: "Exploring new hiking trails this weekend.",
-      userId: 6
-    },
-    {
-      body: "Attended an awesome concert last night!",
-      userId: 7
-    },
-    {
-      body: "Reading a captivating novel right now.",
-      userId: 8
-    },
-    {
-      body: "Training hard at the gym.",
-      userId: 9
-    },
-    {
-      body: "Planning my next travel adventure.",
-      userId: 10
-    }
-   ]
-   await queryInterface.bulkInsert(options, validPosts, {})
+    const validPosts = [
+      {
+        body: "Enjoying a beautiful day outside.",
+        userId: 10
+      },
+      {
+        body: "Working on an exciting new project.",
+        userId: 9
+      },
+      {
+        body: "Had a great time at the beach yesterday.",
+        userId: 8
+      },
+      {
+        body: "Trying out a new recipe in the kitchen.",
+        userId: 7
+      },
+      {
+        body: "Exploring new hiking trails this weekend.",
+        userId: 6
+      },
+      {
+        body: "Attended an awesome concert last night!",
+        userId: 5
+      },
+      {
+        body: "Reading a captivating novel right now.",
+        userId: 4
+      },
+      {
+        body: "Training hard at the gym.",
+        userId: 3
+      },
+      {
+        body: "Planning my next travel adventure.",
+        userId: 2
+      },
+      {
+        body: "Hello, friends! Just wanted to say hi.",
+        userId: 1
+      },
+    ]
+    await queryInterface.bulkInsert(options, validPosts, {})
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *

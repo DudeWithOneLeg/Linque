@@ -32,21 +32,22 @@ module.exports = {
         pfp: 'https://scontent-sjc3-1.xx.fbcdn.net/v/t1.6435-1/162847764_213511100564880_413788499914735902_n.jpg?stp=dst-jpg_p320x320&_nc_cat=101&ccb=1-7&_nc_sid=c6021c&_nc_ohc=YN7DV1aHlQUAX_mJPJV&_nc_ht=scontent-sjc3-1.xx&oh=00_AfCvTcr5TMZQFjy3Biih-QQ-N6YVXqcsOsnBVOiRbxMFRQ&oe=652D9A58'
       },
       {
-        firstName: 'Michael',
-        lastName: 'Scott',
-        email: 'michael.scott@dundermifflin.com',
+        firstName: 'John',
+        lastName: 'Lee',
+        email: 'john@lee.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'ko',
         voice_id: 'aVIgfot5azBxMe2OlWbe',
-        pfp: 'https://scontent-dfw5-2.xx.fbcdn.net/v/t39.30808-6/240269904_263199525808952_8249031902273807410_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=s72A0SLzJC8AX9ki9pF&_nc_ht=scontent-dfw5-2.xx&oh=00_AfAG8BpRPZkApiYqIzSnxnS0K3vB9N87r0VVzpJ4GlVe1w&oe=650AB72D'
+        pfp: 'https://linque.s3.us-east-2.amazonaws.com/Screenshot+2023-03-23+111737.png'
       },
       {
-        firstName: 'Leonardo',
-        lastName: 'DiCaprio',
-        email: 'hollywood_star@oscarsaremylife.com',
+        firstName: 'Romeo',
+        lastName: 'Galvan',
+        email: 'romeo@galvan.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US',
-        pfp: 'https://www.themoviedb.org/t/p/original/wo2hJpn04vbtmh0B9utCFdsQhxM.jpg'
+        voice_id: 'v6Uf3guQDSmaNYJ5XArv',
+        pfp: 'https://linque.s3.us-east-2.amazonaws.com/66429182_134262421145163_6673553712580260570_n.jpg'
       },
       {
         firstName: 'Jennifer',

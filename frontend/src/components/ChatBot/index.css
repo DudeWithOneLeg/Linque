@@ -34,6 +34,7 @@
     background-color: #b9e6ff;
     border-radius: 10px 0px 0px 0px;
     box-shadow: -5px -5px 20px gray;
+    z-index: 4;
 }
 
 #chatbox-header {
@@ -115,16 +116,20 @@
     color: white;
     border-radius: 7px;
     margin-bottom: 10px;
+    border: solid 1px gray;
     display: flex;
     align-self: flex-start;
     align-items: center;
     cursor: pointer;
-    box-shadow: 1px 1px 4px gray, -2px -2px 4px gray;
 }
 
 .chatbot-conversation:hover {
-    background-color: #70a3cd;
+    box-shadow: 1px 1px 4px gray, -1px -1px 4px gray;
 }
+
+/* .chatbot-conversation:hover {
+    background-color: #70a3cd;
+} */
 
 #send-message-button {
     width: 35px;

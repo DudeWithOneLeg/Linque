@@ -35,7 +35,7 @@ export default function Feed() {
                     return <ViewPost post={post} userId={sessionUser.id} key={post.id} posts={postsState}/>
                 }): posts.message
             }
-            {sessionUser && <img id='landing-img' src='/images/icons/home-img.webp'/>}
+            
         </div>
     )
 }

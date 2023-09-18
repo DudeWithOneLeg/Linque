@@ -101,6 +101,44 @@ const validateFriends = async (req, res, next) => {
 
 const router = express.Router();
 
+router.get('/', [requireAuth], async (req, res) => {
+
+    const {id: userId} = req.user
+
+    const users = await User.findAll({
+        include: [
+            {
+              model: Friend,
+              as: 'friendshipsTo',
+              include: [
+                {
+                  model: User,
+                  as: 'fromUser',
+                  where: {
+                    id: userId
+                  }
+                },
+              ],
+            },
+            {
+              model: Friend,
+              as: 'friendshipsFrom',
+              include: [
+                {
+                  model: User,
+                  as: 'toUser',
+                  where: {
+                    id: userId
+                  }
+                },
+              ],
+            },
+          ],
+    })
+    res.status(200)
+    return res.json(users)
+})
+
 router.post(
     '/',
     validateSignup,
