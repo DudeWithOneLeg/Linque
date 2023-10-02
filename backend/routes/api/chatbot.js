@@ -516,7 +516,7 @@ router.post('/', [requireAuth], async (req, res) => {
     if (!chatBody.chatBotConvoId) {
         const convo = await ChatBotConvo.create({
             userId: userId,
-            title: chatBody.body,
+            title: 'test',
             summary: 'test'
         })
         options.chatBotConvoId = convo.id
