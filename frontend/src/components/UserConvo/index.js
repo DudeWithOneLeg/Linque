@@ -127,7 +127,7 @@ export default function UserConvo({ selectedFriend, translate, showConvo }) {
             </div>
             <div id='dm-input-container'>
                 <textarea onChange={(e) => setBody(e.target.value)} id='dm-input' value={body}/>
-                <img src='/images/icons/send.png' onClick={handleSubmit} id='dm-send' />
+                {body && <img src='/images/icons/send.png' onClick={handleSubmit} id='dm-send' />}
                 {/* <div><Microphone defaultLanguage={user.defaultLanguage}/></div> */}
             </div>
         </div>

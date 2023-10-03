@@ -26,6 +26,7 @@
 #dm-main {
     height: 600px;
     padding: 10px;
+    overflow-y: scroll;
 }
 
 #translate-toggle {

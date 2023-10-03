@@ -40,3 +40,14 @@
     justify-content: space-between;
     width: 200px;
 }
+
+.social {
+    height: 40px;
+    border-radius: 5px;
+}
+
+#social-container > *{
+    padding-right: 10px;
+    justify-self: center;
+    align-self: center;
+}

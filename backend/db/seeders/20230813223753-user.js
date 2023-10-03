@@ -92,7 +92,7 @@ module.exports = {
       {
         firstName: 'Taylor',
         lastName: 'Swift',
-        email: 'pop_princess@shakingitoff.com',
+        email: 'taylor@swift.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US',
         pfp: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTklZr3V4e81p1ulDQcekPRk5SqjAZeFLTQ&usqp=CAU'
@@ -100,11 +100,92 @@ module.exports = {
       {
         firstName: 'Tom',
         lastName: 'Hanks',
-        email: 'hanks_for_laughing@comedymovies.com',
+        email: 'tom@hanks.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US',
         pfp: 'https://static.wikia.nocookie.net/stephenking/images/0/0b/Tom-hanks.jpg/revision/latest?cb=20170504034642'
+      },
+      {
+        firstName: 'Angelina',
+        lastName: 'Jolie',
+        email: 'angelina@jolie.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'https://images6.alphacoders.com/322/322852.jpg'
+      },
+      {
+        firstName: 'George',
+        lastName: 'Clooney',
+        email: 'george@clooney.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'https://flxt.tmsimg.com/assets/23213_v9_bb.jpg'
+      },
+      {
+        firstName: 'Scarlett',
+        lastName: 'Johansson',
+        email: 'scarlett@johansson.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'https://qph.cf2.quoracdn.net/main-qimg-6fd73d5351a38d8473c54f7fc004c31a-lq'
+      },
+      {
+        firstName: 'Chris',
+        lastName: 'Hemsworth',
+        email: 'chris@hemsworth.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'https://www.themoviedb.org/t/p/original/jpurJ9jAcLCYjgHHfYF32m3zJYm.jpg'
+      },
+      {
+        firstName: 'Charlize',
+        lastName: 'Theron',
+        email: 'charlize@theron.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'https://m.media-amazon.com/images/M/MV5BMTk5Mzc4ODU0Ml5BMl5BanBnXkFtZTcwNjU1NTI0Mw@@._V1_FMjpg_UX1000_.jpg'
+      },
+      {
+        firstName: 'Robert',
+        lastName: 'Downey Jr.',
+        email: 'robert@downey.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'URL_TO_USER_PROFILE_PICTURE7'
+      },
+      {
+        firstName: 'Mila',
+        lastName: 'Kunis',
+        email: 'mila@kunis.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'URL_TO_USER_PROFILE_PICTURE8'
+      },
+      {
+        firstName: 'Ryan',
+        lastName: 'Reynolds',
+        email: 'ryan@reynolds.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'URL_TO_USER_PROFILE_PICTURE9'
+      },
+      {
+        firstName: 'Kate',
+        lastName: 'Winslet',
+        email: 'kate@winslet.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'URL_TO_USER_PROFILE_PICTURE10'
+      },
+      {
+        firstName: 'Matthew',
+        lastName: 'McConaughey',
+        email: 'matthew@mcconaughey.com',
+        hashedPassword: bcrypt.hashSync('password'),
+        defaultLanguage: 'en-US',
+        pfp: 'URL_TO_USER_PROFILE_PICTURE11'
       }
+
     ]
 
    await queryInterface.bulkInsert(options, validUsers, {})
@@ -118,7 +199,7 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     await queryInterface.bulkDelete(options, {
-      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 20]
     }, {});
   }
 };

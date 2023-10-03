@@ -20,16 +20,17 @@ module.exports = {
      * }], {});
     */
     const validComments = [
-      { userId: 1, postId: 1, body: "Comment 1" },
-  { userId: 2, postId: 2, body: "Comment 2" },
-  { userId: 3, postId: 3, body: "Comment 3" },
-  { userId: 4, postId: 4, body: "Comment 4" },
-  { userId: 5, postId: 5, body: "Comment 5" },
-  { userId: 6, postId: 6, body: "Comment 6" },
-  { userId: 7, postId: 7, body: "Comment 7" },
-  { userId: 8, postId: 8, body: "Comment 8" },
-  { userId: 9, postId: 9, body: "Comment 9" },
-  { userId: 10, postId: 10, body: "Comment 10" }
+      { userId: 1, postId: 1, body: "Hope you guys have fun!" },
+  { userId: 10, postId: 2, body: "SO HOT!" },
+  { userId: 3, postId: 3, body: "Cant wait to see your  work!" },
+  { userId: 4, postId: 4, body: "TAKE ME WITH YOU!" },
+  { userId: 5, postId: 5, body: "Staying safe in style." },
+  { userId: 6, postId: 6, body: "It looks soooo comfy." },
+  { userId: 7, postId: 7, body: "I need a new laptop too, Def gonna buy this too." },
+  { userId: 8, postId: 8, body: "OH EM GEE I LOVE THESE!" },
+  { userId: 9, postId: 9, body: "This would definitely come in handy in my toolset." },
+  { userId: 10, postId: 10, body: "Siiiiick! We should learn a song together!" },
+  { userId: 11, postId: 11, body: "Lets take a trip to Alaska!" },
     ];
     await queryInterface.bulkInsert(options, validComments, {})
   },
@@ -42,7 +43,7 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     await queryInterface.bulkDelete(options, {
-      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     }, {});
   }
 };
