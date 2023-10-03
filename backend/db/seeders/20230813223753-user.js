@@ -151,7 +151,7 @@ module.exports = {
         email: 'robert@downey.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US',
-        pfp: 'URL_TO_USER_PROFILE_PICTURE7'
+        pfp: 'https://www.nowrunning.com/content/Artist/Robert-Downey/banner.jpg'
       },
       {
         firstName: 'Mila',
@@ -159,7 +159,7 @@ module.exports = {
         email: 'mila@kunis.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US',
-        pfp: 'URL_TO_USER_PROFILE_PICTURE8'
+        pfp: 'https://flxt.tmsimg.com/assets/173413_v9_ba.jpg'
       },
       {
         firstName: 'Ryan',
@@ -167,7 +167,7 @@ module.exports = {
         email: 'ryan@reynolds.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US',
-        pfp: 'URL_TO_USER_PROFILE_PICTURE9'
+        pfp: 'https://image.tmdb.org/t/p/w500/4SYTH5FdB0dAORV98Nwg3llgVnY.jpg'
       },
       {
         firstName: 'Kate',
@@ -175,7 +175,7 @@ module.exports = {
         email: 'kate@winslet.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US',
-        pfp: 'URL_TO_USER_PROFILE_PICTURE10'
+        pfp: 'https://m.media-amazon.com/images/M/MV5BODgzMzM2NTE0Ml5BMl5BanBnXkFtZTcwMTcyMTkyOQ@@._V1_FMjpg_UX1000_.jpg'
       },
       {
         firstName: 'Matthew',
@@ -183,7 +183,7 @@ module.exports = {
         email: 'matthew@mcconaughey.com',
         hashedPassword: bcrypt.hashSync('password'),
         defaultLanguage: 'en-US',
-        pfp: 'URL_TO_USER_PROFILE_PICTURE11'
+        pfp: 'https://img.a.transfermarkt.technology/portrait/big/94540-1636851420.jpg?lm=1'
       }
 
     ]
