@@ -12,6 +12,7 @@ export default function CreateComment({ postId }) {
     const [body, setBody] = useState('')
 
     const handleSubmit = () => {
+        if (!body) return 
         dispatch(commentActions.createComment(postId, {body: body}))
         setBody('')
     }

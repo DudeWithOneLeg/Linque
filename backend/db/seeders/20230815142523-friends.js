@@ -63,7 +63,52 @@ module.exports = {
       toUserId: 1,
       fromUserId: 10,
       status: "pending"
-    }
+    },
+    {
+      toUserId: 1,
+      fromUserId: 11,
+      status: "friends"
+    },
+    {
+      toUserId: 1,
+      fromUserId: 12,
+      status: "friends"
+    },
+    {
+      toUserId: 1,
+      fromUserId: 13,
+      status: 'friends'
+    },
+    {
+      toUserId: 1,
+      fromUserId: 14,
+      status: "friends"
+    },
+    {
+      toUserId: 1,
+      fromUserId: 15,
+      status: "friends"
+    },
+    {
+      toUserId: 1,
+      fromUserId: 16,
+      status: "friends"
+    },
+    {
+      toUserId: 1,
+      fromUserId: 17,
+      status: "friends"
+    },
+    {
+      toUserId: 1,
+      fromUserId: 18,
+      status: "friends"
+    },
+    {
+      toUserId: 1,
+      fromUserId: 19,
+      status: "friends"
+    },
    ]
    await queryInterface.bulkInsert(options, validFriends, {})
   },

@@ -1,6 +1,7 @@
 #logo > a {
     text-decoration: none;
     color: white;
+    padding-right: 10px;
 }
 
 #logo {

@@ -15,6 +15,7 @@ export default function Navigation({ setLogin, setSignup, setSearch, search }) {
         <div id='navigation'>
 
             <Logo />
+            
             {!sessionUser && <div id='login-signup'>
                 <a
                     onClick={() => { setSignup(false); setLogin(true) }}>

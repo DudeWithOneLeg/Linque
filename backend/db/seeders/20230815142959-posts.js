@@ -20,46 +20,51 @@ module.exports = {
      * }], {});
     */
     const validPosts = [
+
       {
-        body: "Enjoying a beautiful day outside.",
-        userId: 10
-      },
-      {
-        body: "Working on an exciting new project.",
-        userId: 9
-      },
-      {
-        body: "Had a great time at the beach yesterday.",
-        userId: 8
-      },
-      {
-        body: "Trying out a new recipe in the kitchen.",
-        userId: 7
-      },
-      {
-        body: "Exploring new hiking trails this weekend.",
-        userId: 6
-      },
-      {
-        body: "Attended an awesome concert last night!",
-        userId: 5
-      },
-      {
-        body: "Reading a captivating novel right now.",
-        userId: 4
-      },
-      {
-        body: "Training hard at the gym.",
-        userId: 1
-      },
-      {
-        body: "Planning my next travel adventure.",
+        body: "Road trip!",
         userId: 2
       },
       {
-        body: "Hello, friends! Just wanted to say hi.",
+        body: "Am I hot or am I hot?",
         userId: 3
       },
+      {
+        body: "Just got this sick camera to record my acheivements!",
+        userId: 4
+      },
+      {
+        body: "Abut to be lifted off the ground and fly high!",
+        userId: 5
+      },
+      {
+        body: "Checkout this new sick helmet I just bought!",
+        userId: 6
+      },
+      {
+        body: "This chair is so comfortable!",
+        userId: 7
+      },
+      {
+        body: "Leveling up!",
+        userId: 8
+      },
+      {
+        body: "Checkout my new kicks!",
+        userId: 9
+      },
+      {
+        body: "New addition to the set.",
+        userId: 10
+      },
+      {
+        body: "Now I can get started on learning how to play!",
+        userId: 11
+      },
+      {
+        body: "Checkout my birthday present!",
+        userId: 12
+      }
     ]
     await queryInterface.bulkInsert(options, validPosts, {})
   },
@@ -72,7 +77,7 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     await queryInterface.bulkDelete(options, {
-      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      id: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     }, {});
   }
 };
