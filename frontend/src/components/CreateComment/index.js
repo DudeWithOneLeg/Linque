@@ -12,7 +12,7 @@ export default function CreateComment({ postId }) {
     const [body, setBody] = useState('')
 
     const handleSubmit = () => {
-        if (!body) return 
+        if (!body) return
         dispatch(commentActions.createComment(postId, {body: body}))
         setBody('')
     }
@@ -23,8 +23,9 @@ export default function CreateComment({ postId }) {
             <textarea
                 onChange={(e) => setBody(e.target.value)}
                 value={body}
+                placeholder='Add something to the conversation!'
             />
-            <img className='send-icon' src='/images/icons/send.png' onClick={() => handleSubmit()}/>
+            {body && <img className='send-icon' src='/images/icons/send.png' onClick={() => handleSubmit()}/>}
         </div>
     )
 }

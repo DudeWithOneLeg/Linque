@@ -7,6 +7,16 @@
     font-size: 20px;
     color: white;
     padding-left: 10px;
+    margin-right: 0px;
+
+}
+
+.create-comment > textarea:focus {
+    outline: none;
+}
+
+.create-comment > textarea::placeholder {
+    color: rgb(80, 78, 78);
 }
 
 .create-comment {
@@ -16,8 +26,8 @@
 }
 
 .send-icon {
-    position: relative;
-    right: -10px;
+    position: absolute;
+    right: 10px;
     margin-right: 20px;
     width: 30px;
     height: 30px;
