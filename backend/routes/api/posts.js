@@ -308,7 +308,7 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
     const imageData = JSON.parse(image.data)
 
 
-    const func = async () => {
+    const imageSearch = async () => {
         return new Promise(async (resolve) => {
             if (urls.length) {
 
@@ -353,7 +353,7 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
         }).catch((e) => console.log(e))
     };
 
-    const results = await func()
+    const results = await imageSearch()
 
 
 
