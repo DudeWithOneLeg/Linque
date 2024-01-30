@@ -259,7 +259,6 @@ router.post('/:postId/comments', [requireAuth, postExists, validateFriends], asy
 
 router.post('/:postId/image', [requireAuth, postExists, isPostAuthor, singleMulterUpload('image')], async (req, res) => {
 
-    console.log(req.file)
     const url = await singlePublicFileUpload(req.file);
     const { postId } = req.params
     const { id: userId } = req.user
@@ -271,16 +270,18 @@ router.post('/:postId/image', [requireAuth, postExists, isPostAuthor, singleMult
         if (object.name !== 'Person') arr.push(object)
     })
 
-    const postImage = await PostImage.create({
-        url, postId, userId, data: JSON.stringify(arr), results: null
-    })
-    res.status(200)
-    console.log(postImage.dataValues)
-    return res.json({ ...postImage.dataValues })
+const postImage = await PostImage.create({
+    url, postId, userId, data: JSON.stringify(arr), results: null
+})
+res.status(200)
+console.log(postImage.dataValues)
+return res.json({ ...postImage.dataValues })
 
 })
 
 router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], async (req, res) => {
+    let imageAlt = 'Maybe a photo of'
+    const objCount = {}
 
     const { postId } = req.params
 
@@ -303,7 +304,7 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
     const urls = await multiplePublicFileUpload(req.files)
 
-    //temporary limit
+
     const obj = {}
     const imageData = JSON.parse(image.data)
 
@@ -320,24 +321,24 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
 
                     let callback = async function (data) {
-                        console.log(data)
+                        //console.log(data)
 
                         if (data.search_metadata.status === 'Success') {
 
                             if (data.shopping_results && data.shopping_results.length) {
                                 const matches = data.shopping_results.slice(0, 4);
                                 obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name, image: image };
-                                console.log('callback', obj);
+                                //console.log('callback', obj);
                             }
                             else if (data.visual_matches && data.visual_matches.length) {
                                 const matches = data.visual_matches.slice(0, 4);
                                 obj[itemIndex] = { matches: matches, name: imageData[itemIndex].name, image: image };
-                                console.log('callback', obj);
+                                //console.log('callback', obj);
                             }
                         }
 
                         if (i === urls.length - 1) {
-                            console.log(urls, urls[i])
+                            //console.log(urls, urls[i])
                             resolve(obj);
                         }
                     };
@@ -350,7 +351,7 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
             } else {
                 resolve({});
             }
-        }).catch((e) => console.log(e))
+        }).catch((e) => console.log('ERROR',e))
     };
 
     const results = await imageSearch()
@@ -361,15 +362,32 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
     console.log('OBJECTS', results)
 
-    // if (!results || !Object.values(results).length) {
+    for (let res of Object.values(results)) {
+        const objName = res.name
+        if (!objCount[objName]) objCount[objName] = 1
+        else objCount[objName]++
+    }
 
-    // }
+    const objKeys = Object.keys(objCount)
+
+    for (let i = 0; i < objKeys.length; i++) {
+        if (i === objKeys.length - 1) {
+            if (objCount[objKeys[i]] > 1) imageAlt += ` and ${objCount[objKeys[i]]} ${objKeys[i]}s.`
+            else imageAlt += ` and a ${objKeys[i]}.`
+        }
+
+        else {
+            if (objCount[objKeys[i]] > 1) imageAlt += ` ${objCount[objKeys[i]]} ${objKeys[i]}s,`
+            else imageAlt += ` a ${objKeys[i]},`
+        }
+    }
 
     const newImage = await image.update({
-        results: JSON.stringify(results)
+        results: JSON.stringify(results),
+        alt: imageAlt
     })
 
-    console.log(newImage)
+    //console.log(newImage)
     res.status(200)
     return res.json(newImage)
 
