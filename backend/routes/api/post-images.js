@@ -1,33 +1,28 @@
-const express = require('express');
-const { requireAuth } = require('../../utils/auth');
-const { User, Friend, Post, Comment, PostImage } = require('../../db/models');
+const express = require("express");
+const { requireAuth } = require("../../utils/auth");
+const { User, Friend, Post, Comment, PostImage } = require("../../db/models");
 
 const router = express.Router();
 
-router.delete('/:imageId', [requireAuth], async (req, res) => {
+router.delete("/:imageId", [requireAuth], async (req, res) => {
+  const { imageId } = req.params;
+  const image = await PostImage.findByPk(imageId);
+  const post = await Post.findByPk(image.postId);
 
-    const { imageId } = req.params
+  if (image) {
+    await image.destroy();
+  }
 
-    const image = await PostImage.findByPk(imageId)
+  if (post) {
+    await post.update({
+      hasImage: false,
+    });
+  }
 
-    const post = await Post.findByPk(image.postId)
+  res.status(200);
+  return res.json({
+    message: "Image successfully deleted.",
+  });
+});
 
-
-    if (image) {
-        await image.destroy()
-    }
-
-    if (post) {
-        await post.update({
-            hasImage: false
-        })
-    }
-
-    res.status(200)
-    return res.json({
-        message: 'Image successfully deleted.'
-    })
-
-})
-
-module.exports = router
+module.exports = router;

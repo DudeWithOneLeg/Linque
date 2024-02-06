@@ -3,6 +3,7 @@ const { requireAuth } = require("../../utils/auth");
 const { User, Friend, Post, Comment, PostImage } = require("../../db/models");
 const { Op } = require("sequelize");
 const SerpApi = require("google-search-results-nodejs");
+const vision = require("@google-cloud/vision");
 const {
   singleMulterUpload,
   singlePublicFileUpload,
@@ -45,30 +46,26 @@ const isPostAuthor = (req, res, next) => {
 
 //Detect objects in an image
 async function detectObjects(url) {
-  const vision = require("@google-cloud/vision");
-
   const client = new vision.ImageAnnotatorClient();
-  console.log(client);
-
-  // Performs label detection on the image file
   const [result] = await client.objectLocalization(url);
   const objects = result.localizedObjectAnnotations;
   const arr = [];
+
   objects.forEach((object) => {
     const obj = {};
     obj.name = object.name;
     obj.data = object.boundingPoly.normalizedVertices;
     arr.push(obj);
   });
+
   return arr;
 }
 
-//Are you REALLY friends? hmmmm
+//Are you REALLY friends? hmmmm...
 const validateFriends = async (req, res, next) => {
   if (req.err) return res.json(req.err);
 
   const { id: userId } = req.user;
-
   const { userId: friendId } = req.post;
 
   if (userId === friendId) return next();
@@ -93,7 +90,7 @@ const validateFriends = async (req, res, next) => {
   return next();
 };
 
-//Verify if post exists
+//Verify post exists
 const postExists = async (req, res, next) => {
   console.log(req.body);
   const { postId } = req.params;
