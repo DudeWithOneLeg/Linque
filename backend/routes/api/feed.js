@@ -1,85 +1,90 @@
-const express = require('express');
-const { requireAuth } = require('../../utils/auth');
-const { User, Friend, Post, Comment, PostImage } = require('../../db/models');
-const { Op } = require('sequelize');
+const express = require("express");
+const { requireAuth } = require("../../utils/auth");
+const { User, Friend, Post, Comment, PostImage } = require("../../db/models");
+const { Op } = require("sequelize");
 
+//Flatten or 'normalize' an object
 const flatten = (arr) => {
-
-    const obj = {}
-    for (let el of arr) {
-        if (el.results) {
-            console.log(el.results)
-            el.data = JSON.parse(el.results)
-        }
-        obj[el.id] = el
+  const obj = {};
+  for (let el of arr) {
+    if (el.results) {
+      console.log(el.results);
+      el.data = JSON.parse(el.results);
     }
-    return obj
-}
+    obj[el.id] = el;
+  }
+  return obj;
+};
 
 const router = express.Router();
 
 //Get all posts only if friends
-router.get('/', requireAuth, async (req, res) => {
+router.get("/", requireAuth, async (req, res) => {
+  const userid = req.user.id;
 
-    const userid = req.user.id
+  const friends = await Friend.findAll({
+    where: {
+      [Op.or]: [{ toUserId: userid }, { fromUserId: userid }],
+      status: "friends",
+    },
+  });
 
-    const friends = await Friend.findAll({
-        where: {
-            [Op.or]: [{ toUserId: userid }, { fromUserId: userid }],
-            status: 'friends'
-        }
-    })
+  const friendsIds = [userid];
 
-    const friendsIds = [userid]
+  friends.map((friend) => {
+    if (
+      friend.toUserId !== userid &&
+      friend.fromUserId == userid &&
+      !friendsIds.includes(friend.toUserId) &&
+      friend.status === "friends"
+    )
+      return friendsIds.push(friend.toUserId);
+    else if (
+      friend.fromUserId !== userid &&
+      friend.toUserId === userid &&
+      !friendsIds.includes(friend.fromUserId) &&
+      friend.status === "friends"
+    ) {
+      return friendsIds.push(friend.fromUserId);
+    }
+  });
 
-    friends.map((friend) => {
+  let posts = await Post.findAll({
+    where: {
+      userId: {
+        [Op.in]: friendsIds,
+      },
+    },
+    include: [
+      {
+        model: Comment,
+        include: User,
+      },
+      User,
 
-        if (friend.toUserId !== userid && friend.fromUserId == userid && !friendsIds.includes(friend.toUserId) && friend.status === 'friends')
-            return friendsIds.push(friend.toUserId)
-        else if (friend.fromUserId !== userid && friend.toUserId === userid && !friendsIds.includes(friend.fromUserId) && friend.status === 'friends') {
-            return friendsIds.push(friend.fromUserId)
-        }
-    })
+      {
+        model: PostImage,
+      },
+    ],
+  });
 
-    let posts = await Post.findAll({
-        where: {
-            userId: {
-                [Op.in]: friendsIds
-            }
-        },
-        include: [
-            {
-                model: Comment,
-                include: User
-            },
-            User,
+  const newPosts = [];
 
-            {
-                model: PostImage
-            }
-        ]
-    })
+  posts.forEach((post) => {
+    post = post.toJSON();
+    console.log(post.User);
+    if (post.PostImage) {
+      (post.url = post.PostImage.url),
+        (post.data = JSON.parse(post.PostImage.data));
+    }
+    if (post.Comments) {
+      post.Comments = flatten(post.Comments);
+    }
+    newPosts.push(post);
+  });
 
+  res.status(200);
+  return res.json(newPosts);
+});
 
-
-    const newPosts = []
-
-    posts.forEach(post => {
-        post = post.toJSON()
-        console.log(post.User)
-        if (post.PostImage) {
-            post.url = post.PostImage.url,
-            post.data = JSON.parse(post.PostImage.data)
-        }
-        if (post.Comments) {
-            post.Comments = flatten(post.Comments)
-        }
-        newPosts.push(post)
-    })
-
-    res.status(200)
-    return res.json(newPosts)
-
-})
-
-module.exports = router
+module.exports = router;

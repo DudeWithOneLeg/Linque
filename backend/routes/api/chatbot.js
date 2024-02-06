@@ -338,10 +338,7 @@ const fetchGPT = async (prompt, res, body, req) => {
         }
 
         else {
-            //const russian = await translateText(object.message)
-            //console.log(russian, 'yooo')
-            //object.message = russian
-            //detectLanguage(russian)
+
             voiceApi(object, res, body, req)
         }
 
@@ -352,7 +349,7 @@ const fetchGPT = async (prompt, res, body, req) => {
 }
 
 const searchResults = (object, res, body, req) => {
-    console.log("Response Object", object)
+    //console.log("Response Object", object)
 
 
     const search = new SerpApi.GoogleSearch(SERP_API_KEY);
@@ -360,9 +357,9 @@ const searchResults = (object, res, body, req) => {
     const callback = async function (data) {
         const engine = data.search_parameters.engine
 
-        console.log("FETCHED api")
-        console.log("---------------------------------------")
-        console.log(data)
+        // console.log("FETCHED api")
+        // console.log("---------------------------------------")
+        // console.log(data)
 
 
         object.engine = engine
@@ -380,7 +377,7 @@ const searchResults = (object, res, body, req) => {
 
                 const article = data.organic_results[0]
                 object.data = data.organic_results
-                console.log(article)
+                //console.log(article)
             }
 
             // const data2 = await axios.get(article.link, {responseType: 'document'})
@@ -423,7 +420,7 @@ const searchResults = (object, res, body, req) => {
             if (data.organic_results) {
 
                 const result = data.organic_results[0]
-                object.message = data.organic_results[0].snippet
+                object.message = result.snippet
                 object.data = data.organic_results
             }
 
@@ -503,13 +500,10 @@ router.get('/:chatBotConvoId', [requireAuth], async (req, res) => {
 router.post('/', [requireAuth], async (req, res) => {
 
     const { id: userId } = req.user
-
     const chatBody = req.body
-
     const language = await detectLanguage(chatBody.body)
-
     const translated = await translateText(chatBody.body, language)
-    console.log('TRANSLATED', translated)
+    //console.log('TRANSLATED', translated)
 
     const options = { ...chatBody, user: true }
 
@@ -530,9 +524,8 @@ router.post('/', [requireAuth], async (req, res) => {
 })
 
 router.post('/gpt', [requireAuth], async (req, res) => {
+    
     const { body } = req
-
-
 
     return await fetchGPT(body.body, res, body, req)
 
