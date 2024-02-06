@@ -308,7 +308,7 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
     const obj = {}
     const imageData = JSON.parse(image.data)
 
-
+    //Google Lens search for every object
     const imageSearch = async () => {
         return new Promise(async (resolve) => {
             if (urls.length) {
@@ -362,6 +362,7 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
     console.log('OBJECTS', results)
 
+    //Count num of objects in photo
     for (let res of Object.values(results)) {
         const objName = res.name
         if (!objCount[objName]) objCount[objName] = 1
@@ -370,6 +371,7 @@ router.post('/images/:postId', [requireAuth, multipleMulterUpload('image')], asy
 
     const objKeys = Object.keys(objCount)
 
+    //Generate alt string using name and num of objects in photo
     for (let i = 0; i < objKeys.length; i++) {
         if (i === objKeys.length - 1) {
             if (objCount[objKeys[i]] > 1) imageAlt += ` and ${objCount[objKeys[i]]} ${objKeys[i]}s.`
