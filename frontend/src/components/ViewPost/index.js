@@ -86,7 +86,7 @@ export default function ViewPost({ post, userId }) {
 
                             console.log('new array',newArr)
                             if (newArr.length) {
-                                
+
                                 dispatch(postActions.uploadImage(post.id, newArr))
                             }
 
@@ -143,7 +143,7 @@ export default function ViewPost({ post, userId }) {
                         }
                         {
                             post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }}>
-                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image' crossOrigin='anonymous' alt='post'/>
+                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image' crossOrigin='anonymous' alt={post.PostImage.alt}/>
                             </div>
 
 
@@ -154,7 +154,7 @@ export default function ViewPost({ post, userId }) {
 
                         {
                             post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }} className='edit-post-image-container'>
-                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image edit-post-image' crossOrigin='anonymous' alt='post'/>
+                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image edit-post-image' crossOrigin='anonymous' alt={post.PostImage.alt}/>
                                 <img src='/images/icons/delete-image.png' id='delete-image-button' onClick={() => {
                                     dispatch(postActions.deleteImage(post.PostImage))
                                     setNewImage(null)
