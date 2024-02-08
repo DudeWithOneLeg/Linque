@@ -4,6 +4,7 @@ const { User, Friend, Post, Comment, PostImage } = require('../../db/models');
 
 const router = express.Router()
 
+//Verify comment exists
 const commentExists = async (req, res, next) => {
     const { commentId } = req.params
     const comment = await Comment.findOne({
@@ -85,6 +86,7 @@ router.put('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (
     return res.json(post)
 })
 
+//Delete a comment
 router.delete('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (req, res) => {
 
     const { comment } = req

@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
 import * as postsActions from '../../store/posts'
 import ViewPost from "../ViewPost";
 import CreatePost from "../CreatePost";
@@ -9,9 +8,7 @@ import './index.css'
 export default function Feed() {
 
     const [posts, setPosts] = useState({})
-
     const dispatch = useDispatch()
-
     const sessionUser = useSelector(state => state.session.user)
     const postsState = useSelector(state => state.posts.allPosts)
 
@@ -25,8 +22,6 @@ export default function Feed() {
         })
     }, [dispatch])
 
-
-
     return (
         <div id='feed'>
             <CreatePost user={sessionUser}/>
@@ -35,7 +30,7 @@ export default function Feed() {
                     return <ViewPost post={post} userId={sessionUser.id} key={post.id} posts={postsState}/>
                 }): posts.message
             }
-            
+
         </div>
     )
 }
