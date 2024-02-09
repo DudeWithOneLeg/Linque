@@ -15,6 +15,20 @@ export default function ViewPost({ post, userId }) {
     const dispatch = useDispatch()
 
     const posts = useSelector(state => state.posts.allPosts)
+    let createdAt = post.createdAt.split('T').join(' · ').slice(0, 18)
+    let hour = createdAt.split(' · ')[1].split(':')[0]
+
+    if (hour > 12 && !createdAt.includes('PM') && !createdAt.includes('AM')) {
+
+        const oldHour = hour
+        hour -= 12
+        createdAt = createdAt.replace(oldHour, hour)
+        createdAt += ' PM'
+    }
+    else if (hour < 12 && !createdAt.includes('AM') && !createdAt.includes('PM')) {
+
+        createdAt += ' AM'
+    }
 
     useEffect(() => {
         if (post.PostImage) {
@@ -119,7 +133,7 @@ export default function ViewPost({ post, userId }) {
                         <img className='profile-image' src={post.User.pfp} alt='profile' />
                         <div>
                             <h3>{post.User.firstName} {post.User.lastName}</h3>
-                            <p>{post.createdAt}</p>
+                            <p>{createdAt}</p>
                         </div>
 
 
