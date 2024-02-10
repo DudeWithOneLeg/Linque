@@ -1,8 +1,22 @@
 # Linque
 
-This project is a modernized social platform. A user has the option to create an A.I voice clone on signup. This voice clone is used when translating within Direct Messages. If the users don't speak each others language, Not only will the text be translated, but it will be translated in the senders voice.  When a user uploads a photo to their feed, objects are identified and the internet is searched for visually matching objects/products and the links are displayed under the image. There is also a chatbot with access to google search that includes an A.I generated voice response with language detection and multilingual support. The user can search for YouTube videos,  images, places, and events.
+## Social Platform Modernization
+The project aims to modernize a social platform to enhance user experience and interaction.
 
-[Live Site](https://linque.onrender.com)
+## AI Voice Clone Creation
+Upon signup, users are provided with the option to create an AI voice clone. This clone replicates the user's voice, enabling personalized interactions.
+
+## Voice Translation in Direct Messages
+Within Direct Messages, if users speak different languages, not only is the text translated but it's also rendered in the sender's voice. This feature enhances communication by providing a more natural and immersive experience.
+
+## Object Recognition in Photo Uploads
+When users upload photos to their feed, the platform utilizes object recognition technology to identify objects within the images. It then searches the internet for visually matching objects or products, displaying relevant links underneath the image. This feature enriches the content and facilitates discovery.
+
+## Chatbot with AI Voice Responses
+The platform incorporates a chatbot with access to Google search functionalities. The chatbot provides AI-generated voice responses with language detection and multilingual support. Users can interact with the chatbot to search for various content types, including YouTube videos, images, places, and events. This feature offers users a seamless and informative conversational experience.
+
+
+[Live Site](https://linque-m98u.onrender.com)
 
 # Author
 [Romeo Galvan](https://github.com/DudeWithOneLeg)
