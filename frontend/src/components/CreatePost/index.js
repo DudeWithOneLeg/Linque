@@ -1,12 +1,14 @@
 import { useState } from "react";
 import * as postActions from "../../store/posts";
 import { useDispatch } from "react-redux";
+import GoogleMaps from "../GoogleMaps";
 import "./index.css";
 
 export default function CreatePost({ user }) {
   const [body, setBody] = useState("");
   const [image, setImage] = useState(null);
   const [imageForm, setImageForm] = useState(false);
+  const [eventForm, setEventForm] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
@@ -65,7 +67,14 @@ export default function CreatePost({ user }) {
           </div>
         )}
 
-        <h2>Event (Dead)</h2>
+        {!eventForm && <h2
+        onClick={() => setEventForm(!eventForm)}
+        >Event (Dead)</h2>}
+        {
+          eventForm && <div>
+            <GoogleMaps />
+          </div>
+        }
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { useDispatch, useSelector } from 'react-redux';
-import * as placeActions from '../../store/googleMaps'
+//import * as placeActions from '../../store/googleMaps'
 import './index.css'
 
 // const libraries = ['places']
@@ -14,10 +14,10 @@ export default function GoogleMaps({message}) {
 
     const placeDetails = useSelector(state => state.map.place)
 
-    const latLng = message.data.gps_coordinates
+    //const latLng = message.data.gps_coordinates
 
 
-    const [position, setPosition] = useState({lat: latLng.latitude, lng: latLng.longitude})
+    const [position, setPosition] = useState({lat: 0, lng: 0})
 
     const dispatch = useDispatch()
 
@@ -33,12 +33,12 @@ export default function GoogleMaps({message}) {
 
     // const placeDetails = useSelector(state => state.map.place)
 
-    // const mapRef = useRef(null);
+     const mapRef = useRef(null);
 
-    // const [zoom, setZoom] = useState(19)
-    // const { ready, value, setValue, suggestions: { status, data }, clearSuggestions } = usePlacesAutocomplete({
+     const [zoom, setZoom] = useState(19)
+    const { ready, value, setValue, suggestions: { status, data }, clearSuggestions } = usePlacesAutocomplete({
 
-    // })
+    })
 
     // useEffect(() => {
     //     console.log('hello')
@@ -98,118 +98,118 @@ export default function GoogleMaps({message}) {
 
     const marker = () => {
         return (
-            <Marker ></Marker>
+            <Marker position={position}></Marker>
         )
     }
 
     // const geocoder = new window.google.maps.Geocoder();
 
-    // const handleMapClick = (e) => {
-    //     setPosition({
-    //         lat: e.latLng.lat(),
-    //         lng: e.latLng.lng()
-    //     })
-    //     console.log(position)
+    const handleMapClick = (e) => {
+        setPosition({
+            lat: e.latLng.lat(),
+            lng: e.latLng.lng()
+        })
+        console.log(position)
 
-    //     if (zoom <= 15) {
-    //         setZoom(19)
-    //     }
-    //     if (zoom <= 12) {
-    //         setZoom(15)
-    //     }
-    //     if (zoom <= 9) {
-    //         setZoom(12)
-    //     }
-    //     if (zoom <= 6) {
-    //         setZoom(9)
-    //     }
-    //     if (zoom <= 3) {
-    //         setZoom(6)
-    //     }
-    //     const currentZoom = mapRef.current.getZoom()
-    //     setZoom(currentZoom)
+        if (zoom <= 15) {
+            setZoom(19)
+        }
+        if (zoom <= 12) {
+            setZoom(15)
+        }
+        if (zoom <= 9) {
+            setZoom(12)
+        }
+        if (zoom <= 6) {
+            setZoom(9)
+        }
+        if (zoom <= 3) {
+            setZoom(6)
+        }
+        const currentZoom = mapRef.current.getZoom()
+        setZoom(currentZoom)
 
-    // }
+    }
 
-    // const handleResults = () => {
-    //     console.log(status, data)
-    //     return data.map(location => {
+    const handleResults = () => {
+        //console.log(status, data)
+        return data.map(location => {
 
-    //         return (<p onClick={(e) => {
-    //             setAddress(e.target.value)
-    //             clearSuggestions()
-    //             const service = new window.google.maps.places.PlacesService(mapRef.current);
-    //             service.getDetails({ placeId: location.place_id }, (result, status) => {
-    //                 if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-    //                     const location = result.geometry.location;
-    //                     const lat = location.lat();
-    //                     const lng = location.lng();
-    //                     let i = mapRef.current.getZoom()
-    //                     let time = 150
-    //                     if (i < 4) {
+            return (<p onClick={(e) => {
+                setAddress(e.target.value)
+                clearSuggestions()
+                const service = new window.google.maps.places.PlacesService(mapRef.current);
+                service.getDetails({ placeId: location.place_id }, (result, status) => {
+                    if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+                        const location = result.geometry.location;
+                        const lat = location.lat();
+                        const lng = location.lng();
+                        let i = mapRef.current.getZoom()
+                        let time = 150
+                        if (i < 4) {
 
-    //                         let id = setInterval(() => {
-    //                             if (i >= 4) {
+                            let id = setInterval(() => {
+                                if (i >= 4) {
 
-    //                                 setPosition({ lat: lat, lng: lng })
-    //                                 let newId = setInterval(() => {
-    //                                     if (i >= 17) {
-    //                                         clearInterval(newId)
-    //                                     }
-    //                                     setZoom(i++)
-    //                                 }, time)
-    //                                 clearInterval(id)
-    //                             }
-    //                             setZoom(i++)
-    //                         }, time)
-
-
-    //                         return
-
-    //                     }
-
-    //                     if (i > 4) {
-
-    //                         let id = setInterval(() => {
-    //                             if (i <= 4) {
-
-    //                                 console.log(i)
-    //                                 setPosition({ lat: lat, lng: lng })
-    //                                 let newId = setInterval(() => {
-    //                                     if (i >= 17) {
-    //                                         clearInterval(newId)
-    //                                     }
-    //                                     setZoom(i++)
-    //                                 }, time)
-    //                                 clearInterval(id)
-    //                             }
-    //                             setZoom(i--)
-    //                         }, time)
+                                    setPosition({ lat: lat, lng: lng })
+                                    let newId = setInterval(() => {
+                                        if (i >= 17) {
+                                            clearInterval(newId)
+                                        }
+                                        setZoom(i++)
+                                    }, time)
+                                    clearInterval(id)
+                                }
+                                setZoom(i++)
+                            }, time)
 
 
-    //                         return
-    //                     }
+                            return
 
-    //                     if (i === 4) {
-    //                         setPosition({ lat: lat, lng: lng })
-    //                         let newId = setInterval(() => {
-    //                             if (i >= 17) {
-    //                                 clearInterval(newId)
-    //                             }
-    //                             setZoom(i++)
-    //                         }, time)
-    //                         return
-    //                     }
-    //                 } else {
-    //                     console.error('Place details request failed:', status);
-    //                 }
-    //             });
-    //         }}
-    //             value={location.description}
-    //             tabIndex={1}
-    //         >{location.description}</p>)
-    //     })
-    // }
+                        }
+
+                        if (i > 4) {
+
+                            let id = setInterval(() => {
+                                if (i <= 4) {
+
+                                    console.log(i)
+                                    setPosition({ lat: lat, lng: lng })
+                                    let newId = setInterval(() => {
+                                        if (i >= 17) {
+                                            clearInterval(newId)
+                                        }
+                                        setZoom(i++)
+                                    }, time)
+                                    clearInterval(id)
+                                }
+                                setZoom(i--)
+                            }, time)
+
+
+                            return
+                        }
+
+                        if (i === 4) {
+                            setPosition({ lat: lat, lng: lng })
+                            let newId = setInterval(() => {
+                                if (i >= 17) {
+                                    clearInterval(newId)
+                                }
+                                setZoom(i++)
+                            }, time)
+                            return
+                        }
+                    } else {
+                        console.error('Place details request failed:', status);
+                    }
+                });
+            }}
+                value={location.description}
+                tabIndex={1}
+            >{location.description}</p>)
+        })
+    }
 
 
 
@@ -234,14 +234,14 @@ export default function GoogleMaps({message}) {
                     <p>{state}</p>
                 </div>
             </div> */}
-            <p>{message.body}</p>
+            {/* <p>{message.body}</p> */}
             <div className='map'>
                 {
                     isLoaded ? (
                         <GoogleMap
                             mapContainerStyle={containerStyle}
                             center={position}
-                            zoom={7}
+                            zoom={1}
 
                             options={{
 
@@ -256,10 +256,10 @@ export default function GoogleMaps({message}) {
                                     position: window.google.maps.ControlPosition.RIGHT_TOP,
                                 }
                             }}
-                            //onClick={(e) => handleMapClick(e)}
-                            // onLoad={(map) => mapRef.current = map
+                            onClick={(e) => handleMapClick(e)}
+                            onLoad={(map) => mapRef.current = map
 
-                            // }
+                             }
                         >
                             { /* Child components, such as markers, info windows, etc. */}
                             {
