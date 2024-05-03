@@ -26,7 +26,21 @@ const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const PROJECT_ID = process.env.PROJECT_ID;
 const NODE_ENV = process.env.NODE_ENV;
 
-const translate = new Translate({ PROJECT_ID });
+const googleCloudCreds = {
+  "type": "service_account",
+  "project_id": "linque-2",
+  "private_key_id": process.env.GOOGLE_CLOUD_PRIVATE_KEY_ID,
+  "private_key": process.env.GOOGLE_CLOUD_PRIVATE_KEY,
+  "client_email": "linque-translate@linque-2.iam.gserviceaccount.com",
+  "client_id": "105457358034187759043",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/linque-translate%40linque-2.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+
+const translate = new Translate({credentials: googleCloudCreds});
 
 // Detects the sentiment of the text
 async function detectLanguage(text) {
