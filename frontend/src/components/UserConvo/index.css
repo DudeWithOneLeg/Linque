@@ -3,38 +3,44 @@
     display: flex;
     flex-direction: column;
     z-index: 6;
+    padding: 5px;
+    /* margin: 10px; */
 }
 
 #user-conversation {
-    height: 85%;
+    height: 600px;
     overflow-y: scroll;
+    /* overflow: hidden; */
+    padding: 5px;
 }
 
 #dm-input-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
     bottom: 0px;
-    margin-left: -5px;
+    /* margin-left: -5px;*/
     margin-bottom: 0px;
-    padding: 5px 5px 5px 0px;
+    /* margin: 5px; */
+    height: 50px;
 }
 
 #dm-input {
     font-size: 15px;
-    height: 100%;
-    width: 80%;
+    width: 100%;
     border-radius: 5px;
-    padding-right: 30px;
+    /* margin: 20px; */
     background-color: antiquewhite;
+    outline: none;
 }
 
 #dm-send {
     width: 35px;
     cursor: pointer;
-    padding-right: 5px;
+    padding: 5px;
+    /* padding-right: 15px; */
 }
 
 .user-message-language1 {

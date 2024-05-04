@@ -1,15 +1,48 @@
 .dm-list {
     border-radius: 7px;
-    background-color: rgb(46, 56, 68);
+    background-color: rgb(54, 69, 87);
     height: 35px;
     display:flex;
     align-items: center;
     padding-left: 10px;
     margin-bottom: 5px;
     cursor: pointer;
+    border: solid 1px;
+}
+
+#friends-list::-webkit-scrollbar {
+    border-radius: 20px;
+    width: 10px;
+    background: #465775;
+    /* padding: 4px; */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 20px;
+    /* padding: 10px; */
+}
+
+.dm-list:hover {
+    background-color: rgb(45, 56, 68);
 }
 
 .dm-list > p {
     margin: 0px;
     padding: 0px;
+}
+
+.dm-friend-list-pfp {
+   width: 25px;
+   height: 25px;
+   border-radius: 10px;
+   margin-right: 5px;
+   object-fit: cover;
+}
+
+#friends-list {
+    padding: 5px;
+    margin: 5px 5px 0px 5px;
+    overflow-y: scroll;
+    height: 600px;
 }

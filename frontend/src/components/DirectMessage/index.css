@@ -2,6 +2,7 @@
     position: fixed;
     left: 0px;
     bottom: 0px;
+    margin-bottom: 0px;
     height: fit-content;
     width: 400px;
     border-radius: 0px 10px 0px 0px;
@@ -9,6 +10,8 @@
     flex-direction: column;
     background-color: #465775;
     z-index: 4;
+    margin: 0px;
+    padding: 0px;
 }
 
 #dm-header {
@@ -19,21 +22,34 @@
     height: 40px;
     width: 100%;
     cursor: pointer;
-    background-color: rgb(110, 198, 168);
+    background-color: rgb(45, 56, 68);
     border-radius: 0px 10px 0px 0px;
 }
 
-#dm-main {
-    height: 600px;
-    padding: 10px;
-    overflow-y: scroll;
+#dm-header:hover {
+    background-color: rgb(61, 76, 93);
 }
+
+#dm-main {
+    /* height: 100%; */
+    /* padding: 10px; */
+    /* overflow-y: scroll; */
+    /* margin: 0px; */
+    /* padding-right: 0px; */
+    /* margin-bottom: 0px; */
+}
+
+
+
+  ::-webkit-scrollbar-track {
+    /* padding: 2px; */
+  }
 
 #translate-toggle {
     height: 25px;
-    width: 25px;
+    /* width: 25px; */
     border-radius: 100%;
-    padding: 2px;
+    /* padding: 2px; */
 }
 
 .translate-toggle-active {

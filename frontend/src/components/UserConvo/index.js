@@ -15,9 +15,9 @@ export default function UserConvo({ selectedFriend, translate, showConvo }) {
   const messages = useSelector((state) => state.message.allMessages);
   const speech = useSelector((state) => state.speech.speech);
 
-  const socket = io("https://linque.onrender.com");
+  // const socket = io("https://linque.onrender.com");
 
-  // const socket = io('http://localhost:8000');
+  const socket = io('http://localhost:8000');
 
   const [message, setMessage] = useState({});
   const [body, setBody] = useState("");
@@ -93,7 +93,7 @@ export default function UserConvo({ selectedFriend, translate, showConvo }) {
         {messages && Object.values(messages).length ? (
           Object.values(messages).map((message) => {
             if (message.senderId !== user.id) {
-              console.log(message.language);
+              // console.log(message.language);
               return (
                 <div className="bot-message-container">
                   <p className="user-message-language1">

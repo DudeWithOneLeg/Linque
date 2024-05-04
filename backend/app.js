@@ -108,33 +108,33 @@ const server = http.createServer(app);
 
 const isProduction = environment === "production";
 
-const io = require("socket.io")(server, {
-  cors: {
-    origin: `https://linque.onrender.com`,
-    methods: ["GET", "POST"],
-  },
-});
-
 // const io = require("socket.io")(server, {
 //   cors: {
-//     origin: 'http://localhost:3000',
-//     methods: ["GET", "POST"]
-//   }
+//     origin: `https://linque.onrender.com`,
+//     methods: ["GET", "POST"],
+//   },
 // });
 
+const io = require("socket.io")(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ["GET", "POST"]
+  }
+});
+
 io.on("connection", (socket) => {
-  console.log("A user connected", socket.id);
+  // console.log("A user connected", socket.id);
 
   socket.on("join room", (message) => {
     socket.join(message.room);
 
-    console.log("joined room:", message.room);
+    // console.log("joined room:", message.room);
   });
 
   socket.on("leave room", (room) => {
     socket.leave(room);
-    console.log(socket.rooms);
-    console.log("left room:", room);
+    // console.log(socket.rooms);
+    // console.log("left room:", room);
   });
 
   socket.on("chat message", async (message) => {
@@ -148,7 +148,7 @@ io.on("connection", (socket) => {
           message.friendLanguage
         );
         message.language = await detectLanguage(message.body);
-        console.log(message.voice_id);
+        // console.log(message.voice_id);
         return await voiceApi(message.body, message.voice_id).then(
           async (file) => {
             await singlePublicFileUpload(file).then(async (url) => {
