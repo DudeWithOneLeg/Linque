@@ -1,6 +1,6 @@
 const express = require('express')
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Message, User, UserConvo, Friend, ChatBotConvo, ChatBotMessage } = require('../../db/models')
+const { requireAuth } = require('../../utils/auth');
+const { ChatBotConvo, ChatBotMessage } = require('../../db/models')
 const axios = require('axios');
 const fs = require('fs')
 const util = require('util');
@@ -8,15 +8,28 @@ const writeFile = util.promisify(fs.writeFile);
 const SerpApi = require('google-search-results-nodejs');
 const { Translate } = require('@google-cloud/translate').v2;
 
-const PROJECT_ID = process.env.PROJECT_ID;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const SERP_API_KEY = process.env.SERP_API_KEY;
 
+const googleCloudCreds = {
+    "type": "service_account",
+    "project_id": "linque-2",
+    "private_key_id": process.env.GOOGLE_CLOUD_PRIVATE_KEY_ID,
+    "private_key": process.env.GOOGLE_CLOUD_PRIVATE_KEY,
+    "client_email": "linque-translate@linque-2.iam.gserviceaccount.com",
+    "client_id": "105457358034187759043",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/linque-translate%40linque-2.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
+
 const router = express.Router()
 
 // Instantiates a client
-const translate = new Translate({ PROJECT_ID });
+const translate = new Translate({ credentials: googleCloudCreds });
 
 async function detectLanguage(text) {
 
@@ -437,7 +450,6 @@ const searchResults = (object, res, body, req) => {
                 object.data = data.shopping_results
             }
 
-
         }
 
         if (engine === 'google_images') {
@@ -445,10 +457,8 @@ const searchResults = (object, res, body, req) => {
             if (data.images_results) {
 
                 const imageResults = data.images_results
-
                 object.data = { images: { ...imageResults.slice(0, 4) }, metaData: { ...data.search_metadata } }
             }
-
 
         }
         // console.log(object)
@@ -462,7 +472,6 @@ const searchResults = (object, res, body, req) => {
         // console.log('yoooooo', object.api)
         search.json(object.api, callback)
     }
-
 
 }
 
