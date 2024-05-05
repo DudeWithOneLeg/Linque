@@ -1,6 +1,6 @@
 import { useState } from "react";
-import FriendsList from "../FriendsList";
-import UserConvo from "../UserConvo";
+import FriendsList from "./FriendsList";
+import UserConvo from "./UserConvo";
 import "./index.css";
 
 export default function DirectMessage() {
@@ -10,23 +10,27 @@ export default function DirectMessage() {
   const [translate, setTranslate] = useState(false);
   const [show, setShow] = useState(false);
 
+  const goBack = () => {
+    setShowConvo(false);
+  }
+
+  const showwMessages = () => {
+    setShow(!show);
+    setShowConvo(showConvo);
+  }
+
   return (
     <div id="direct-message">
       <div id="dm-header">
         {showConvo && show && (
           <img
             src="/images/icons/back.png"
-            onClick={() => {
-              setShowConvo(false);
-            }}
+            onClick={goBack}
             id="dm-back"
           />
         )}
         <p
-          onClick={() => {
-            setShow(!show);
-            setShowConvo(showConvo);
-          }}
+          onClick={showwMessages}
         >
           Direct Messages
         </p>

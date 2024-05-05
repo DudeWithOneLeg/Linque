@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import * as friendActions from '../../store/friends'
+import * as friendActions from '../../../store/friends'
 import { io } from "socket.io-client"
 import './index.css'
 
@@ -24,7 +24,9 @@ export default function FriendsList({setShowConvo, setSelectedFriend, setRoom}) 
         <div id='friends-list'>
             {
                 Object.values(friends).length ? Object.values(friends).map((friendship) => {
+
                     const friend = friendship.toUser ? friendship.toUser : friendship.fromUser
+                    
                     return <div onClick={() => handleClick(friendship)} key={friendship.id} className='dm-list'>
                         <img src={friend.pfp} className='dm-friend-list-pfp'/>
                         <p>{friend.firstName} {friend.lastName}</p>

@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import * as chatBotActions from "../../store/chatbot";
 import * as speechActions from "../../store/speech";
 import { useDispatch, useSelector } from "react-redux";
-import ViewChatBotConvos from "../ViewChatBotConvos";
-import ViewChatBotMessages from "../ViewChatBotMessages";
+import ViewChatBotConvos from "./ViewChatBotConvos";
+import ViewChatBotMessages from "./ViewChatBotMessages";
 import Microphone from "../Microphone";
 import "./index.css";
 

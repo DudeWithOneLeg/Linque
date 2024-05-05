@@ -1,4 +1,4 @@
-import * as chatBotActions from "../../store/chatbot";
+import * as chatBotActions from "../../../store/chatbot";
 import { useDispatch } from "react-redux";
 
 export default function ViewChatBotConvos({ convo, setShowConvos }) {

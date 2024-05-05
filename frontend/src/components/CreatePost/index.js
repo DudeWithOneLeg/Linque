@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as postActions from "../../store/posts";
 import { useDispatch } from "react-redux";
-import GoogleMaps from "../GoogleMaps";
+import GoogleMaps from "../ChatBot/GoogleMaps";
 import "./index.css";
 
 export default function CreatePost({ user }) {

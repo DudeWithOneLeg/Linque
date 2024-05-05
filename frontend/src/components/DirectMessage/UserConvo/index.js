@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
-import * as messageActions from "../../store/messages";
+import * as messageActions from "../../../store/messages";
 import { io } from "socket.io-client";
-import { languageCodesReversed } from "../SignupForm/index.css/languages";
-import Microphone from "../Microphone";
+
+import Microphone from "../../Microphone";
+import Messages from "../Messages";
 import "./index.css";
 
 // const NODE_ENV = process.env.NODE_ENV
@@ -90,50 +91,7 @@ export default function UserConvo({ selectedFriend, translate, showConvo }) {
   return (
     <div id="user-convo">
       <div id="user-conversation">
-        {messages && Object.values(messages).length ? (
-          Object.values(messages).map((message) => {
-            if (message.senderId !== user.id) {
-              // console.log(message.language);
-              return (
-                <div className="bot-message-container">
-                  <p className="user-message-language1">
-                    {message.language
-                      ? languageCodesReversed[message.language]
-                      : ""}
-                  </p>
-                  <div className="bot-message">
-                    {message.body}
-                    {message.audio ? (
-                      <audio src={message.audio} controls playbackRate={0.9} />
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                </div>
-              );
-            } else {
-              return (
-                <div className="user-message-container">
-                  <p className="friend-message-language">
-                    {message.language
-                      ? languageCodesReversed[message.language]
-                      : ""}
-                  </p>
-                  <div className="user-message">
-                    {message.body}
-                    {message.audio ? (
-                      <audio src={message.audio} autoPlay controls />
-                    ) : (
-                      <></>
-                    )}
-                  </div>
-                </div>
-              );
-            }
-          })
-        ) : (
-          <></>
-        )}
+        <Messages messages={messages} user={user}/>
       </div>
       <div id="dm-input-container">
         <textarea
