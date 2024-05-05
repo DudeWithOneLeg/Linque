@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import ViewComments from './ViewComments'
-import * as postActions from '../../store/posts'
+import ViewComments from '../ViewComments'
+import * as postActions from '../../../store/posts'
 import { useDispatch, useSelector } from 'react-redux'
-import ViewObjects from './ViewObjects'
-import OpengraphReactComponent from 'opengraph-react'
-import PostImage from './PostImage'
+import ViewObjects from '../ViewObjects'
+// import OpengraphReactComponent from 'opengraph-react'
+import PostImage from '../PostImage'
 import './index.css'
 
 export default function ViewPost({ post, userId }) {
@@ -118,7 +118,7 @@ export default function ViewPost({ post, userId }) {
 
 
 
-    }, [posts])
+    }, [posts, dispatch, post.PostImage, post.id])
 
 
 
@@ -154,7 +154,7 @@ export default function ViewPost({ post, userId }) {
 
                         <p>{post.body && post.body}</p>
                         {
-                            post.hasImage && !post.PostImage && <img src='/images/icons/pic-loading.png' className='image-loading' alt='loading-picture'/>
+                            post.hasImage && !post.PostImage && <img src='/images/icons/pic-loading.png' className='image-loading' alt='loading'/>
                         }
                         {
                             post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }}>
@@ -199,6 +199,7 @@ export default function ViewPost({ post, userId }) {
                                         dispatch(postActions.deletePost(post.id))
 
                                     }}
+                                    alt='delete'
                                 />
 
                         </div>
@@ -218,9 +219,9 @@ export default function ViewPost({ post, userId }) {
 
 
 
-                <ViewObjects post={post} />
+                { post.PostImage ? <ViewObjects post={post} /> :<></>}
             {
-                post.PostImage && post.PostImage.data && !post.PostImage.results && <img src='/images/icons/loading.png' className='loading' />
+                post.PostImage && post.PostImage.data && !post.PostImage.results && <img src='/images/icons/loading.png' className='loading' alt='loading'/>
             }
             <ViewComments comments={post.Comments} postId={post.id} key={post.id} userId={userId} />
 

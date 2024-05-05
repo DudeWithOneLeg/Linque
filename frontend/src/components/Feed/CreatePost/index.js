@@ -1,7 +1,7 @@
 import { useState } from "react";
-import * as postActions from "../../store/posts";
+import * as postActions from "../../../store/posts";
 import { useDispatch } from "react-redux";
-import GoogleMaps from "../ChatBot/GoogleMaps";
+import GoogleMaps from "../../ChatBot/GoogleMaps";
 import "./index.css";
 
 export default function CreatePost({ user }) {
@@ -67,14 +67,14 @@ export default function CreatePost({ user }) {
           </div>
         )}
 
-        {!eventForm && <h2
-        onClick={() => setEventForm(!eventForm)}
-        >Event (Dead)</h2>}
-        {
-          eventForm && <div>
+        {!eventForm && (
+          <h2 onClick={() => setEventForm(!eventForm)}>Event (Dead)</h2>
+        )}
+        {eventForm && (
+          <div>
             <GoogleMaps />
           </div>
-        }
+        )}
       </div>
     </div>
   );

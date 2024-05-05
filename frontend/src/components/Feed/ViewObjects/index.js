@@ -7,11 +7,13 @@ export default function ViewObjects({ post }) {
   const [data, setData] = useState([]);
   // console.log(objects)
   let results;
-  // console.log(results);
 
-  if (post && post.postImage && post.postimage.results) {
 
-    results = JSON.parse(results);
+  if (post && post.PostImage && post.PostImage.results) {
+
+    results = JSON.parse(post.PostImage.results);
+    // console.log(results);
+    // console.log('hi')
   }
 
   return results ? (

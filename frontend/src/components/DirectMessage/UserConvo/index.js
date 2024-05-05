@@ -2,7 +2,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import * as messageActions from "../../../store/messages";
 import { io } from "socket.io-client";
-
 import Microphone from "../../Microphone";
 import Messages from "../Messages";
 import "./index.css";

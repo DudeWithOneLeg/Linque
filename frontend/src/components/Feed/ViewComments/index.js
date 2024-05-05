@@ -1,6 +1,6 @@
 import CreateComment from "../CreateComment";
 import ViewComment from "../ViewComment";
-import OpengraphReactComponent from "opengraph-react";
+// import OpengraphReactComponent from "opengraph-react";
 
 import "./index.css";
 
