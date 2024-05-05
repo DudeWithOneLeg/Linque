@@ -100,7 +100,7 @@ router.get(
 
 router.post('/oauth', async (req, res) => {
   const { newUser: authUser } = req.body
-  console.log(authUser)
+  // console.log(authUser)
 
   const user = await User.findOne({
     where: {
@@ -142,7 +142,7 @@ router.post('/oauth', async (req, res) => {
   if (authUser.family_name) newUser.lastName = authUser.family_name
   if (authUser.picture) newUser.pfp = authUser.picture
 
-  console.log(authUser)
+  // console.log(authUser)
 
   res.status(200)
   return res.json(newUser)

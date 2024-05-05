@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import ViewComments from '../ViewComments'
+import ViewComments from './ViewComments'
 import * as postActions from '../../store/posts'
 import { useDispatch, useSelector } from 'react-redux'
-import ViewObjects from '../ViewObjects'
+import ViewObjects from './ViewObjects'
 import OpengraphReactComponent from 'opengraph-react'
+import PostImage from './PostImage'
 import './index.css'
 
 export default function ViewPost({ post, userId }) {
@@ -33,7 +34,7 @@ export default function ViewPost({ post, userId }) {
     useEffect(() => {
         if (post.PostImage) {
             const newArr = []
-            const imgDiv = document.getElementById(post.url)
+            // const imgDiv = document.getElementById(post.url)
             const img = document.getElementById(post.PostImage.url + 'image')
 
             img.onload = () => {
@@ -98,7 +99,7 @@ export default function ViewPost({ post, userId }) {
 
                             }
 
-                            console.log('new array',newArr)
+                            // console.log('new array',newArr)
                             if (newArr.length) {
 
                                 dispatch(postActions.uploadImage(post.id, newArr))
@@ -166,15 +167,7 @@ export default function ViewPost({ post, userId }) {
                     {post.userId === userId && edit && <div className='new-post-container'>
                         <textarea value={body} className='new-post' onChange={(e) => setBody(e.target.value)} ></textarea>
 
-                        {
-                            post && post.PostImage && <div id={post.PostImage.url} style={{ position: 'relative' }} className='edit-post-image-container'>
-                                <img id={post.PostImage.url + 'image'} src={post.PostImage.url} className='post-image edit-post-image' crossOrigin='anonymous' alt={post.PostImage.alt}/>
-                                <img src='/images/icons/delete-image.png' id='delete-image-button' onClick={() => {
-                                    dispatch(postActions.deleteImage(post.PostImage))
-                                    setNewImage(null)
-                                    }}/>
-                            </div>
-                        }
+                        <PostImage post={post} setNewImage={setNewImage}/>
                         {
                             post && edit && !post.PostImage && <input
                             id="image"
@@ -221,17 +214,11 @@ export default function ViewPost({ post, userId }) {
                 <p>{Object.values(post.Comments).length ? Object.values(post.Comments).length : '0'} comments</p>
 
             </div>
-            {post.PostImage && post.PostImage.results && <div className='post-like-button'>
-                {/* <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUXbmV2ZXIgZ29ubmEgZ2l2ZSB5b3UgdXA%3D' target="_blank">
 
-                    <img src='/images/like.png' />
-                </a>
 
-                <h3>Like</h3> */}
 
-                <ViewObjects results={post.PostImage.results} />
 
-            </div>}
+                <ViewObjects post={post} />
             {
                 post.PostImage && post.PostImage.data && !post.PostImage.results && <img src='/images/icons/loading.png' className='loading' />
             }

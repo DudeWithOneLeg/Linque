@@ -1,4 +1,4 @@
-import * as commentActions from "../../store/posts";
+import * as commentActions from "../../../store/posts";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import "./index.css";

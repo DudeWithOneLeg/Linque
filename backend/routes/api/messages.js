@@ -28,15 +28,15 @@ async function translateText(text, target) {
 
   // Translates some text into Russian
   const [translation] = await translate.translate(text, target);
-  console.log(`Text: ${text}`);
-  console.log(`Translation: ${translation}`);
+  // console.log(`Text: ${text}`);
+  // console.log(`Translation: ${translation}`);
   return translation;
 }
 
 //Text-to-speech
 const voiceApi = async (text, voice_id) => {
-  console.log("---------------------------------------");
-  console.log("Fetching audio...");
+  // console.log("---------------------------------------");
+  // console.log("Fetching audio...");
 
   const API_ENDPOINT = `https://api.elevenlabs.io/v1/text-to-speech/${voice_id}`;
   const voice = {
@@ -58,15 +58,15 @@ const voiceApi = async (text, voice_id) => {
     })
     .then((response) => {
       if (response.data) {
-        console.log(response);
+        // console.log(response);
         const file = new File(fs.readFile("/audio/audio.mp3"));
-        console.log("new file", file);
+        // console.log("new file", file);
         return file;
       }
     })
     .catch((error) => console.error(error))
     .catch(() => {
-      console.log("FAILED :(");
+      // console.log("FAILED :(");
     });
 };
 
@@ -75,12 +75,12 @@ const writeAudio = (buffer) => {
   const audioBuffer = Buffer.from(buffer, "binary");
   writeFile("audio/audio.mp3", audioBuffer)
     .then(async () => {
-      console.log("SUCCESS: File written successfully!");
-      console.log("---------------------------------------");
+      // console.log("SUCCESS: File written successfully!");
+      // console.log("---------------------------------------");
     })
     .catch((err) => {
-      console.error("FAILED: Writing audio failed.", err);
-      console.log("---------------------------------------");
+      // console.error("FAILED: Writing audio failed.", err);
+      // console.log("---------------------------------------");
     });
 };
 

@@ -32,8 +32,8 @@ async function translateText(text, target) {
 
     // Translates some text into Russian
     const [translation] = await translate.translate(text, target);
-    console.log(`Text: ${text}`);
-    console.log(`Translation: ${translation}`);
+    // console.log(`Text: ${text}`);
+    // console.log(`Translation: ${translation}`);
     return translation
 }
 
@@ -42,8 +42,8 @@ async function translateText(text, target) {
 router.use('/audio', express.static('audio'))
 
 const voiceApi = async (object, res, body, req) => {
-    console.log("---------------------------------------");
-    console.log('Fetching audio...')
+    // console.log("---------------------------------------");
+    // console.log('Fetching audio...')
 
     const API_ENDPOINT = 'https://api.elevenlabs.io/v1/text-to-speech/ThT5KcBeYPX3keUQqHPh'
     const voice = {
@@ -64,13 +64,13 @@ const voiceApi = async (object, res, body, req) => {
         responseType: 'arraybuffer'
     }).then(response => {
         if (response.data) {
-            console.log(response.data)
+            // console.log(response.data)
             writeAudio(response.data, object, res, body, req)
         }
 
     })
         .catch(error => console.error(error)).catch(() => {
-            console.log('FAILED :(')
+            // console.log('FAILED :(')
         })
 }
 
@@ -79,15 +79,15 @@ const writeAudio = (buffer, object, res, body, req) => {
     const audioBuffer = Buffer.from(buffer, 'binary')
     writeFile("audio/audio.mp3", audioBuffer)
         .then(async () => {
-            console.log('SUCCESS: File written successfully!');
-            console.log("---------------------------------------");
+            // console.log('SUCCESS: File written successfully!');
+            // console.log("---------------------------------------");
 
 
 
             if (object) {
 
                 const language = await detectLanguage(object.message)
-                console.log(language)
+                // console.log(language)
 
                 const chat = await ChatBotMessage.create({
                     body: object.message,
@@ -105,15 +105,15 @@ const writeAudio = (buffer, object, res, body, req) => {
                 })
 
                 res.status(200);
-                console.log({ ...data, data: JSON.parse(data.data) })
+                // console.log({ ...data, data: JSON.parse(data.data) })
                 return res.json({ ...data, data: JSON.parse(data.data) });
 
             }
 
         })
         .catch((err) => {
-            console.error('FAILED: Writing audio failed.', err);
-            console.log("---------------------------------------");
+            // console.error('FAILED: Writing audio failed.', err);
+            // console.log("---------------------------------------");
         })
 }
 
@@ -323,15 +323,15 @@ const fetchGPT = async (prompt, res, body, req) => {
         const gptRes = response.data.choices[0].message.content.replace('\n', '')
 
 
-        console.log('SUCCESS!')
-        console.log('GPT Initial response: ', gptRes)
+        // console.log('SUCCESS!')
+        // console.log('GPT Initial response: ', gptRes)
         let object = {}
 
         if (gptRes.includes('{') && gptRes.includes('}')) object = JSON.parse(gptRes)
 
         else object.message = gptRes
 
-        console.log(object)
+        // console.log(object)
 
         if (Object.values(object).length && object.api && Object.values(object.api).length) {
             searchResults(object, res, body, req)
@@ -369,7 +369,7 @@ const searchResults = (object, res, body, req) => {
             const video = data.video_results[1]
             object.data = data.video_results
 
-            console.log(video)
+            // console.log(video)
         }
 
         if (engine === 'google_scholar') {
@@ -397,7 +397,7 @@ const searchResults = (object, res, body, req) => {
 
                 object.message = `${event.title} on ${event.date.start_date} at ${event.address}. ${event.description}`
                 object.data = data.events_results
-                console.log(event)
+                // console.log(event)
             }
 
         }
@@ -451,7 +451,7 @@ const searchResults = (object, res, body, req) => {
 
 
         }
-        console.log(object)
+        // console.log(object)
         object.message = await translateText(object.message, body.language)
         voiceApi(object, res, body, req)
 
@@ -459,7 +459,7 @@ const searchResults = (object, res, body, req) => {
 
     // Show result as JSON
     if (object.api) {
-        console.log('yoooooo', object.api)
+        // console.log('yoooooo', object.api)
         search.json(object.api, callback)
     }
 
@@ -524,7 +524,7 @@ router.post('/', [requireAuth], async (req, res) => {
 })
 
 router.post('/gpt', [requireAuth], async (req, res) => {
-    
+
     const { body } = req
 
     return await fetchGPT(body.body, res, body, req)

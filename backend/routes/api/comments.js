@@ -14,7 +14,7 @@ const commentExists = async (req, res, next) => {
         include: [User]
     })
 
-    console.log(comment)
+    // console.log(comment)
     if (comment) {
         req.comment = comment
     }
@@ -69,7 +69,7 @@ router.put('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (
             }
         ]
     })
-    console.log(comments, post.Comments)
+    // console.log(comments, post.Comments)
     const flatten = (arr) => {
 
         const obj = {}
@@ -80,7 +80,7 @@ router.put('/:commentId', [requireAuth, commentExists, isCommentAuthor], async (
         return obj
     }
 
-    console.log(post)
+    // console.log(post)
 
     res.status(200)
     return res.json(post)

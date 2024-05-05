@@ -109,7 +109,7 @@ router.put("/:friendshipId", [requireAuth], async (req, res) => {
     },
   });
 
-  console.log(friendship);
+  // console.log(friendship);
 
   if (!friendship) {
     res.status(404);

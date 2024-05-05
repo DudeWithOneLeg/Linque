@@ -33,7 +33,7 @@ const flatten = (arr) => {
   const obj = {};
   for (let el of arr) {
     if (el.results) {
-      console.log(el.results);
+      // console.log(el.results);
       el.data = JSON.parse(el.results);
     }
     obj[el.id] = el;
@@ -43,7 +43,7 @@ const flatten = (arr) => {
 
 //Are you REALLY the author of this post?
 const isPostAuthor = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { id: userId } = req.user;
   const {
     post: { userId: authorId },
@@ -106,7 +106,7 @@ const validateFriends = async (req, res, next) => {
 
 //Verify post exists
 const postExists = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   const { postId } = req.params;
   const post = await Post.findOne({
     where: {
@@ -140,7 +140,7 @@ const router = express.Router();
 router.post("/", [requireAuth], async (req, res) => {
   const user = req.user;
   const { body, hasImage } = req.body;
-  console.log("yoo has image ", hasImage);
+  // console.log("yoo has image ", hasImage);
 
   const post = await Post.create({
     userId: user.id,
@@ -162,7 +162,7 @@ router.post("/", [requireAuth], async (req, res) => {
     ],
   });
 
-  console.log(post);
+  // console.log(post);
   res.status(200);
   return res.json(newPost);
 });
@@ -209,7 +209,7 @@ router.put(
     newPost.User = user;
     newPost.Comments = comments;
 
-    console.log(newPost);
+    // console.log(newPost);
 
     if (newPost.Comments) {
       newPost.Comments = flatten(newPost.Comments);

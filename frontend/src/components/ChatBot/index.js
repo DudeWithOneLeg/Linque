@@ -27,7 +27,7 @@ export default function ChatBot() {
 
   const handleClick = async (speech) => {
     if (!body && !speech) {
-      console.log("nada");
+      // console.log("nada");
       return;
     }
 
@@ -36,7 +36,7 @@ export default function ChatBot() {
     if (messages) {
       newBody.chatBotConvoId = Object.values(messages)[0].chatBotConvoId;
     }
-    console.log(newBody);
+    // console.log(newBody);
     dispatch(chatBotActions.createMessage(newBody)).then(async () => {
       const div = document.createElement("div");
       div.className = "bot-message";

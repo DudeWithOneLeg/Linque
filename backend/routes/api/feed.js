@@ -8,7 +8,7 @@ const flatten = (arr) => {
   const obj = {};
   for (let el of arr) {
     if (el.results) {
-      console.log(el.results);
+      // console.log(el.results);
       el.data = JSON.parse(el.results);
     }
     obj[el.id] = el;
@@ -72,7 +72,7 @@ router.get("/", requireAuth, async (req, res) => {
 
   posts.forEach((post) => {
     post = post.toJSON();
-    console.log(post.User);
+    // console.log(post.User);
     if (post.PostImage) {
       (post.url = post.PostImage.url),
         (post.data = JSON.parse(post.PostImage.data));

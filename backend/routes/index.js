@@ -45,8 +45,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const voiceApi = async (object) => {
-  console.log("---------------------------------------");
-  console.log('Fetching audio...')
+//   console.log("---------------------------------------");
+//   console.log('Fetching audio...')
   const API_ENDPOINT = 'https://api.elevenlabs.io/v1/text-to-speech/ThT5KcBeYPX3keUQqHPh'
   const voice = {
       text: object.message,
@@ -71,7 +71,7 @@ const voiceApi = async (object) => {
 
   })
   .catch(error => console.error(error)).catch(() => {
-      console.log('FAILED :(')
+    //   console.log('FAILED :(')
   })
 }
 
@@ -80,14 +80,14 @@ const writeAudio = (buffer, object) => {
   const audioBuffer = Buffer.from(buffer, 'binary')
   writeFile("/frontend/public/audio/audio.mp3", audioBuffer)
       .then(() => {
-          console.log('SUCCESS: File written successfully!');
-          console.log("---------------------------------------");
+        //   console.log('SUCCESS: File written successfully!');
+        //   console.log("---------------------------------------");
 
           return object
       })
       .catch((err) => {
-          console.error('FAILED: Writing audio failed.');
-          console.log("---------------------------------------");
+        //   console.error('FAILED: Writing audio failed.');
+        //   console.log("---------------------------------------");
       })
 }
 
@@ -273,8 +273,8 @@ const fetchGPT = async (prompt) => {
       const gptRes = response.data.choices[0].message.content.replace('\n', '')
 
 
-      console.log('SUCCESS!')
-      console.log('GPT Initial response: ', gptRes)
+    //   console.log('SUCCESS!')
+    //   console.log('GPT Initial response: ', gptRes)
       let object = {}
 
       if (gptRes.includes('{') && gptRes.includes('}')) object = JSON.parse(gptRes)
@@ -292,7 +292,7 @@ const fetchGPT = async (prompt) => {
 }
 
 const searchResults = (object) => {
-      console.log("Response Object", object)
+    //   console.log("Response Object", object)
 
 
       const search = new SerpApi.GoogleSearch(SERP_API_KEY);
@@ -300,8 +300,8 @@ const searchResults = (object) => {
       const callback = async function (data) {
           const engine = data.search_parameters.engine
 
-          console.log("FETCHED api")
-          console.log("---------------------------------------")
+        //   console.log("FETCHED api")
+        //   console.log("---------------------------------------")
 
 
 
@@ -309,7 +309,7 @@ const searchResults = (object) => {
 
               const video = data.video_results[1]
 
-              console.log(video)
+            //   console.log(video)
           }
 
           if (engine === 'google_scholar') {
@@ -322,7 +322,7 @@ const searchResults = (object) => {
 
               //object.message = article.snippet
 
-              console.log(article)
+            //   console.log(article)
           }
 
           if (engine === 'google_events') {
@@ -330,7 +330,7 @@ const searchResults = (object) => {
               const event = data.events_results[0]
 
               object.message = `${event.title} on ${event.date.start_date} at ${event.address}. ${event.description}`
-              console.log(event)
+            //   console.log(event)
           }
 
           if (engine === 'google_maps') {
@@ -366,7 +366,7 @@ const searchResults = (object) => {
               const imageResults = data.search_metadata.google_images_url
 
           }
-          console.log(object.message, data.organic_results)
+        //   console.log(object.message, data.organic_results)
 
           return voiceApi(object)
 
@@ -374,7 +374,7 @@ const searchResults = (object) => {
 
       // Show result as JSON
       if (object.api) {
-          console.log('yoooooo', object.api)
+        //   console.log('yoooooo', object.api)
           return search.json(object.api, callback)
       }
 

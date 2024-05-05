@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as commentActions from "../../store/posts";
+import * as commentActions from "../../../store/posts";
 import "./index.css";
 
 export default function ViewComment({ comment, userId }) {

@@ -98,7 +98,7 @@ const voiceApi = async (text, voice_id) => {
     })
     .catch((error) => console.error(error))
     .catch(() => {
-      console.log("FAILED :(");
+      // console.log("FAILED :(");
     });
   return file;
 };
@@ -153,7 +153,7 @@ io.on("connection", (socket) => {
           async (file) => {
             await singlePublicFileUpload(file).then(async (url) => {
               message.audio = url;
-              console.log("Rooms:", socket.rooms);
+              // console.log("Rooms:", socket.rooms);
               await Message.create(message);
 
               socket.in(room).emit("chat message", message);
@@ -165,7 +165,7 @@ io.on("connection", (socket) => {
     } else {
       message.language = await detectLanguage(message.body);
 
-      console.log("Rooms:", socket.rooms);
+      // console.log("Rooms:", socket.rooms);
       await Message.create(message);
 
       io.in(room).emit("chat message", message);
