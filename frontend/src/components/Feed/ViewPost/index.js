@@ -152,7 +152,7 @@ export default function ViewPost({ post, userId }) {
 
                     {!edit && post && <div>
 
-                        <p>{post.body && post.body}</p>
+                        <p className='post-text'>{post.body && post.body}</p>
                         {
                             post.hasImage && !post.PostImage && <img src='/images/icons/pic-loading.png' className='image-loading' alt='loading'/>
                         }
