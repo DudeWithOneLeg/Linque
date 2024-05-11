@@ -26,7 +26,7 @@ const isEventOrganizer = (req, res, next) => {
 
   const { id: userId } = req.user;
 
-  console.log(userId, organizerId);
+  // console.log(userId, organizerId);
 
   if (organizerId != userId) {
     res.status(403);

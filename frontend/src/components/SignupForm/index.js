@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import * as sessionActions from "../../../store/session";
+import * as sessionActions from "../../store/session";
 import { languageNames, languageCodes } from "./languages";
-import GoogleLoginComp from "../../GoogleLoginComp";
+import GoogleLoginComp from "../GoogleLoginComp";
 
 import "./index.css";
 

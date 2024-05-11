@@ -183,7 +183,7 @@ router.post("/", validateSignup, async (req, res) => {
 
   if (user.voice_id) safeUser.voice_id = user.voice_id;
 
-  console.log(safeUser);
+  // console.log(safeUser);
 
   await setTokenCookie(res, safeUser);
 
@@ -225,7 +225,7 @@ router.post("/voice", singleMulterUpload("file"), async (req, res) => {
     })
     .catch((error) => console.error(error))
     .catch(() => {
-      console.log("FAILED :(");
+      // console.log("FAILED :(");
     });
 });
 

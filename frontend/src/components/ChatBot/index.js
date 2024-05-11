@@ -2,8 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import * as chatBotActions from "../../store/chatbot";
 import * as speechActions from "../../store/speech";
 import { useDispatch, useSelector } from "react-redux";
-import ViewChatBotConvos from "../ViewChatBotConvos";
-import ViewChatBotMessages from "../ViewChatBotMessages";
+import ViewChatBotConvos from "./ViewChatBotConvos";
+import ViewChatBotMessages from "./ViewChatBotMessages";
 import Microphone from "../Microphone";
 import "./index.css";
 
@@ -27,17 +27,18 @@ export default function ChatBot() {
 
   const handleClick = async (speech) => {
     if (!body && !speech) {
-      console.log("nada");
       return;
     }
 
     const newBody = { body: body ? body : speech, user: true };
+    // console.log(newBody);
     dispatch(speechActions.clearSpeech());
     if (messages) {
       newBody.chatBotConvoId = Object.values(messages)[0].chatBotConvoId;
     }
-    console.log(newBody);
+    // console.log(newBody);
     dispatch(chatBotActions.createMessage(newBody)).then(async () => {
+      console.log('hi')
       const div = document.createElement("div");
       div.className = "bot-message";
       messageDiv.appendChild(div);
@@ -51,6 +52,7 @@ export default function ChatBot() {
       const arrayBuffer = await data.arrayBuffer();
       const blob = new Blob([arrayBuffer], { type: "audio/mp3" });
       const newUrl = window.URL.createObjectURL(blob);
+      console.log(newUrl)
 
       //set audio
       audio = document.createElement("audio");

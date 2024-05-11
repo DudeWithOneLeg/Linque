@@ -12,7 +12,6 @@ export default function Microphone({ soundRef, defaultLanguage }) {
   const {
     finalTranscript,
     listening,
-    resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
@@ -31,7 +30,7 @@ export default function Microphone({ soundRef, defaultLanguage }) {
       console.log(finalTranscript);
       dispatch(speechActions.setSpeech(finalTranscript));
     }
-  }, [dispatch, finalTranscript]);
+  }, [dispatch, finalTranscript, listening]);
 
   //Keep speech recognition on when mic enabled
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function Microphone({ soundRef, defaultLanguage }) {
       if (defaultLanguage) options.language = defaultLanguage;
       SpeechRecognition.startListening(options);
     }
-  }, [listening]);
+  }, [listening, defaultLanguage, mic]);
 
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;

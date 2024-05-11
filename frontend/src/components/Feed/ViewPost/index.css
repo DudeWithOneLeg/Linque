@@ -89,10 +89,13 @@
 .post-edit {
     width: 25px;
     height: 25px;
+    border-radius: 20px;
+    padding: 5px;
 }
 
 .post-edit:hover {
     cursor: pointer;
+    background-color: rgba(61, 86, 106, 0.9);
 }
 
 
@@ -248,4 +251,8 @@ canvas {
 
 #image {
     padding-top: 10px;
+}
+
+.post-text {
+    padding: 5px;
 }
