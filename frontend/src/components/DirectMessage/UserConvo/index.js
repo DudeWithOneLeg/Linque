@@ -15,9 +15,9 @@ export default function UserConvo({ selectedFriend, translate, showConvo }) {
   const messages = useSelector((state) => state.message.allMessages);
   const speech = useSelector((state) => state.speech.speech);
 
-  // const socket = io("https://linque.onrender.com");
+  const socket = io("https://linque-m98u.onrender.com");
 
-  const socket = io('http://localhost:8000');
+  // const socket = io('http://localhost:8000');
 
   const [message, setMessage] = useState({});
   const [body, setBody] = useState("");

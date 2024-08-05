@@ -118,7 +118,7 @@ const isProduction = environment === "production";
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://linque-m98u.onrender.com",
     methods: ["GET", "POST"],
   },
 });
