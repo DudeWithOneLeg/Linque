@@ -27,7 +27,7 @@ The platform incorporates a chatbot with access to Google search functionalities
 ## Environment Variables
 ```
 DATABASE_URL=(production postgres database url)
-ELEVENLABS_API_KEY=(Eleven Lbas API key)
+ELEVENLABS_API_KEY=(Eleven Labs API key)
 GOOGLE_APPLICATION_CREDENTIALS=(Google Application Credentials)
 JWT_EXPIRES_IN=(JWT expiration in ms)
 JWT_SECRET=(secure secret)
