@@ -17,7 +17,7 @@ const googleCloudCreds = {
   "type": "service_account",
   "project_id": "linque-2",
   "private_key_id": process.env.GOOGLE_CLOUD_PRIVATE_KEY_ID,
-  "private_key": process.env.GOOGLE_CLOUD_PRIVATE_KEY,
+  "private_key": process.env.GOOGLE_CLOUD_PRIVATE_KEY.split(String.raw`\n`).join('\n'),
   "client_email": "linque-translate@linque-2.iam.gserviceaccount.com",
   "client_id": "105457358034187759043",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
